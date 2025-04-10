@@ -1,49 +1,45 @@
-# Nu primesc notă pentru că nu am pus titlu și descriere
+# E-VOTE
 
-### Folosiți template-ul corespunzător grupei voastre!
+# PROJECT INSTRUCTONS:
 
-| Laborant  | Link template                                |
-|-----------|----------------------------------------------|
-| Dragoș B  | https://github.com/Ionnier/oop-template      |
-| Tiberiu M | https://github.com/MaximTiberiu/oop-template |
-| Marius MC | https://github.com/mcmarius/oop-template     |
+| Teaching Assistent | Dragoș B | Link template | https://github.com/Ionnier/oop-template |
 
-## Instrucțiuni de compilare
+## Compiling Instructions
 
-Proiectul este configurat cu CMake.
+The project is configuered with Cmake.
 
-Instrucțiuni pentru terminal:
+Terminal instructions:
 
-1. Pasul de configurare
+1. The configuration step
 ```sh
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
-# sau ./scripts/cmake.sh configure
+# or ./scripts/cmake.sh configure
 ```
 
-Sau pe Windows cu GCC:
+Or on Windows with GCC:
 ```sh
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -G Ninja
-# sau ./scripts/cmake.sh configure -g Ninja
+# or ./scripts/cmake.sh configure -g Ninja
 ```
 
-La acest pas putem cere să generăm fișiere de proiect pentru diverse medii de lucru.
+At this step we can ask to generate project files for various work environments.
 
-## Cerințe obligatorii
+## Mandatory requirements
 
-Nerespectarea duce la nepunctarea proiectului
+Failure to comply will result in the project being disqualified.
 
-  - programul va fi scris în C++
-  - programul va avea un meniu interactiv (doar pentru ilustrarea funcționalității)
-  - programul nu are erori de compilare
-  - fară variabile globale
-  - datele membre private(sau protected)
-  - GitHub Actions trecute
-  - commit-uri pe Git adecvate si punctuale
-  - folosirea a funcționalităților limbajului fără sens
-  - folosirea a funcționlităților limbajului cu scopul de a încălca "legal" o altă regulă
-      - folosirea excesivă a claselor friend
-      - folosirea excesviă a elementelor statice
-  - fiecare cerinta va fi punctate 1/2 pe implementare + 1/2 pe faptul ca a fost implementata cu sens
+  - the program will be written in C++
+  - the program will have an interactive menu (just to illustrate the functionality)
+  - the program has no compilation errors
+  - no global variables
+  - private (or protected) member data
+  - GitHub Actions passed
+  - appropriate and punctual Git commits
+  - meaningless use of language features
+  - use of language features with the aim of "legally" violating another rule
+      - excessive use of friend classes
+      - excessive use of static elements
+  - each requirement will be scored 1/2 on implementation + 1/2 on the fact that it was implemented meaningfully
 
 ## Cerințe
 - [ ] definirea a minim **2-3 ieararhii de clase** care sa interactioneze in cadrul temei alese (fie prin compunere, agregare sau doar sa apeleze metodele celeilalte intr-un mod logic) (6p)
