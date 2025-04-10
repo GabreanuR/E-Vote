@@ -1,6 +1,5 @@
 #include <iostream>
 #include <array>
-#include "app/evote_app.h"
 
 int main() {
     std::cout << "Hello, world!\n";
