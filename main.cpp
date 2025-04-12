@@ -1,19 +1,18 @@
 #include <iostream>
-#include <fstream>
-#include <app/evote_app.h>
-
+#include "app/evote_app.h"
+#include "ui/ui.h"
 using namespace std;
 
-void demoMode() {
-
-}
-
 void mainMenu() {
-    while (true) {
-        cout << endl << "MENU:" << endl;
-        cout << "1. Normal Mode" << endl;
-        cout << "2. Demo Mode" << endl;
-        cout << "3. Exit" << endl;
+    bool running = true;
+    while (running) {
+        clearScreen();
+        cout << "==================================================\n";
+        cout << "Main Menu\n";
+        cout << "==================================================\n";
+        cout << "1. Normal Mode\n";
+        cout << "2. Demo Mode\n";
+        cout << "3. Exit\n";
         cout << "Enter your choice: ";
 
         char choice;
@@ -21,18 +20,21 @@ void mainMenu() {
 
         switch (choice) {
             case '1':
-                cout << "Entering Normal Mode" << endl;
+                cout << "\nEntering Normal Mode...\n\n";
+                pause();
                 runEvoteApp();
                 break;
             case '2':
-                cout << "Entering Demo Mode" << endl;
-                demoMode();
+                cout << "\nEntering Demo Mode... (Not implemented)\n\n";
+                pause();
                 break;
             case '3':
-                cout << "Exiting Program" << endl;
-            exit(0);
+                cout << "Exiting Program!\n";
+                running = false;
+                break;
             default:
-                cout << "'" << choice << "' is an invalid choice!" << endl;
+                cout << "\n'" << choice << "' is an invalid choice!\n\n";
+                pause();
         }
     }
 }

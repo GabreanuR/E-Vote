@@ -1,12 +1,17 @@
 #include <iostream>
+#include "ui/ui.h"
 using namespace std;
 
 void runEvoteApp() {
-    while (true) {
-        cout << endl << "E-VOTE APP:" << endl;
-        cout << "1. Login as Voter" << endl;
-        cout << "2. View Elections" << endl;
-        cout << "3. Return to Main Menu" << endl;
+    bool running = true;
+    while (running) {
+        clearScreen();
+        cout << "==================================================\n";
+        cout << "E-VOTE APP:\n";
+        cout << "==================================================\n";
+        cout << "1. Login\n";
+        cout << "2. View Elections\n";
+        cout << "3. Return to Main Menu\n";
         cout << "Enter your choice: ";
 
         char choice;
@@ -14,18 +19,20 @@ void runEvoteApp() {
 
         switch (choice) {
             case '1':
-                cout << "Logging in as voter..." << endl;
-
-            break;
+                cout << "\nLogin...\n\n";
+                pause();
+                break;
             case '2':
-                cout << "Viewing elections..." << endl;
-
-            break;
+                cout << "\nViewing elections...\n\n";
+                pause();
+                break;
             case '3':
-                cout << "Exiting E-VOTE APP" << endl;
+                cout << "\nExiting E-VOTE APP\n\n";
+                running = false;
                 return;
             default:
-                cout << "'" << choice << "' is an invalid choice!" << endl;
+                cout << "\n'" << choice << "' is an invalid choice!\n\n";
+                pause();
         }
     }
 }
