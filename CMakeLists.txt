@@ -136,7 +136,11 @@ add_executable(${MAIN_EXECUTABLE_NAME} main.cpp ${SOURCES}
         src/voters/voters.h
         src/app/evote_app.h
         src/ui/ui.cpp
-        src/ui/ui.h)
+        src/ui/ui.h
+        src/app/voter.cpp
+        src/app/voter.h
+        src/app/admin.cpp
+        src/app/admin.h)
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
 # NOTE: RUN_SANITIZERS is optional, if it's not present it will default to true

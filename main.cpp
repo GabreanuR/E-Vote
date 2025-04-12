@@ -4,8 +4,7 @@
 using namespace std;
 
 void mainMenu() {
-    bool running = true;
-    while (running) {
+    while (true) {
         clearScreen();
         cout << "==================================================\n";
         cout << "Main Menu\n";
@@ -29,9 +28,9 @@ void mainMenu() {
                 pause();
                 break;
             case '3':
-                cout << "Exiting Program!\n";
-                running = false;
-                break;
+                cout << "\nExiting Program!\n\n";
+                pause();
+                return;
             default:
                 cout << "\n'" << choice << "' is an invalid choice!\n\n";
                 pause();
