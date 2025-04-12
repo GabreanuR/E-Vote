@@ -133,7 +133,10 @@ FetchContent_MakeAvailable(googletest)
 add_executable(${MAIN_EXECUTABLE_NAME} main.cpp ${SOURCES}
         src/app/evote_app.cpp
         src/voters/voters.cpp
-        src/voters/voters.h)
+        src/voters/voters.h
+        src/app/evote_app.h
+        src/ui/ui.cpp
+        src/ui/ui.h)
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
 # NOTE: RUN_SANITIZERS is optional, if it's not present it will default to true

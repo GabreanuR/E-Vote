@@ -1,7 +1,12 @@
 #include <iostream>
 #include <fstream>
+#include <app/evote_app.h>
 
 using namespace std;
+
+void demoMode() {
+
+}
 
 void mainMenu() {
     while (true) {
@@ -17,10 +22,12 @@ void mainMenu() {
         switch (choice) {
             case '1':
                 cout << "Entering Normal Mode" << endl;
-            return;
+                runEvoteApp();
+                break;
             case '2':
                 cout << "Entering Demo Mode" << endl;
-            return;
+                demoMode();
+                break;
             case '3':
                 cout << "Exiting Program" << endl;
             exit(0);
@@ -32,7 +39,6 @@ void mainMenu() {
 
 int main() {
     mainMenu();
-
     return 0;
 }
 
