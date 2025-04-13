@@ -1,47 +1,12 @@
-#include <iostream>
-#include "app/evote_app.h"
-#include "ui/ui.h"
-using namespace std;
 
-void mainMenu() {
-    while (true) {
-        clearScreen();
-        cout << "==================================================\n";
-        cout << "Main Menu\n";
-        cout << "==================================================\n";
-        cout << "1. Normal Mode\n";
-        cout << "2. Demo Mode\n";
-        cout << "3. Exit\n";
-        cout << "Enter your choice: ";
-
-        char choice;
-        cin >> choice;
-
-        switch (choice) {
-            case '1':
-                cout << "\nEntering Normal Mode...\n\n";
-                pause();
-                runEvoteApp();
-                break;
-            case '2':
-                cout << "\nEntering Demo Mode... (Not implemented)\n\n";
-                pause();
-                break;
-            case '3':
-                cout << "\nExiting Program!\n\n";
-                pause();
-                return;
-            default:
-                cout << "\n'" << choice << "' is an invalid choice!\n\n";
-                pause();
-        }
-    }
-}
+#include "menu/MainMenu.h"
 
 int main() {
-    mainMenu();
+    MainMenu menu;
+    menu.display();
     return 0;
 }
+
 
 // COD INITIAL
 //
