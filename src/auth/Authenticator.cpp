@@ -2,12 +2,15 @@
 #include "user/Voter.h"
 #include "user/Admin.h"
 #include <iostream>
+#include <utility>
+#include "ui/ui.h"
 
 using namespace std;
 
-Authenticator::Authenticator(const string &type) : userType(type) {}
+Authenticator::Authenticator(string type) : userType(std::move(type)) {}
 
-User* Authenticator::authenticate() {
+User* Authenticator::authenticate() const {
+    clearScreen();
     cout << "=== " << (userType == "voter" ? "VOTER" : "ADMIN") << " LOGIN ===\n";
     cout << "Enter ID: ";
     string id;
@@ -20,7 +23,9 @@ User* Authenticator::authenticate() {
     // TODO: Check from file/database
     if (userType == "voter") {
         return new Voter(id);
-    } else {
+    }
+    if (userType == "admin") {
         return new Admin(id);
     }
+    return nullptr;
 }

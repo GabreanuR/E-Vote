@@ -9,8 +9,8 @@ using namespace std;
 class Authenticator {
     string userType;
 public:
-    explicit Authenticator(const string &type);
-    User* authenticate();
+    explicit Authenticator(string type);
+    [[nodiscard]] User* authenticate() const;
 };
 
 #endif

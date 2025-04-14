@@ -1,6 +1,9 @@
 #include <iostream>
 #include "ui/ui.h"
 #include "EvoteMenu.h"
+
+#include <limits>
+
 #include "auth/Authenticator.h"
 
 using namespace std;
@@ -18,6 +21,8 @@ void EvoteMenu::display() {
 
         char choice;
         cin >> choice;
+        //If the user inputs multiple characters, this ignores it
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         switch (choice) {
             case '1': {

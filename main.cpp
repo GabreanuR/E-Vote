@@ -1,4 +1,3 @@
-
 #include "menu/MainMenu.h"
 
 int main() {

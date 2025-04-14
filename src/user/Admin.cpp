@@ -1,6 +1,7 @@
 #include "Admin.h"
 #include "ui/ui.h"
 #include <iostream>
+#include <limits>
 using namespace std;
 
 Admin::Admin(const std::string& id) : User(id) {}
@@ -21,9 +22,44 @@ void Admin::showDashboard() {
 
         char choice;
         cin >> choice;
+        //If the user inputs multiple characters, this ignores it
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-        if (choice == '6') break;
-        cout << "Functionality not yet implemented";
-        pause();
+        switch (choice) {
+            case '1': {
+                cout << "\nCreating Election...\n\n";
+                pause();
+                break;
+            }
+            case '2': {
+                cout << "\nViewing Elections...\n\n";
+                pause();
+                break;
+            }
+            case '3': {
+                cout << "\nEnding Election...\n\n";
+                pause();
+                break;
+            }
+            case '4': {
+                cout << "\nAdding Voter...\n\n";
+                pause();
+                break;
+            }
+            case '5': {
+                cout << "\nRemoving Voter...\n\n";
+                pause();
+                break;
+            }
+            case '6': {
+                cout << "\nLogging out!\n\n";
+                pause();
+                return;
+            }
+            default: {
+                cout << "\n'" << choice << "' is an invalid choice!\n\n";
+                pause();
+            }
+        }
     }
 }
