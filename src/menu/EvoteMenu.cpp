@@ -29,27 +29,29 @@ void EvoteMenu::display() {
                 cout << "\nAccessing Voter Login\n\n";
                 pause();
                 Authenticator auth("voter");
-                User* user = auth.authenticate();
-                if (user) user->showDashboard();
-                delete user;
+                if (User *user = auth.authenticate()) {
+                    user->showDashboard();
+                    delete user;
+                }
                 break;
             }
             case '2': {
                 cout << "\nAccessing Admin Login\n\n";
                 pause();
                 Authenticator auth("admin");
-                User* user = auth.authenticate();
-                if (user) user->showDashboard();
-                delete user;
+                if (User *user = auth.authenticate()) {
+                    user->showDashboard();
+                    delete user;
+                }
                 break;
             }
             case '3':
                 cout << "\nExiting E-VOTE System\n\n";
-            pause();
-            return;
+                pause();
+                return;
             default:
                 cout << "\n'" << choice << "' is an invalid choice!\n\n";
-            pause();
+                pause();
         }
     }
 }
