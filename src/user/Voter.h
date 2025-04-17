@@ -9,4 +9,13 @@ public:
     void showDashboard() override;
 };
 
+class Student : public Voter {
+    public:
+};
+
+class Professional : public Voter {
+    public:
+};
+
+
 #endif
