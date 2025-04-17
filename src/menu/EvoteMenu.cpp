@@ -1,9 +1,7 @@
 #include <iostream>
-#include "ui/ui.h"
+#include "ui/UI.h"
 #include "EvoteMenu.h"
-
 #include <limits>
-
 #include "auth/Authenticator.h"
 
 using namespace std;

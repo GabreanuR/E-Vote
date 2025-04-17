@@ -1,4 +1,4 @@
-#include "ui.h"
+#include "UI.h"
 #include <cstdlib>
 
 void clearScreen() {

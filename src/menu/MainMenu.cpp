@@ -1,5 +1,5 @@
 #include <iostream>
-#include "ui/ui.h"
+#include "ui/UI.h"
 #include "MainMenu.h"
 
 #include <limits>
