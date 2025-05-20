@@ -30,11 +30,11 @@ public:
         positions.push_back(pos);
     }
 
-    [[nodiscard]] const std::vector<Position> &getPositions() const {
-        return positions;
-    }
-
-    [[nodiscard]] ElectionLevel getLevel() const { return level; }
+    // [[nodiscard]] const std::vector<Position> &getPositions() const {
+    //     return positions;
+    // }
+    //
+    // [[nodiscard]] ElectionLevel getLevel() const { return level; }
 
     std::string getId() const { return id; };
 
