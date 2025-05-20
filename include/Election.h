@@ -36,9 +36,9 @@ public:
     //
     // [[nodiscard]] ElectionLevel getLevel() const { return level; }
 
-    std::string getId() const { return id; };
-
-    std::string getTitle() const { return title; };
+    // std::string getId() const { return id; };
+    //
+    // std::string getTitle() const { return title; };
 };
 
 
