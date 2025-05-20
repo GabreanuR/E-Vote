@@ -40,7 +40,7 @@ void Admin::showDashboard() {
             }
             case '2': {
                 cout << "\nViewing Elections...\n\n";
-                viewElectionsDashboard();
+                //viewElectionsDashboard();
                 pause();
                 break;
             }
@@ -188,67 +188,67 @@ void Admin::createElection(std::vector<std::unique_ptr<Election>> &elections) {
     }
 }
 
-std::vector<std::unique_ptr<Election>> loadElectionsFromFile() {
-    std::vector<std::unique_ptr<Election>> elections;
-    ifstream inFile("src/Elections/ElectionData.txt");
-    string line;
-    while (getline(inFile, line)) {
-        istringstream iss(line);
-        string id, title, typeStr, levelStr, posName, candList;
-        getline(iss, id, '|');
-        getline(iss, title, '|');
-        getline(iss, typeStr, '|');
-        getline(iss, levelStr, '|');
-        getline(iss, posName, '|');
-        getline(iss, candList);
+// std::vector<std::unique_ptr<Election>> loadElectionsFromFile() {
+//     std::vector<std::unique_ptr<Election>> elections;
+//     ifstream inFile("src/Elections/ElectionData.txt");
+//     string line;
+//     while (getline(inFile, line)) {
+//         istringstream iss(line);
+//         string id, title, typeStr, levelStr, posName, candList;
+//         getline(iss, id, '|');
+//         getline(iss, title, '|');
+//         getline(iss, typeStr, '|');
+//         getline(iss, levelStr, '|');
+//         getline(iss, posName, '|');
+//         getline(iss, candList);
+//
+//         ElectionLevel level = static_cast<ElectionLevel>(stoi(levelStr));
+//         vector<string> candidates;
+//         istringstream candStream(candList);
+//         string cand;
+//         while (getline(candStream, cand, ',')) {
+//             candidates.push_back(cand);
+//         }
+//
+//         unique_ptr<Election> election;
+//         if (typeStr == "Majority") {
+//             election = make_unique<Majority>(id, title, level);
+//         } else {
+//             election = make_unique<Proportional>(id, title, level);
+//         }
+//
+//         Position pos(posName, candidates);
+//         election->addPosition(pos);
+//         elections.push_back(std::move(election));
+//     }
+//     return elections;
+// }
 
-        ElectionLevel level = static_cast<ElectionLevel>(stoi(levelStr));
-        vector<string> candidates;
-        istringstream candStream(candList);
-        string cand;
-        while (getline(candStream, cand, ',')) {
-            candidates.push_back(cand);
-        }
-
-        unique_ptr<Election> election;
-        if (typeStr == "Majority") {
-            election = make_unique<Majority>(id, title, level);
-        } else {
-            election = make_unique<Proportional>(id, title, level);
-        }
-
-        Position pos(posName, candidates);
-        election->addPosition(pos);
-        elections.push_back(std::move(election));
-    }
-    return elections;
-}
-
-void Admin::viewElectionsDashboard() {
-    clearScreen();
-    auto elections = loadElectionsFromFile();
-    if (elections.empty()) {
-        cout << "No elections found.\n";
-        pause();
-        return;
-    }
-
-    cout << "=== All Elections ===\n";
-    for (size_t i = 0; i < elections.size(); ++i) {
-        cout << i + 1 << ". " << elections[i]->getId() << " - " << elections[i]->getTitle() << "\n";
-    }
-
-    cout << "\nSelect an election to view details or 0 to return: ";
-    int choice;
-    cin >> choice;
-    cin.ignore();
-
-    if (choice > 0 && choice <= elections.size()) {
-        clearScreen();
-        elections[choice - 1]->displayDetails();
-        pause();
-    }
-}
+// void Admin::viewElectionsDashboard() {
+//     clearScreen();
+//     auto elections = loadElectionsFromFile();
+//     if (elections.empty()) {
+//         cout << "No elections found.\n";
+//         pause();
+//         return;
+//     }
+//
+//     cout << "=== All Elections ===\n";
+//     for (size_t i = 0; i < elections.size(); ++i) {
+//         cout << i + 1 << ". " << elections[i]->getId() << " - " << elections[i]->getTitle() << "\n";
+//     }
+//
+//     cout << "\nSelect an election to view details or 0 to return: ";
+//     int choice;
+//     cin >> choice;
+//     cin.ignore();
+//
+//     if (choice > 0 && choice <= elections.size()) {
+//         clearScreen();
+//         elections[choice - 1]->displayDetails();
+//         pause();
+//     }
+// }
 
 
 
