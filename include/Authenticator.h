@@ -1,7 +1,7 @@
 #ifndef AUTHENTICATOR_H
 #define AUTHENTICATOR_H
 
-#include "user/User.h"
+#include "User.h"
 #include <string>
 
 using namespace std;

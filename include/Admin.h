@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 #include "User.h"
-#include "Elections/Election.h"
+#include "Election.h"
 
 class Admin : public User {
 public:

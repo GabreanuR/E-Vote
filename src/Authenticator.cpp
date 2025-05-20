@@ -1,9 +1,9 @@
-#include "Authenticator.h"
-#include "user/Voter.h"
-#include "user/Admin.h"
+#include "../include/Authenticator.h"
+#include "../include/Voter.h"
+#include "../include/Admin.h"
 #include <iostream>
 #include <utility>
-#include "ui/UI.h"
+#include "../include/UI.h"
 
 using namespace std;
 

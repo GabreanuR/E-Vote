@@ -1,5 +1,5 @@
-#include "Voter.h"
-#include "ui/UI.h"
+#include "../include/Voter.h"
+#include "../include/UI.h"
 #include <iostream>
 #include <limits>
 using namespace std;

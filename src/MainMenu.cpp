@@ -1,10 +1,10 @@
 #include <iostream>
-#include "ui/UI.h"
-#include "MainMenu.h"
+#include "../include/UI.h"
+#include "../include/MainMenu.h"
 
 #include <limits>
 
-#include "EvoteMenu.h"
+#include "../include/EvoteMenu.h"
 
 using namespace std;
 

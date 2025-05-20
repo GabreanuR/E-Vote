@@ -1,8 +1,8 @@
-#include "Admin.h"
-#include "ui/UI.h"
+#include "../include/Admin.h"
+#include "../include/UI.h"
 #include <iostream>
 #include <limits>
-#include "Elections/Type.h"
+#include "../include/Type.h"
 #include <fstream>
 #include <sstream>
 
