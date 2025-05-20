@@ -10,7 +10,7 @@ class Admin : public User {
 public:
     explicit Admin(const std::string& id);
 
-    static void viewElectionsDashboard();
+    //static void viewElectionsDashboard();
 
     void showDashboard() override;
     static void createElection(std::vector<std::unique_ptr<Election>>& elections);

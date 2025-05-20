@@ -80,7 +80,7 @@ void Admin::createElection(std::vector<std::unique_ptr<Election>> &elections) {
         string electionId;
         cout << "Enter Election ID: ";
         cin >> electionId;
-        cin.ignore();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         string title;
         cout << "Enter Election Title: ";
