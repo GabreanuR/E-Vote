@@ -4,7 +4,7 @@
 #include "../include/EvoteMenu.h"
 
 void clearScreen();
-void pause();
+void pauseScreen();
 
 using namespace std;
 
@@ -27,24 +27,24 @@ void MainMenu::display() {
         switch (choice) {
             case '1': {
                 cout << "\nEntering Normal Mode...\n\n";
-                pause();
+                pauseScreen();
                 EvoteMenu menu;
                 menu.display();
                 break;
             }
             case '2': {
                 cout << "\nEntering Demo Mode... (Not implemented)\n\n";
-                pause();
+                pauseScreen();
                 break;
             }
             case '3': {
                 cout << "\nExiting Program!\n\n";
-                pause();
+                pauseScreen();
                 return;
             }
             default: {
                 cout << "\n'" << choice << "' is an invalid choice!\n\n";
-                pause();
+                pauseScreen();
             }
         }
     }

@@ -6,7 +6,7 @@
 #include <sstream>
 
 void clearScreen();
-void pause();
+void pauseScreen();
 
 using namespace std;
 
@@ -37,38 +37,38 @@ void Admin::showDashboard() {
             case '1': {
                 cout << "\nCreating Election...\n\n";
                 createElection(elections);
-                pause();
+                pauseScreen();
                 break;
             }
             case '2': {
                 cout << "\nViewing Elections...\n\n";
                 //viewElectionsDashboard();
-                pause();
+                pauseScreen();
                 break;
             }
             case '3': {
                 cout << "\nEnding Election...\n\n";
-                pause();
+                pauseScreen();
                 break;
             }
             case '4': {
                 cout << "\nAdding Voter...\n\n";
-                pause();
+                pauseScreen();
                 break;
             }
             case '5': {
                 cout << "\nRemoving Voter...\n\n";
-                pause();
+                pauseScreen();
                 break;
             }
             case '6': {
                 cout << "\nLogging out!\n\n";
-                pause();
+                pauseScreen();
                 return;
             }
             default: {
                 cout << "\n'" << choice << "' is an invalid choice!\n\n";
-                pause();
+                pauseScreen();
             }
         }
     }
@@ -182,7 +182,7 @@ void Admin::createElection(std::vector<std::unique_ptr<Election>> &elections) {
             break;
         } else {
             cout << "Restarting election creation...\n";
-            pause();
+            pauseScreen();
         }
 
 

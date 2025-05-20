@@ -4,7 +4,7 @@
 #include "../include/Authenticator.h"
 
 void clearScreen();
-void pause();
+void pauseScreen();
 
 using namespace std;
 
@@ -27,7 +27,7 @@ void EvoteMenu::display() {
         switch (choice) {
             case '1': {
                 cout << "\nAccessing Voter Login\n\n";
-                pause();
+                pauseScreen();
                 Authenticator auth("voter");
                 if (User *user = auth.authenticate()) {
                     user->showDashboard();
@@ -37,7 +37,7 @@ void EvoteMenu::display() {
             }
             case '2': {
                 cout << "\nAccessing Admin Login\n\n";
-                pause();
+                pauseScreen();
                 Authenticator auth("admin");
                 if (User *user = auth.authenticate()) {
                     user->showDashboard();
@@ -47,11 +47,11 @@ void EvoteMenu::display() {
             }
             case '3':
                 cout << "\nExiting E-VOTE System\n\n";
-                pause();
+                pauseScreen();
                 return;
             default:
                 cout << "\n'" << choice << "' is an invalid choice!\n\n";
-                pause();
+                pauseScreen();
         }
     }
 }

@@ -8,7 +8,7 @@ void clearScreen() {
 #endif
 }
 
-void pause() {
+void pauseScreen() {
 #ifdef _WIN32
     system("pause");
 #else

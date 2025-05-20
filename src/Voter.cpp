@@ -3,7 +3,7 @@
 #include <limits>
 
 void clearScreen();
-void pause();
+void pauseScreen();
 
 using namespace std;
 
@@ -31,37 +31,37 @@ void Voter::showDashboard() {
         switch (choice) {
             case '1': {
                 cout << "\nViewing Available Elections...\n\n";
-                pause();
+                pauseScreen();
                 break;
             }
             case '2': {
                 cout << "\nCasting Vote...\n\n";
-                pause();
+                pauseScreen();
                 break;
             }
             case '3': {
                 cout << "\nViewing My Votes...\n\n";
-                pause();
+                pauseScreen();
                 break;
             }
             case '4': {
                 cout << "\nChanging Vote...\n\n";
-                pause();
+                pauseScreen();
                 break;
             }
             case '5': {
                 cout << "\nViewing Results...\n\n";
-                pause();
+                pauseScreen();
                 break;
             }
             case '6': {
                 cout << "\nLogging out!\n\n";
-                pause();
+                pauseScreen();
                 return;
             }
             default: {
                 cout << "\n'" << choice << "' is an invalid choice!\n\n";
-                pause();
+                pauseScreen();
             }
         }
     }

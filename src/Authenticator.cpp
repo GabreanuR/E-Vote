@@ -5,7 +5,7 @@
 #include <utility>
 
 void clearScreen();
-void pause();
+void pauseScreen();
 
 using namespace std;
 
