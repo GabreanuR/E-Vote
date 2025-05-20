@@ -1,7 +1,10 @@
 #include "../include/Voter.h"
-#include "../include/UI.h"
 #include <iostream>
 #include <limits>
+
+void clearScreen();
+void pause();
+
 using namespace std;
 
 Voter::Voter(const std::string& id) : User(id) {}

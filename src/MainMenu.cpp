@@ -1,10 +1,10 @@
 #include <iostream>
-#include "../include/UI.h"
 #include "../include/MainMenu.h"
-
 #include <limits>
-
 #include "../include/EvoteMenu.h"
+
+void clearScreen();
+void pause();
 
 using namespace std;
 

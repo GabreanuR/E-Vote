@@ -1,10 +1,12 @@
 #include "../include/Admin.h"
-#include "../include/UI.h"
 #include <iostream>
 #include <limits>
 #include "../include/Type.h"
 #include <fstream>
 #include <sstream>
+
+void clearScreen();
+void pause();
 
 using namespace std;
 
@@ -161,7 +163,6 @@ void Admin::createElection(std::vector<std::unique_ptr<Election>> &elections) {
         if (tolower(confirm) == 'y') {
             elections.push_back(std::move(election));
             cout << "Election created successfully!\n";
-            pause();
 
             ofstream outFile("ElectionDate.txt", ios::app);
             if (outFile.is_open()) {

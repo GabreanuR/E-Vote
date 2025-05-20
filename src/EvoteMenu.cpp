@@ -1,8 +1,10 @@
 #include <iostream>
-#include "../include/UI.h"
 #include "../include/EvoteMenu.h"
 #include <limits>
 #include "../include/Authenticator.h"
+
+void clearScreen();
+void pause();
 
 using namespace std;
 

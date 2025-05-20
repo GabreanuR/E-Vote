@@ -3,7 +3,9 @@
 #include "../include/Admin.h"
 #include <iostream>
 #include <utility>
-#include "../include/UI.h"
+
+void clearScreen();
+void pause();
 
 using namespace std;
 
