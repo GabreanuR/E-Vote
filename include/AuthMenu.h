@@ -1,11 +1,11 @@
 #ifndef AUTHMENU_H
 #define AUTHMENU_H
 
-#include "Menu.h"
+#include "Meniu.h"
 #include "UserType.h"
 #include <string>
 
-class AuthMenu : public Menu {
+class AuthMenu : public Meniu {
     UserType userType;
     string jsonPath;             // Path to the JSON file: "voters.json" or "admins.json"
     string authenticatedUser;    // Store username after successful login
@@ -20,4 +20,4 @@ public:
 };
 
 
-#endif //AUTHMENU_H
+#endif

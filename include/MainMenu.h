@@ -1,11 +1,13 @@
 #ifndef MAIN_MENU_H
 #define MAIN_MENU_H
 
-#include "Menu.h"
+#include "Meniu.h"
 
-class MainMenu final : public Menu {
+class MainMenu final : public Meniu {
 public:
     void display() override;
+
+    static void printMainMenuText();
 };
 
 #endif

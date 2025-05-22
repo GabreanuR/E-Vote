@@ -6,4 +6,4 @@ enum class UserType {
     Admin
 };
 
-#endif //USERTYPE_H
+#endif

@@ -1,10 +1,9 @@
 #include <iostream>
 #include "../include/MainMenu.h"
-#include "../include/Utility.h"
 #include "../include/AuthMenu.h"
 #include "../include/UserType.h"
 
-void printMainMenuText() {
+void MainMenu::printMainMenuText() {
     cout << "==================================================\n";
     cout << "Welcome to the E-VOTE System!\n";
     cout << "==================================================\n";

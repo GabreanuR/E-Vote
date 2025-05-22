@@ -1,10 +1,8 @@
 #include <iostream>
-#include <limits>
-#include <functional>
-#include "../include/Utility.h"
-using namespace std;
+#include <sstream>
+#include "../include/Meniu.h"
 
-void clearScreen() {
+void Meniu::clearScreen() {
 #ifdef _WIN32
     system("cls");
 #else
@@ -12,7 +10,7 @@ void clearScreen() {
 #endif
 }
 
-void pauseScreen() {
+void Meniu::pauseScreen() {
 #ifdef _WIN32
     system("pause");
 #else
@@ -20,18 +18,19 @@ void pauseScreen() {
 #endif
 }
 
-int getValidatedInput(const int min, const int max, const std::function<void()>& reprintMenu) {
+int Meniu::getValidatedInput(const int min, const int max, const std::function<void()>& reprintMenu) {
+    string input;
     int choice;
+
     while (true) {
         cout << "Enter your choice: ";
-        if (!(cin >> choice)) {
-            cin.clear(); // reset flags
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        getline(cin, input);
+
+        if (stringstream ss(input); !(ss >> choice) || (ss.peek() != EOF)) {
             cout << "\nInvalid input! Please enter a number.\n";
         } else if (choice < min || choice > max) {
             cout << "\n'" << choice << "' is not a valid option!\n";
         } else {
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             return choice;
         }
 

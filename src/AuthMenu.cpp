@@ -1,7 +1,6 @@
 #include "../include/AuthMenu.h"
-#include "../include/Voter.h"
-#include "../include/Admin.h"
-#include "../include/Utility.h"
+#include "../include/VoterMenu.h"
+#include "../include/AdminMenu.h"
 
 #include <fstream>
 #include <iostream>
@@ -55,11 +54,11 @@ void AuthMenu::display() {
             pauseScreen();
 
             if (userType == UserType::Voter) {
-                Voter voterMenu(username);
-                voterMenu.showDashboard();
+                VoterMenu voterMenu;
+                voterMenu.display();
             } else {
-                Admin adminMenu(username);
-                adminMenu.showDashboard();
+                AdminMenu adminMenu;
+                adminMenu.display();
             }
 
             return;
