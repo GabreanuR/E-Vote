@@ -1,9 +1,7 @@
 #include "../include/Voter.h"
 #include <iostream>
 #include <limits>
-
-void clearScreen();
-void pauseScreen();
+#include "../include/Utility.h"
 
 using namespace std;
 

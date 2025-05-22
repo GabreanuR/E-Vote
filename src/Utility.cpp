@@ -1,3 +1,4 @@
+#include "../include/Utility.h"
 #include <cstdlib>
 
 void clearScreen() {

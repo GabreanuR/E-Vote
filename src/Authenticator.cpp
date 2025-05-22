@@ -1,11 +1,9 @@
 #include "../include/Authenticator.h"
 #include "../include/Voter.h"
 #include "../include/Admin.h"
+#include "../include/Utility.h"
 #include <iostream>
 #include <utility>
-
-void clearScreen();
-void pauseScreen();
 
 using namespace std;
 

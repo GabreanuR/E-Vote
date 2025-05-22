@@ -2,11 +2,9 @@
 #include <iostream>
 #include <limits>
 #include "../include/Type.h"
+#include "../include/Utility.h"
 #include <fstream>
 #include <sstream>
-
-void clearScreen();
-void pauseScreen();
 
 using namespace std;
 
