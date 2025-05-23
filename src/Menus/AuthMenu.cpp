@@ -1,6 +1,6 @@
-#include "../include/AuthMenu.h"
-#include "../include/VoterMenu.h"
-#include "../include/AdminMenu.h"
+#include "../../include/Menus/AuthMenu.h"
+#include "../../include/Menus/VoterMenu.h"
+#include "../../include/Menus/AdminMenu.h"
 
 #include <fstream>
 #include <iostream>

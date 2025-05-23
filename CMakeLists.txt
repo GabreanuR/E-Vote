@@ -134,16 +134,28 @@ add_executable(${MAIN_EXECUTABLE_NAME} main.cpp ${SOURCES}
         include/Election.h
         include/Type.h
         include/Position.h
-        src/AuthMenu.cpp
-        include/AuthMenu.h
+        src/Menus/AuthMenu.cpp
+        include/Menus/AuthMenu.h
         include/UserType.h
-        src/AdminMenu.cpp
-        include/AdminMenu.h
-        src/VoterMenu.cpp
-        include/VoterMenu.h
-        src/Meniu.cpp
-        include/Meniu.h
-        include/Meniu.h)
+        src/Menus/AdminMenu.cpp
+        include/Menus/AdminMenu.h
+        src/Menus/VoterMenu.cpp
+        include/Menus/VoterMenu.h
+        src/Menus/Meniu.cpp
+        include/Menus/Meniu.h
+        include/Menus/Meniu.h
+        src/User.cpp
+        include/User.h
+        src/AccessLevel.cpp
+        include/AccessLevel.h
+        src/Election.cpp
+        include/Election.h
+        src/ElectionModes/ElectionLevelUtils.cpp
+        include/ElectionModes/ElectionLevelUtils.h
+        src/ElectionModes/VotingStrategy.cpp
+        include/ElectionModes/VotingStrategy.h
+        src/ElectionModes/Candidate.cpp
+        include/ElectionModes/Candidate.h)
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
 # NOTE: RUN_SANITIZERS is optional, if it's not present it will default to true

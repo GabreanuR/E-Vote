@@ -1,6 +1,6 @@
 #include <iostream>
 #include <sstream>
-#include "../include/Meniu.h"
+#include "../../include/Menus/Meniu.h"
 
 void Meniu::clearScreen() {
 #ifdef _WIN32

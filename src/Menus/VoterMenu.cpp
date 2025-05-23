@@ -1,6 +1,6 @@
 #include <iostream>
-#include "../include/VoterMenu.h"
-#include "../include/Voter.h"
+#include "../../include/Menus/VoterMenu.h"
+#include "../../include/Voter.h"
 
 void VoterMenu::printVoterMenuText() {
     cout << "==================================================\n";

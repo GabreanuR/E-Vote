@@ -1,6 +1,6 @@
 #include <iostream>
-#include "../include/AdminMenu.h"
-#include "../include/Admin.h"
+#include "../../include/Menus/AdminMenu.h"
+#include "../../include/Admin.h"
 
 void AdminMenu::printAdminMenuText() {
     cout << "==================================================\n";

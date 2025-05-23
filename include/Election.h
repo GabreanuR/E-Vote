@@ -5,10 +5,7 @@
 #include <utility>
 #include <vector>
 #include "Position.h"
-
-enum class ElectionLevel {
-    National, Regional, Municipal, Local, Corporate
-};
+#include "ElectionModes/ElectionLevelUtils.h"
 
 class Election {
 protected:
@@ -40,6 +37,4 @@ public:
     //
     // std::string getTitle() const { return title; };
 };
-
-
-#endif
+#endif //ELECTION_H
