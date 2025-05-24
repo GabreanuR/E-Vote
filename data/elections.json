@@ -1,0 +1,16 @@
+[
+  {
+    "id": 101,
+    "title": "2025 Presidential Election",
+    "status": "active",
+    "level": "national",
+    "zone": null,
+    "votingSystem": "majority",
+    "startDate": "2025-06-01",
+    "endDate": "2025-06-10",
+    "candidates": [
+      { "id": 1, "name": "John Doe", "party": "Independent", "votes": 0 },
+      { "id": 2, "name": "Alice Popescu", "party": "Democratic Party", "votes": 0 }
+    ]
+  }
+]
