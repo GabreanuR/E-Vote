@@ -1,5 +1,5 @@
 #include <utility>
-#include "../../include/ElectionStructure/Candidate.h"
+#include "../../include/Models/Candidate.h"
 
 int Candidate::idCounter = 0;
 

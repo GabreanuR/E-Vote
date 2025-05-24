@@ -1,5 +1,12 @@
 {
-  "election": 101,
-  "user": 501,
-  "candidate": 1001
+  "userId": 105,
+  "electionId": 202,
+  "candidateId": 50,
+  "locationCounters": {
+    "national": 1,
+    "regional": 3,
+    "municipal": 10,
+    "local": 25,
+    "nongov": 5
+  }
 }

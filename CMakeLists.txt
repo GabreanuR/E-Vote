@@ -131,10 +131,9 @@ FetchContent_MakeAvailable(googletest)
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${MAIN_EXECUTABLE_NAME} main.cpp ${SOURCES}
-        include/ElectionStructure/Election.h
+        include/Models/Election.h
         src/Menus/AuthMenu.cpp
         include/Menus/AuthMenu.h
-        include/UserStructure/UserType.h
         src/Menus/AdminMenus/AdminMenu.cpp
         include/Menus/AdminMenus/AdminMenu.h
         src/Menus/VoterMenus/VoterMenu.cpp
@@ -142,23 +141,15 @@ add_executable(${MAIN_EXECUTABLE_NAME} main.cpp ${SOURCES}
         src/Menus/Meniu.cpp
         include/Menus/Meniu.h
         include/Menus/Meniu.h
-        src/UserStructure/User.cpp
-        include/UserStructure/User.h
-        src/UserStructure/AccessLevel.cpp
-        include/UserStructure/AccessLevel.h
-        src/ElectionStructure/Election.cpp
-        include/ElectionStructure/Election.h
-        src/ElectionStructure/ElectionLevelUtils.cpp
-        include/ElectionStructure/ElectionLevelUtils.h
-        include/ElectionStructure/VotingStrategy.h
-        src/ElectionStructure/Candidate.cpp
-        include/ElectionStructure/Candidate.h
-        src/ElectionStructure/Vote.cpp
-        include/ElectionStructure/Vote.h
-        src/ElectionStructure/MajorityVoting.cpp
-        include/ElectionStructure/MajorityVoting.h
-        src/ElectionStructure/ProportionalVoting.cpp
-        include/ElectionStructure/ProportionalVoting.h
+        src/Models/Election.cpp
+        include/Models/Election.h
+        include/Models/VotingStrategy.h
+        src/Models/Candidate.cpp
+        include/Models/Candidate.h
+        src/Models/MajorityVoting.cpp
+        include/Models/MajorityVoting.h
+        src/Models/ProportionalVoting.cpp
+        include/Models/ProportionalVoting.h
         src/Menus/AdminMenus/CreateElectionMenu.cpp
         include/Menus/AdminMenus/CreateElectionMenu.h
         src/Menus/AdminMenus/ManageExistingElectionsMenu.cpp
@@ -175,6 +166,20 @@ add_executable(${MAIN_EXECUTABLE_NAME} main.cpp ${SOURCES}
         include/Menus/VoterMenus/VoteInElectionMenu.h
         src/Menus/VoterMenus/ViewAvailableElectionsMenu.cpp
         include/Menus/VoterMenus/ViewAvailableElectionsMenu.h
+        src/Utils/DataManager.cpp
+        include/Utils/DataManager.h
+        src/Models/User.cpp
+        include/Models/User.h
+        src/Models/VoteLog.cpp
+        include/Models/VoteLog.h
+        src/Utils/ElectionLevel.cpp
+        include/Utils/ElectionLevel.h
+        src/Utils/IdGenerator.cpp
+        include/Utils/IdGenerator.h
+        src/Utils/VotingSystem.cpp
+        include/Utils/VotingSystem.h
+        src/Models/Location.cpp
+        include/Models/Location.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

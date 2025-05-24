@@ -1,4 +1,4 @@
-#include "../../include/ElectionStructure/Election.h"
+#include "../../include/Models/Election.h"
 #include <stdexcept>
 
 Election::Election(int id, std::string name, ElectionLevel level, std::unique_ptr<VotingStrategy> strategy)

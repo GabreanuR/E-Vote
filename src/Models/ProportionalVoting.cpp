@@ -1,4 +1,4 @@
-#include "../../include/ElectionStructure/ProportionalVoting.h"
+#include "../../include/Models/ProportionalVoting.h"
 #include <unordered_map>
 #include <iostream>
 #include <iomanip>

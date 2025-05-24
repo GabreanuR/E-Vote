@@ -5,134 +5,35 @@
     "username": "maria.popescu",
     "password": "maria123",
     "disabled": false,
-    "hasVotedFor": [101, 203],
+    "hasVotedFor": [1001, 1002],
     "access": {
       "national": true,
-      "regional": "region1",
-      "municipal": "municip1",
-      "local": "local1",
-      "non_gov": false
+      "regional": [201],
+      "municipal": [301],
+      "local": [401],
+      "nongov": false
     }
   },
   {
     "id": 2,
     "type": "voter",
-    "username": "ion.ionescu",
-    "password": "ionpass",
+    "username": "andrei.ionescu",
+    "password": "andrei123",
     "disabled": false,
     "hasVotedFor": [],
     "access": {
       "national": true,
-      "regional": "region1",
-      "municipal": "municip1",
-      "local": "local2",
-      "non_gov": true
+      "regional": [202],
+      "municipal": [],
+      "local": [],
+      "nongov": [501]
     }
   },
   {
     "id": 3,
-    "type": "voter",
-    "username": "ana.georgescu",
-    "password": "ana456",
-    "disabled": false,
-    "hasVotedFor": [102],
-    "access": {
-      "national": true,
-      "regional": "region2",
-      "municipal": "municip2",
-      "local": "local3",
-      "non_gov": false
-    }
-  },
-  {
-    "id": 4,
-    "type": "voter",
-    "username": "daniel.mihai",
-    "password": "dan789",
-    "disabled": false,
-    "hasVotedFor": [],
-    "access": {
-      "national": true,
-      "regional": "region2",
-      "municipal": "municip3",
-      "local": "local4",
-      "non_gov": true
-    }
-  },
-  {
-    "id": 5,
-    "type": "voter",
-    "username": "roxana.ilie",
-    "password": "rox123",
-    "disabled": true,
-    "hasVotedFor": [],
-    "access": {
-      "national": true,
-      "regional": "region3",
-      "municipal": "municip3",
-      "local": "local5",
-      "non_gov": true
-    }
-  },
-  {
-    "id": 6,
     "type": "admin",
     "username": "admin1",
-    "password": "adminpass1",
-    "disabled": false,
-    "hasVotedFor": []
-  },
-  {
-    "id": 7,
-    "type": "admin",
-    "username": "admin2",
-    "password": "adminpass2",
-    "disabled": false,
-    "hasVotedFor": []
-  },
-  {
-    "id": 8,
-    "type": "voter",
-    "username": "adrian.stefan",
-    "password": "adi321",
-    "disabled": false,
-    "hasVotedFor": [203],
-    "access": {
-      "national": true,
-      "regional": "region1",
-      "municipal": "municip1",
-      "local": "local1",
-      "non_gov": false
-    }
-  },
-  {
-    "id": 9,
-    "type": "voter",
-    "username": "florina.ene",
-    "password": "flo456",
-    "disabled": false,
-    "hasVotedFor": [],
-    "access": {
-      "national": true,
-      "regional": "region2",
-      "municipal": "municip2",
-      "local": "local3",
-      "non_gov": false
-    }
-  },
-  {
-    "id": 10,
-    "type": "voter",
-    "username": "valentin.ciobanu",
-    "password": "val789",
-    "disabled": false,
-    "hasVotedFor": [101, 204],
-    "access": {
-      "national": true,
-      "regional": "region3",
-      "municipal": "municip3",
-      "local": "local5",
-      "non_gov": true
-    }
+    "password": "adminpass",
+    "disabled": false
   }
 ]

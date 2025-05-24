@@ -1,4 +1,4 @@
-#include "../../include/ElectionStructure/MajorityVoting.h"
+#include "../../include/Models/MajorityVoting.h"
 
 #include <algorithm>
 #include <unordered_map>

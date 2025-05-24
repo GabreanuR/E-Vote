@@ -1,0 +1,18 @@
+{
+  "regional": {
+    "201": "North-West Region",
+    "202": "South-East Region"
+  },
+  "municipal": {
+    "301": "Cluj-Napoca",
+    "302": "Turda"
+  },
+  "local": {
+    "401": "Manastur",
+    "402": "Zorilor"
+  },
+  "nongov": {
+    "501": "Company A",
+    "502": "University B"
+  }
+}
