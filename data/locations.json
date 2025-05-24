@@ -1,18 +1,44 @@
 {
-  "regional": {
-    "201": "North-West Region",
-    "202": "South-East Region"
+  "regions": {
+    "201": {
+      "name": "North-West Region",
+      "municipalities": ["301", "302"]
+    },
+    "202": {
+      "name": "South-East Region",
+      "municipalities": []
+    }
   },
-  "municipal": {
-    "301": "Cluj-Napoca",
-    "302": "Turda"
+  "municipalities": {
+    "301": {
+      "name": "Cluj-Napoca",
+      "region": "201",
+      "localities": ["401", "402"]
+    },
+    "302": {
+      "name": "Turda",
+      "region": "201",
+      "localities": []
+    }
   },
-  "local": {
-    "401": "Manastur",
-    "402": "Zorilor"
+  "localities": {
+    "401": {
+      "name": "Manastur",
+      "municipality": "301"
+    },
+    "402": {
+      "name": "Zorilor",
+      "municipality": "301"
+    }
   },
-  "nongov": {
-    "501": "Company A",
-    "502": "University B"
+  "nonGovernment": {
+    "501": {
+      "name": "Company A",
+      "type": "company"
+    },
+    "502": {
+      "name": "University B",
+      "type": "university"
+    }
   }
 }

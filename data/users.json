@@ -5,13 +5,19 @@
     "username": "maria.popescu",
     "password": "maria123",
     "disabled": false,
-    "hasVotedFor": [1001, 1002],
+    "votingHistory": [
+      {
+        "electionId": 1001,
+        "timestamp": "2025-06-05T14:30:00Z",
+        "voteType": "public"
+      }
+    ],
     "access": {
       "national": true,
-      "regional": [201],
-      "municipal": [301],
-      "local": [401],
-      "nongov": false
+      "regions": [201],
+      "municipalities": [301],
+      "localities": [401],
+      "nonGovernment": [501]
     }
   },
   {
@@ -20,13 +26,13 @@
     "username": "andrei.ionescu",
     "password": "andrei123",
     "disabled": false,
-    "hasVotedFor": [],
+    "votingHistory": [],
     "access": {
       "national": true,
-      "regional": [202],
-      "municipal": [],
-      "local": [],
-      "nongov": [501]
+      "regions": [202],
+      "municipalities": [],
+      "localities": [],
+      "nonGovernment": [501]
     }
   },
   {
@@ -34,6 +40,13 @@
     "type": "admin",
     "username": "admin1",
     "password": "adminpass",
-    "disabled": false
+    "disabled": false,
+    "access": {
+      "national": true,
+      "regions": [],
+      "municipalities": [],
+      "localities": [],
+      "nonGovernment": []
+    }
   }
 ]

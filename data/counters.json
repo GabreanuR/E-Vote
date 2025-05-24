@@ -1,12 +1,11 @@
 {
-  "userId": 105,
-  "electionId": 202,
-  "candidateId": 50,
+  "userId": 3,
+  "electionId": 1002,
+  "candidateId": 4,
   "locationCounters": {
-    "national": 1,
-    "regional": 3,
-    "municipal": 10,
-    "local": 25,
-    "nongov": 5
+    "regions": 2,
+    "municipalities": 2,
+    "localities": 2,
+    "nonGovernment": 2
   }
 }
