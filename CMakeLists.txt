@@ -130,56 +130,10 @@ FetchContent_MakeAvailable(googletest)
 ###############################################################################
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
-add_executable(${MAIN_EXECUTABLE_NAME} main.cpp ${SOURCES}
-        include/Models/Election.h
-        src/Menus/AuthMenu.cpp
-        include/Menus/AuthMenu.h
-        src/Menus/AdminMenus/AdminMenu.cpp
-        include/Menus/AdminMenus/AdminMenu.h
-        src/Menus/VoterMenus/VoterMenu.cpp
-        include/Menus/VoterMenus/VoterMenu.h
-        src/Menus/Meniu.cpp
-        include/Menus/Meniu.h
-        include/Menus/Meniu.h
-        src/Models/Election.cpp
-        include/Models/Election.h
-        include/Models/VotingStrategy.h
-        src/Models/Candidate.cpp
-        include/Models/Candidate.h
-        src/Models/MajorityVoting.cpp
-        include/Models/MajorityVoting.h
-        src/Models/ProportionalVoting.cpp
-        include/Models/ProportionalVoting.h
-        src/Menus/AdminMenus/CreateElectionMenu.cpp
-        include/Menus/AdminMenus/CreateElectionMenu.h
-        src/Menus/AdminMenus/ManageExistingElectionsMenu.cpp
-        include/Menus/AdminMenus/ManageExistingElectionsMenu.h
-        src/Menus/AdminMenus/ManageVotersMenu.cpp
-        include/Menus/AdminMenus/ManageVotersMenu.h
-        src/Menus/AdminMenus/ViewingElectionResultsMenu.cpp
-        include/Menus/AdminMenus/ViewingElectionResultsMenu.h
-        src/Menus/VoterMenus/ViewElectionResultsMenu.cpp
-        include/Menus/VoterMenus/ViewElectionResultsMenu.h
-        src/Menus/VoterMenus/ViewMyVotesMenu.cpp
-        include/Menus/VoterMenus/ViewMyVotesMenu.h
-        src/Menus/VoterMenus/VoteInElectionMenu.cpp
-        include/Menus/VoterMenus/VoteInElectionMenu.h
-        src/Menus/VoterMenus/ViewAvailableElectionsMenu.cpp
-        include/Menus/VoterMenus/ViewAvailableElectionsMenu.h
-        src/Utils/DataManager.cpp
-        include/Utils/DataManager.h
-        src/Models/User.cpp
-        include/Models/User.h
-        src/Models/VoteLog.cpp
-        include/Models/VoteLog.h
-        src/Utils/ElectionLevel.cpp
-        include/Utils/ElectionLevel.h
-        src/Utils/IdGenerator.cpp
-        include/Utils/IdGenerator.h
-        src/Utils/VotingSystem.cpp
-        include/Utils/VotingSystem.h
-        src/Models/Location.cpp
-        include/Models/Location.h
+add_executable(${MAIN_EXECUTABLE_NAME} 
+    main.cpp 
+    ${SOURCES}
+    ${HEADERS}
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

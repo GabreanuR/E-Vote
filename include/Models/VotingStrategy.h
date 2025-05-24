@@ -2,9 +2,8 @@
 #define VOTINGSTRATEGY_H
 
 #include <string>
-#include "Election.h"
 
-using namespace std;
+class Election;  // Forward declaration
 
 class VotingStrategy {
 public:

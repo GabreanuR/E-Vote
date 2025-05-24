@@ -3,7 +3,8 @@
 
 #include <string>
 #include <vector>
-#include "Election.h"
+
+class Election;  // Forward declaration
 
 enum UserType {
     Voter,

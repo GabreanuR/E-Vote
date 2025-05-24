@@ -1,15 +1,15 @@
 #include <iostream>
-#include "../../include/Menus/MainMenu.h"
-#include "../../include/Menus/AuthMenu.h"
-#include "../../include/UserStructure/UserType.h"
+#include "Menus/MainMenu.h"
+#include "Menus/AuthMenu.h"
+#include "Models/User.h"
 
 void MainMenu::printMainMenuText() {
-    cout << "==================================================\n";
-    cout << "Welcome to the E-VOTE System!\n";
-    cout << "==================================================\n";
-    cout << "1. Login as Voter\n";
-    cout << "2. Login as Admin\n";
-    cout << "3. Exit\n";
+    std::cout << "==================================================\n";
+    std::cout << "Welcome to the E-VOTE System!\n";
+    std::cout << "==================================================\n";
+    std::cout << "1. Login as Voter\n";
+    std::cout << "2. Login as Admin\n";
+    std::cout << "3. Exit\n";
 }
 
 void MainMenu::display() {
@@ -19,17 +19,17 @@ void MainMenu::display() {
 
         switch (getValidatedInput(1, 3, printMainMenuText)) {
             case 1:
-                cout << "\nAccessing Voter Login\n\n";
+                std::cout << "\nAccessing Voter Login\n\n";
                 pauseScreen();
                 AuthMenu(UserType::Voter).display();
                 break;
             case 2:
-                cout << "\nAccessing Admin Login\n\n";
+                std::cout << "\nAccessing Admin Login\n\n";
                 pauseScreen();
                 AuthMenu(UserType::Admin).display();
                 break;
             case 3:
-                cout << "\nExiting Program!\n\n";
+                std::cout << "\nExiting Program!\n\n";
                 pauseScreen();
                 return;
             default: ;

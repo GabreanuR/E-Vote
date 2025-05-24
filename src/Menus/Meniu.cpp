@@ -1,6 +1,6 @@
 #include <iostream>
 #include <sstream>
-#include "../../include/Menus/Meniu.h"
+#include "Menus/Meniu.h"
 
 void Meniu::clearScreen() {
 #ifdef _WIN32
@@ -19,17 +19,17 @@ void Meniu::pauseScreen() {
 }
 
 int Meniu::getValidatedInput(const int min, const int max, const std::function<void()>& reprintMenu) {
-    string input;
+    std::string input;
     int choice;
 
     while (true) {
-        cout << "Enter your choice: ";
-        getline(cin, input);
+        std::cout << "Enter your choice: ";
+        std::getline(std::cin, input);
 
-        if (stringstream ss(input); !(ss >> choice) || (ss.peek() != EOF)) {
-            cout << "\nInvalid input! Please enter a number.\n";
+        if (std::stringstream ss(input); !(ss >> choice) || (ss.peek() != EOF)) {
+            std::cout << "\nInvalid input! Please enter a number.\n";
         } else if (choice < min || choice > max) {
-            cout << "\n'" << choice << "' is not a valid option!\n";
+            std::cout << "\n'" << choice << "' is not a valid option!\n";
         } else {
             return choice;
         }

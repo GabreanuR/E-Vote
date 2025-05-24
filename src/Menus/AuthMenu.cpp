@@ -1,6 +1,6 @@
-#include "../../include/Menus/AuthMenu.h"
-#include "../../include/Menus/VoterMenus/VoterMenu.h"
-#include "../../include/Menus/AdminMenus/AdminMenu.h"
+#include "Menus/AuthMenu.h"
+#include "Menus/VoterMenus/VoterMenu.h"
+#include "Menus/AdminMenus/AdminMenu.h"
 
 #include <fstream>
 #include <iostream>
@@ -32,11 +32,10 @@ bool AuthMenu::verifyCredentials(const string& username, const string& password)
             user["password"] == password &&
             !user["disabled"].get<bool>()) {
             return true;
-            }
+        }
     }
     return false;
 }
-
 
 void AuthMenu::display() {
     clearScreen();

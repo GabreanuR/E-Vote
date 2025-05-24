@@ -1,23 +1,23 @@
 #ifndef AUTHMENU_H
 #define AUTHMENU_H
 
-#include "Meniu.h"
-#include "../UserStructure/UserType.h"
+#include "Menus/Meniu.h"
+#include "Models/User.h"
 #include <string>
 
 class AuthMenu final : public Meniu {
+private:
     UserType userType;
-    string jsonPath;             // Path to the JSON file: "voters.json" or "admins.json"
-    string authenticatedUser;    // Store username after successful login
+    std::string jsonPath;             // Path to the JSON file: "voters.json" or "admins.json"
+    std::string authenticatedUser;    // Store username after successful login
 
     bool verifyCredentials(const std::string& username, const std::string& password) const;
 
 public:
-    AuthMenu(UserType type);
+    explicit AuthMenu(UserType type);
 
     void display() override;
-    string getAuthenticatedUsername() const;
+    std::string getAuthenticatedUsername() const;
 };
-
 
 #endif
