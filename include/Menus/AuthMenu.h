@@ -2,7 +2,7 @@
 #define AUTHMENU_H
 
 #include "Meniu.h"
-#include "../UserType.h"
+#include "../UserStructure/UserType.h"
 #include <string>
 
 class AuthMenu final : public Meniu {

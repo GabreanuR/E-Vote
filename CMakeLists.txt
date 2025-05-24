@@ -131,31 +131,51 @@ FetchContent_MakeAvailable(googletest)
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${MAIN_EXECUTABLE_NAME} main.cpp ${SOURCES}
-        include/Election.h
-        include/Type.h
-        include/Position.h
+        include/ElectionStructure/Election.h
         src/Menus/AuthMenu.cpp
         include/Menus/AuthMenu.h
-        include/UserType.h
-        src/Menus/AdminMenu.cpp
-        include/Menus/AdminMenu.h
-        src/Menus/VoterMenu.cpp
-        include/Menus/VoterMenu.h
+        include/UserStructure/UserType.h
+        src/Menus/AdminMenus/AdminMenu.cpp
+        include/Menus/AdminMenus/AdminMenu.h
+        src/Menus/VoterMenus/VoterMenu.cpp
+        include/Menus/VoterMenus/VoterMenu.h
         src/Menus/Meniu.cpp
         include/Menus/Meniu.h
         include/Menus/Meniu.h
-        src/User.cpp
-        include/User.h
-        src/AccessLevel.cpp
-        include/AccessLevel.h
-        src/Election.cpp
-        include/Election.h
-        src/ElectionModes/ElectionLevelUtils.cpp
-        include/ElectionModes/ElectionLevelUtils.h
-        src/ElectionModes/VotingStrategy.cpp
-        include/ElectionModes/VotingStrategy.h
-        src/ElectionModes/Candidate.cpp
-        include/ElectionModes/Candidate.h)
+        src/UserStructure/User.cpp
+        include/UserStructure/User.h
+        src/UserStructure/AccessLevel.cpp
+        include/UserStructure/AccessLevel.h
+        src/ElectionStructure/Election.cpp
+        include/ElectionStructure/Election.h
+        src/ElectionStructure/ElectionLevelUtils.cpp
+        include/ElectionStructure/ElectionLevelUtils.h
+        include/ElectionStructure/VotingStrategy.h
+        src/ElectionStructure/Candidate.cpp
+        include/ElectionStructure/Candidate.h
+        src/ElectionStructure/Vote.cpp
+        include/ElectionStructure/Vote.h
+        src/ElectionStructure/MajorityVoting.cpp
+        include/ElectionStructure/MajorityVoting.h
+        src/ElectionStructure/ProportionalVoting.cpp
+        include/ElectionStructure/ProportionalVoting.h
+        src/Menus/AdminMenus/CreateElectionMenu.cpp
+        include/Menus/AdminMenus/CreateElectionMenu.h
+        src/Menus/AdminMenus/ManageExistingElectionsMenu.cpp
+        include/Menus/AdminMenus/ManageExistingElectionsMenu.h
+        src/Menus/AdminMenus/ManageVotersMenu.cpp
+        include/Menus/AdminMenus/ManageVotersMenu.h
+        src/Menus/AdminMenus/ViewingElectionResultsMenu.cpp
+        include/Menus/AdminMenus/ViewingElectionResultsMenu.h
+        src/Menus/VoterMenus/ViewElectionResultsMenu.cpp
+        include/Menus/VoterMenus/ViewElectionResultsMenu.h
+        src/Menus/VoterMenus/ViewMyVotesMenu.cpp
+        include/Menus/VoterMenus/ViewMyVotesMenu.h
+        src/Menus/VoterMenus/VoteInElectionMenu.cpp
+        include/Menus/VoterMenus/VoteInElectionMenu.h
+        src/Menus/VoterMenus/ViewAvailableElectionsMenu.cpp
+        include/Menus/VoterMenus/ViewAvailableElectionsMenu.h
+)
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
 # NOTE: RUN_SANITIZERS is optional, if it's not present it will default to true

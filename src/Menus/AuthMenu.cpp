@@ -1,6 +1,6 @@
 #include "../../include/Menus/AuthMenu.h"
-#include "../../include/Menus/VoterMenu.h"
-#include "../../include/Menus/AdminMenu.h"
+#include "../../include/Menus/VoterMenus/VoterMenu.h"
+#include "../../include/Menus/AdminMenus/AdminMenu.h"
 
 #include <fstream>
 #include <iostream>
@@ -11,10 +11,7 @@ using json = nlohmann::json;
 using namespace std;
 
 AuthMenu::AuthMenu(UserType type) : userType(type) {
-    if (userType == UserType::Voter)
-        jsonPath = "data/voters.json";
-    else
-        jsonPath = "data/admins.json";
+    jsonPath = "data/users.json";
 }
 
 bool AuthMenu::verifyCredentials(const string& username, const string& password) const {
@@ -27,13 +24,19 @@ bool AuthMenu::verifyCredentials(const string& username, const string& password)
     json userList;
     inFile >> userList;
 
+    string expectedType = (userType == UserType::Voter) ? "voter" : "admin";
+
     for (const auto& user : userList) {
-        if (user["username"] == username && user["password"] == password) {
+        if (user["type"] == expectedType &&
+            user["username"] == username &&
+            user["password"] == password &&
+            !user["disabled"].get<bool>()) {
             return true;
-        }
+            }
     }
     return false;
 }
+
 
 void AuthMenu::display() {
     clearScreen();
@@ -44,9 +47,9 @@ void AuthMenu::display() {
         string username, password;
 
         cout << "Username: ";
-        cin >> username;
+        getline(cin, username);
         cout << "Password: ";
-        cin >> password;
+        getline(cin, password);
 
         if (verifyCredentials(username, password)) {
             authenticatedUser = username;

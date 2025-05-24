@@ -1,7 +1,7 @@
 #include <iostream>
 #include "../../include/Menus/MainMenu.h"
 #include "../../include/Menus/AuthMenu.h"
-#include "../../include/UserType.h"
+#include "../../include/UserStructure/UserType.h"
 
 void MainMenu::printMainMenuText() {
     cout << "==================================================\n";

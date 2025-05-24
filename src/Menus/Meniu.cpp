@@ -14,7 +14,7 @@ void Meniu::pauseScreen() {
 #ifdef _WIN32
     system("pause");
 #else
-    system("read -p \"Press any key to continue...\" -n1");
+    system("bash -c 'read -n 1 -s -r -p \"Press any key to continue...\"'");
 #endif
 }
 
