@@ -1,16 +1,12 @@
-//
-// Created by gabre on 24/05/2025.
-//
-
 #ifndef ELECTIONLEVEL_H
 #define ELECTIONLEVEL_H
 
-
-
-class ElectionLevel {
-
+enum class ElectionLevel {
+    national,
+    regional,
+    municipal,
+    local,
+    nonGovernment
 };
 
-
-
-#endif //ELECTIONLEVEL_H
+#endif // ELECTIONLEVEL_H
