@@ -85,6 +85,10 @@
             ],
             "name": "Dobrogea"
         },
+        "10": {
+            "municipalities": [],
+            "name": "Bulgaria"
+        },
         "2": {
             "municipalities": [
                 "1"
@@ -120,6 +124,14 @@
         "7": {
             "municipalities": [],
             "name": "R. Moldova"
+        },
+        "8": {
+            "municipalities": [],
+            "name": "Ungaria"
+        },
+        "9": {
+            "municipalities": [],
+            "name": "Serbia"
         }
     }
 }

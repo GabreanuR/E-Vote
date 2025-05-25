@@ -8,17 +8,6 @@ public:
     void display() override;
 
     static void printMenuText();
-
-private:
-    static void addRegion();
-
-    static void addMunicipality();
-
-    static void addLocality();
-
-    static void addNonGovernment();
-
-    static void displayLocations();
 };
 
 #endif
