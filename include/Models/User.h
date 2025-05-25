@@ -58,7 +58,7 @@ class User {
     }
 
     [[nodiscard]] static bool doesUsernameExist(const std::string& username) {
-        json users = DataManager::getInstance().loadData("users");
+        json users = DataManager::getInstance().loadData("users.json");
         for (const auto& user : users) {
             if (user["username"] == username) {
                 return true;

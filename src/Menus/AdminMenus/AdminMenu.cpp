@@ -2,7 +2,7 @@
 #include "../include/Menus/AdminMenus/AdminMenu.h"
 #include "../include/Menus/AdminMenus/CreateElectionMenu.h"
 #include "../include/Menus/AdminMenus/ManageExistingElectionsMenu.h"
-#include "../include/Menus/AdminMenus/ManageVotersMenu.h"
+#include "../include/Menus/AdminMenus/ManageUsersMenu.h"
 #include "../include/Menus/AdminMenus/ViewingElectionResultsMenu.h"
 #include "../include/Menus/AdminMenus/ManageLocationsMenu.h"
 
@@ -12,7 +12,7 @@ void AdminMenu::printAdminMenuText() {
               << "==================================================\n"
               << "1. Create New Election\n"
               << "2. Manage Existing Elections\n"
-              << "3. Manage Voters\n"
+              << "3. Manage Users\n"
               << "4. View Election Results\n"
               << "5. Manage Locations\n"
               << "6. Logout\n";
@@ -37,9 +37,9 @@ void AdminMenu::display() {
                 break;
             }
             case 3: {
-                std::cout << "\nManaging Voters...\n\n";
+                std::cout << "\nManaging Users...\n\n";
                 pauseScreen();
-                ManageVotersMenu().display();
+                ManageUsersMenu().display();
                 break;
             }
             case 4: {

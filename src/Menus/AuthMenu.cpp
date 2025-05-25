@@ -8,7 +8,7 @@
 
 using json = nlohmann::json;
 
-const std::string AuthMenu::jsonPath = "users";
+const std::string AuthMenu::jsonPath = "users.json";
 
 AuthMenu::AuthMenu(const UserType type) : userType(type) {}
 

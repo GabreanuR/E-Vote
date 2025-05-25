@@ -32,6 +32,11 @@
             "localities": [],
             "name": "Craiova",
             "region": "5"
+        },
+        "5": {
+            "localities": [],
+            "name": "Cluj",
+            "region": "4"
         }
     },
     "nonGovernment": {
@@ -64,7 +69,9 @@
             "name": "Banat si Crisana"
         },
         "4": {
-            "municipalities": [],
+            "municipalities": [
+                "5"
+            ],
             "name": "Transilvania"
         },
         "5": {

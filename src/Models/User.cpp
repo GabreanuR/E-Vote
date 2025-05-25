@@ -18,9 +18,11 @@ int User::generateId() {
         if (counter < 1) counter = 1;  // Ensure counter is at least 1
     }
     
-    // Save incremented counter back to file
+    // Increment counter and save it back
     data["userId"] = counter + 1;
-    DataManager::getInstance().saveData(countersFile, data);
+    if (!DataManager::getInstance().saveData(countersFile, data)) {
+        throw std::runtime_error("Failed to update user ID counter");
+    }
     
     return counter;
 }
