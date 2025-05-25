@@ -1,21 +1,17 @@
 #include <iostream>
 #include "../include/Menus/AdminMenus/AdminMenu.h"
-#include "../include/Menus/AdminMenus/CreateElectionMenu.h"
-#include "../include/Menus/AdminMenus/ManageExistingElectionsMenu.h"
+#include "../include/Menus/AdminMenus/ManageElectionsMenu.h"
 #include "../include/Menus/AdminMenus/ManageUsersMenu.h"
-#include "../include/Menus/AdminMenus/ViewingElectionResultsMenu.h"
 #include "../include/Menus/AdminMenus/ManageLocationsMenu.h"
 
 void AdminMenu::printAdminMenuText() {
     std::cout << "==================================================\n"
               << "Admin Dashboard\n"
               << "==================================================\n"
-              << "1. Create New Election\n"
-              << "2. Manage Existing Elections\n"
-              << "3. Manage Users\n"
-              << "4. View Election Results\n"
-              << "5. Manage Locations\n"
-              << "6. Logout\n";
+              << "1. Manage Elections\n"
+              << "2. Manage Users\n"
+              << "3. Manage Locations\n"
+              << "4. Logout\n";
 }
 
 void AdminMenu::display() {
@@ -23,38 +19,26 @@ void AdminMenu::display() {
         clearScreen();
         printAdminMenuText();
 
-        switch (getValidatedInput(1, 6, printAdminMenuText)) {
+        switch (getValidatedInput(1, 4, printAdminMenuText)) {
             case 1: {
-                std::cout << "\nCreating New Election...\n\n";
+                std::cout << "\nManaging Elections...\n\n";
                 pauseScreen();
-                CreateElectionMenu().display();
+                ManageElectionsMenu().display();
                 break;
             }
             case 2: {
-                std::cout << "\nManaging Existing Elections...\n\n";
-                pauseScreen();
-                ManageExistingElectionsMenu().display();
-                break;
-            }
-            case 3: {
                 std::cout << "\nManaging Users...\n\n";
                 pauseScreen();
                 ManageUsersMenu().display();
                 break;
             }
-            case 4: {
-                std::cout << "\nViewing Election Results...\n\n";
-                pauseScreen();
-                ViewingElectionResultsMenu().display();
-                break;
-            }
-            case 5: {
+            case 3: {
                 std::cout << "\nManaging Locations...\n\n";
                 pauseScreen();
                 ManageLocationsMenu().display();
                 break;
             }
-            case 6: {
+            case 4: {
                 std::cout << "\nLogging out!\n\n";
                 pauseScreen();
                 return;
