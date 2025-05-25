@@ -6,8 +6,7 @@
 class VoterMenu final : public Meniu {
 public:
     void display() override;
-
-    static void printVoterMenuText();
+    static void printMenuText();
 };
 
 #endif
