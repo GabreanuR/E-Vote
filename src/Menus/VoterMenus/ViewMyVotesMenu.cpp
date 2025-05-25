@@ -3,9 +3,9 @@
 
 void ViewMyVotesMenu::display() {
     clearScreen();
-    cout << "===== My Votes =====\n";
+    std::cout << "===== My Votes =====\n";
 
-    cout << "Functionality coming soon...\n";
+    std::cout << "Functionality coming soon...\n";
 
     pauseScreen();
 }

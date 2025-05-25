@@ -3,9 +3,9 @@
 
 void ViewAvailableElectionsMenu::display() {
     clearScreen();
-    cout << "===== Available Election =====\n";
+    std::cout << "===== Available Election =====\n";
 
-    cout << "Functionality coming soon...\n";
+    std::cout << "Functionality coming soon...\n";
 
     pauseScreen();
 }

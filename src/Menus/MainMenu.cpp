@@ -14,25 +14,30 @@ void MainMenu::printMainMenuText() {
 
 void MainMenu::display() {
     while (true) {
-        clearScreen();
-        printMainMenuText();
+        try {
+            clearScreen();
+            printMainMenuText();
 
-        switch (getValidatedInput(1, 3, printMainMenuText)) {
-            case 1:
-                std::cout << "\nAccessing Voter Login\n\n";
-                pauseScreen();
-                AuthMenu(UserType::voter).display();
-                break;
-            case 2:
-                std::cout << "\nAccessing Admin Login\n\n";
-                pauseScreen();
-                AuthMenu(UserType::admin).display();
-                break;
-            case 3:
-                std::cout << "\nExiting Program!\n\n";
-                pauseScreen();
-                return;
-            default: ;
+            switch (getValidatedInput(1, 3, printMainMenuText)) {
+                case 1:
+                    std::cout << "\nAccessing Voter Login\n\n";
+                    pauseScreen();
+                    AuthMenu(UserType::voter).display();
+                    break;
+                case 2:
+                    std::cout << "\nAccessing Admin Login\n\n";
+                    pauseScreen();
+                    AuthMenu(UserType::admin).display();
+                    break;
+                case 3:
+                    std::cout << "\nExiting Program!\n\n";
+                    pauseScreen();
+                    return;
+                default: ;
+            }
+        } catch (const std::exception& e) {
+            std::cerr << "\nError: " << e.what() << "\n";
+            pauseScreen();
         }
     }
 }

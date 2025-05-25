@@ -6,14 +6,14 @@
 #include "../include/Menus/VoterMenus/ViewElectionResultsMenu.h"
 
 void VoterMenu::printVoterMenuText() {
-    cout << "==================================================\n";
-    cout << "Voter Dashboard\n";
-    cout << "==================================================\n";
-    cout << "1. View Available Elections\n";
-    cout << "2. Vote in an Election\n";
-    cout << "3. View My Votes\n";
-    cout << "4. View Election Results\n";
-    cout << "5. Logout\n";
+    std::cout << "==================================================\n"
+              << "Voter Dashboard\n"
+              << "==================================================\n"
+              << "1. View Available Elections\n"
+              << "2. Vote in an Election\n"
+              << "3. View My Votes\n"
+              << "4. View Election Results\n"
+              << "5. Logout\n";
 }
 
 void VoterMenu::display() {
@@ -23,31 +23,31 @@ void VoterMenu::display() {
 
         switch (getValidatedInput(1, 5, printVoterMenuText)) {
             case 1: {
-                cout << "\nViewing Available Elections...\n\n";
+                std::cout << "\nViewing Available Elections...\n\n";
                 pauseScreen();
                 ViewAvailableElectionsMenu().display();
                 break;
             }
             case 2: {
-                cout << "\nVoting in Election...\n\n";
+                std::cout << "\nVoting in Election...\n\n";
                 pauseScreen();
                 VoteInElectionMenu().display();
                 break;
             }
             case 3: {
-                cout << "\nViewing My Votes...\n\n";
+                std::cout << "\nViewing My Votes...\n\n";
                 pauseScreen();
                 ViewMyVotesMenu().display();
                 break;
             }
             case 4: {
-                cout << "\nViewing Election Results...\n\n";
+                std::cout << "\nViewing Election Results...\n\n";
                 pauseScreen();
                 ViewElectionResultsMenu().display();  // <-- New functionality
                 break;
             }
             case 5: {
-                cout << "\nLogging out!\n\n";
+                std::cout << "\nLogging out!\n\n";
                 pauseScreen();
                 return;
             }

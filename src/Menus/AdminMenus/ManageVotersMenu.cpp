@@ -3,9 +3,9 @@
 
 void ManageVotersMenu::display() {
     clearScreen();
-    cout << "===== Manage Voters =====\n";
+    std::cout << "===== Manage Voters =====\n";
 
-    cout << "Functionality coming soon...\n";
+    std::cout << "Functionality coming soon...\n";
 
     pauseScreen();
 }

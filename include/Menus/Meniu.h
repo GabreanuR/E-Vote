@@ -3,8 +3,6 @@
 
 #include <functional>
 
-using namespace std;
-
 class Meniu {
 public:
     virtual void display() = 0;
@@ -14,7 +12,7 @@ protected:
 
     static void pauseScreen();
 
-    static int getValidatedInput(int min, int max, const function<void()>& reprintMenu);
+    static int getValidatedInput(int min, int max, const std::function<void()>& reprintMenu);
 };
 
 #endif
