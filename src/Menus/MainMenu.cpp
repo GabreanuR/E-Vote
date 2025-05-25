@@ -21,12 +21,12 @@ void MainMenu::display() {
             case 1:
                 std::cout << "\nAccessing Voter Login\n\n";
                 pauseScreen();
-                AuthMenu(UserType::Voter).display();
+                AuthMenu(UserType::voter).display();
                 break;
             case 2:
                 std::cout << "\nAccessing Admin Login\n\n";
                 pauseScreen();
-                AuthMenu(UserType::Admin).display();
+                AuthMenu(UserType::admin).display();
                 break;
             case 3:
                 std::cout << "\nExiting Program!\n\n";

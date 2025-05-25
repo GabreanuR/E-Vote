@@ -1,5 +1,10 @@
-#ifndef ELECTIONLEVEL_H
-#define ELECTIONLEVEL_H
+#ifndef TYPES_H
+#define TYPES_H
+
+enum class UserType {
+    voter,
+    admin
+};
 
 enum class ElectionLevel {
     national,
@@ -9,4 +14,4 @@ enum class ElectionLevel {
     nonGovernment
 };
 
-#endif // ELECTIONLEVEL_H
+#endif // TYPES_H

@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include "../Utils/Types.h"
 #include "VotingStrategy.h"
 #include "Candidate.h"
 

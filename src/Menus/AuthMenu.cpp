@@ -24,12 +24,10 @@ bool AuthMenu::verifyCredentials(const string& username, const string& password)
     json userList;
     inFile >> userList;
 
-    string expectedType = (userType == UserType::Voter) ? "voter" : "admin";
-
     for (const auto& user : userList) {
-        if (user["type"] == expectedType &&
-            user["username"] == username &&
+        if (user["username"] == username && 
             user["password"] == password &&
+            user["type"].get<int>() == static_cast<int>(userType) &&
             !user["disabled"].get<bool>()) {
             return true;
         }
@@ -39,7 +37,7 @@ bool AuthMenu::verifyCredentials(const string& username, const string& password)
 
 void AuthMenu::display() {
     clearScreen();
-    cout << (userType == UserType::Voter ? "=== Voter Login ===" : "=== Admin Login ===") << "\n";
+    cout << (userType == UserType::voter ? "=== Voter Login ===" : "=== Admin Login ===") << "\n";
 
     int attempts = 3;
     while (attempts-- > 0) {
@@ -55,7 +53,7 @@ void AuthMenu::display() {
             cout << "\nLogin successful! Welcome, " << username << ".\n";
             pauseScreen();
 
-            if (userType == UserType::Voter) {
+            if (userType == UserType::voter) {
                 VoterMenu voterMenu;
                 voterMenu.display();
             } else {
