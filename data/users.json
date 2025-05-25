@@ -81,20 +81,14 @@
     },
     {
         "access": {
-            "localities": [
-                4
-            ],
-            "municipalities": [
-                2
-            ],
+            "localities": [],
+            "municipalities": [],
             "national": true,
             "nonGovernment": [
                 1,
                 2
             ],
-            "regions": [
-                6
-            ]
+            "regions": []
         },
         "disabled": false,
         "id": 5,
@@ -219,10 +213,54 @@
             "regions": []
         },
         "disabled": false,
-        "id": 20,
+        "id": 21,
         "password": "123456",
         "type": "voter",
-        "username": "Ana",
+        "username": "Bibi",
+        "votingHistory": []
+    },
+    {
+        "access": {
+            "localities": [
+                1,
+                2,
+                3,
+                4
+            ],
+            "municipalities": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+            ],
+            "national": true,
+            "nonGovernment": [
+                1,
+                2,
+                3
+            ],
+            "regions": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10
+            ]
+        },
+        "disabled": false,
+        "id": 22,
+        "password": "123456",
+        "type": "admin",
+        "username": "Kika",
         "votingHistory": []
     }
 ]
