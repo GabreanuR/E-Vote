@@ -61,7 +61,7 @@ void ManageUsersMenu::viewUsers() {
     clearScreen();
     std::cout << "===== All Users =====\n\n";
 
-    const json users = DataManager::getInstance().loadData("users.json");
+    const json users = DataManager::getInstance().loadData("users");
     
     for (const auto& userData : users) {
         const User user(userData);
@@ -175,7 +175,7 @@ void ManageUsersMenu::addUser() {
     }
     
     // Check if username already exists
-    const json users = DataManager::getInstance().loadData("users.json");
+    const json users = DataManager::getInstance().loadData("users");
     for (const auto& user : users) {
         if (user["username"] == username) {
             std::cout << "\nUsername already exists.\n";
@@ -201,12 +201,22 @@ void ManageUsersMenu::addUser() {
         // Create new user
         User newUser(username, password, type);
         
+        // If it's a voter, set restricted access levels
+        if (type == UserType::voter) {
+            // Initialize with restricted access for all levels using -1 as the restricted identifier
+            newUser.grantAccess(ElectionLevel::national, -1);  // Restricted national access
+            newUser.grantAccess(ElectionLevel::regional, -1);  // Restricted regional access
+            newUser.grantAccess(ElectionLevel::municipal, -1); // Restricted municipal access
+            newUser.grantAccess(ElectionLevel::local, -1);     // Restricted local access
+            newUser.grantAccess(ElectionLevel::nonGovernment, -1); // Restricted non-government access
+        }
+        
         // Save to users file
         json updatedUsers = users;
         updatedUsers.push_back(newUser.toJson());
         
         // Save users file
-        if (DataManager::getInstance().saveData("users.json", updatedUsers)) {
+        if (DataManager::getInstance().saveData("users", updatedUsers)) {
             std::cout << "\nUser added successfully!\n";
         } else {
             std::cout << "\nError adding user.\n";
@@ -225,7 +235,7 @@ void ManageUsersMenu::toggleUserStatus() {
     std::cout << "===== Enable/Disable User =====\n\n";
 
     // Load users
-    json users = DataManager::getInstance().loadData("users.json");
+    json users = DataManager::getInstance().loadData("users");
     
     if (users.empty()) {
         std::cout << "No users found.\n";
@@ -265,7 +275,7 @@ void ManageUsersMenu::toggleUserStatus() {
         (*it)["disabled"] = !(*it)["disabled"].get<bool>();
         
         // Save changes
-        if (DataManager::getInstance().saveData("users.json", users)) {
+        if (DataManager::getInstance().saveData("users", users)) {
             std::cout << "\nUser status updated successfully!\n";
         } else {
             std::cout << "\nError updating user status.\n";
@@ -282,7 +292,7 @@ void ManageUsersMenu::deleteUser() {
     std::cout << "===== Delete User =====\n\n";
 
     // Load users
-    json users = DataManager::getInstance().loadData("users.json");
+    json users = DataManager::getInstance().loadData("users");
     
     if (users.empty()) {
         std::cout << "No users found.\n";
@@ -336,7 +346,7 @@ void ManageUsersMenu::manageUserAccess() {
     std::cout << "===== Manage User Access =====\n\n";
 
     // Load users
-    json users = DataManager::getInstance().loadData("users.json");
+    json users = DataManager::getInstance().loadData("users");
     
     if (users.empty()) {
         std::cout << "No users found.\n";
@@ -485,7 +495,7 @@ void ManageUsersMenu::manageUserAccess() {
         
         // Save changes
         (*it) = user.toJson();
-        if (DataManager::getInstance().saveData("users.json", users)) {
+        if (DataManager::getInstance().saveData("users", users)) {
             std::cout << "\nUser access updated successfully!\n";
         } else {
             std::cout << "\nError updating user access.\n";

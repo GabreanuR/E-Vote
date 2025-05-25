@@ -41,7 +41,75 @@
         "id": 3,
         "password": "123456",
         "type": "admin",
-        "username": "Admin3",
+        "username": "Admin5",
+        "votingHistory": []
+    },
+    {
+        "access": {
+            "localities": [],
+            "municipalities": [],
+            "national": false,
+            "nonGovernment": [],
+            "regions": []
+        },
+        "disabled": false,
+        "id": 4,
+        "password": "123456",
+        "type": "admin",
+        "username": "Admin4",
+        "votingHistory": []
+    },
+    {
+        "access": {
+            "localities": [],
+            "municipalities": [],
+            "national": true,
+            "nonGovernment": [],
+            "regions": []
+        },
+        "disabled": false,
+        "id": 5,
+        "password": "123456",
+        "type": "voter",
+        "username": "Mihai",
+        "votingHistory": []
+    },
+    {
+        "access": {
+            "localities": [],
+            "municipalities": [],
+            "national": false,
+            "nonGovernment": [],
+            "regions": []
+        },
+        "disabled": false,
+        "id": 6,
+        "password": "123456",
+        "type": "admin",
+        "username": "Admin6",
+        "votingHistory": []
+    },
+    {
+        "access": {
+            "localities": [
+                1
+            ],
+            "municipalities": [
+                1
+            ],
+            "national": false,
+            "nonGovernment": [
+                1
+            ],
+            "regions": [
+                1
+            ]
+        },
+        "disabled": false,
+        "id": 7,
+        "password": "123456",
+        "type": "voter",
+        "username": "Mihnea",
         "votingHistory": []
     }
 ]

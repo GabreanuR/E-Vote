@@ -37,6 +37,11 @@
             "localities": [],
             "name": "Cluj",
             "region": "4"
+        },
+        "6": {
+            "localities": [],
+            "name": "Oradea",
+            "region": "3"
         }
     },
     "nonGovernment": {
@@ -65,7 +70,9 @@
             "name": "Moldova"
         },
         "3": {
-            "municipalities": [],
+            "municipalities": [
+                "6"
+            ],
             "name": "Banat si Crisana"
         },
         "4": {

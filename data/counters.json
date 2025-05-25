@@ -2,7 +2,8 @@
     "candidateId": 4,
     "electionId": 1002,
     "localityId": 3,
-    "municipalityId": 6,
+    "municipalityId": 7,
     "nonGovernmentId": 2,
-    "regionId": 6
+    "regionId": 6,
+    "userId": 8
 }

@@ -5,7 +5,7 @@
 #include <algorithm>
 
 // Static members initialization
-const std::string User::countersFile = "counters.json";
+const std::string User::countersFile = "counters";
 
 // Private static methods
 int User::generateId() {
@@ -157,7 +157,7 @@ bool User::changeVote(const int electionId, const int oldCandidateId, int newCan
 
 // File operations
 bool User::updateVoteLog(int electionId, int candidateId, bool isNewVote) const {
-    json voteLog = DataManager::getInstance().loadData("votes_log.json");
+    json voteLog = DataManager::getInstance().loadData("votes_log");
     if (isNewVote) {
         voteLog.push_back({
             {"voterId", id},
@@ -178,18 +178,18 @@ bool User::updateVoteLog(int electionId, int candidateId, bool isNewVote) const 
             voteLog.erase(it);
         }
     }
-    return DataManager::getInstance().saveData("votes_log.json", voteLog);
+    return DataManager::getInstance().saveData("votes_log", voteLog);
 }
 
 bool User::updateElectionResults(const int electionId, const int candidateId, const bool isIncrement) {
-    json elections = DataManager::getInstance().loadData("elections.json");
+    json elections = DataManager::getInstance().loadData("elections");
     for (auto& election : elections) {
         if (election["id"] == electionId) {
             for (auto& candidate : election["candidates"]) {
                 if (candidate["id"] == candidateId) {
                     const int votes = candidate["votes"].get<int>();
                     candidate["votes"] = isIncrement ? votes + 1 : votes - 1;
-                    return DataManager::getInstance().saveData("elections.json", elections);
+                    return DataManager::getInstance().saveData("elections", elections);
                 }
             }
         }
@@ -199,7 +199,7 @@ bool User::updateElectionResults(const int electionId, const int candidateId, co
 
 // User management
 bool User::deleteUser(int userId) {
-    json users = DataManager::getInstance().loadData("users.json");
+    json users = DataManager::getInstance().loadData("users");
     const auto it = std::ranges::find_if(users,
                                    [userId](const json& user) { return user["id"] == userId; });
     
@@ -209,7 +209,7 @@ bool User::deleteUser(int userId) {
     users.erase(it);
     
     // Remove user's votes from vote log
-    json voteLog = DataManager::getInstance().loadData("votes_log.json");
+    json voteLog = DataManager::getInstance().loadData("votes_log");
     voteLog.erase(
         std::ranges::remove_if(voteLog,
                                [userId](const json& vote) { return vote["voterId"] == userId; }).begin(),
@@ -217,7 +217,7 @@ bool User::deleteUser(int userId) {
     );
     
     // Update election results
-    json elections = DataManager::getInstance().loadData("elections.json");
+    json elections = DataManager::getInstance().loadData("elections");
     for (auto& election : elections) {
         for (auto& candidate : election["candidates"]) {
             const int votes = candidate["votes"].get<int>();
@@ -225,13 +225,13 @@ bool User::deleteUser(int userId) {
         }
     }
     
-    return DataManager::getInstance().saveData("users.json", users) &&
-           DataManager::getInstance().saveData("votes_log.json", voteLog) &&
-           DataManager::getInstance().saveData("elections.json", elections);
+    return DataManager::getInstance().saveData("users", users) &&
+           DataManager::getInstance().saveData("votes_log", voteLog) &&
+           DataManager::getInstance().saveData("elections", elections);
 }
 
 bool User::removeVotes() const {
-    json voteLog = DataManager::getInstance().loadData("votes_log.json");
+    json voteLog = DataManager::getInstance().loadData("votes_log");
     voteLog.erase(
         std::ranges::remove_if(voteLog,
                                [this](const json& vote) { return vote["voterId"] == id; }).begin(),
@@ -239,7 +239,7 @@ bool User::removeVotes() const {
     );
     
     // Update election results
-    json elections = DataManager::getInstance().loadData("elections.json");
+    json elections = DataManager::getInstance().loadData("elections");
     for (auto& election : elections) {
         for (auto& candidate : election["candidates"]) {
             const int votes = candidate["votes"].get<int>();
@@ -247,8 +247,8 @@ bool User::removeVotes() const {
         }
     }
     
-    return DataManager::getInstance().saveData("votes_log.json", voteLog) &&
-           DataManager::getInstance().saveData("elections.json", elections);
+    return DataManager::getInstance().saveData("votes_log", voteLog) &&
+           DataManager::getInstance().saveData("elections", elections);
 }
 
 // Serialization
