@@ -5,7 +5,7 @@
 
 class ProportionalVoting final : public VotingStrategy {
 public:
-
+    void computeResults(Election& election) override;
 };
 
 #endif

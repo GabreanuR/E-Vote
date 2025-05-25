@@ -4,9 +4,12 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <nlohmann/json.hpp>
 #include "../Utils/Types.h"
 #include "VotingStrategy.h"
 #include "Candidate.h"
+
+using json = nlohmann::json;
 
 class Election {
 private:
@@ -24,6 +27,7 @@ public:
     // Constructor
     Election(int id, const std::string& title, const std::string& level, 
             const std::string& zone, const std::string& votingSystem);
+    explicit Election(const json& data);
     
     // Getters
     int getId() const { return id; }
@@ -52,6 +56,7 @@ public:
     bool isActive() const { return status == "active"; }
     void start();
     void end();
+    [[nodiscard]] json toJson() const;
 };
 
 #endif

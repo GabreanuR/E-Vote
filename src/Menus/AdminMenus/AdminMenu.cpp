@@ -4,6 +4,7 @@
 #include "../include/Menus/AdminMenus/ManageExistingElectionsMenu.h"
 #include "../include/Menus/AdminMenus/ManageVotersMenu.h"
 #include "../include/Menus/AdminMenus/ViewingElectionResultsMenu.h"
+#include "../include/Menus/AdminMenus/ManageLocationsMenu.h"
 
 void AdminMenu::printAdminMenuText() {
     std::cout << "==================================================\n"
@@ -13,7 +14,8 @@ void AdminMenu::printAdminMenuText() {
               << "2. Manage Existing Elections\n"
               << "3. Manage Voters\n"
               << "4. View Election Results\n"
-              << "5. Logout\n";
+              << "5. Manage Locations\n"
+              << "6. Logout\n";
 }
 
 void AdminMenu::display() {
@@ -21,7 +23,7 @@ void AdminMenu::display() {
         clearScreen();
         printAdminMenuText();
 
-        switch (getValidatedInput(1, 5, printAdminMenuText)) {
+        switch (getValidatedInput(1, 6, printAdminMenuText)) {
             case 1: {
                 std::cout << "\nCreating New Election...\n\n";
                 pauseScreen();
@@ -47,6 +49,12 @@ void AdminMenu::display() {
                 break;
             }
             case 5: {
+                std::cout << "\nManaging Locations...\n\n";
+                pauseScreen();
+                ManageLocationsMenu().display();
+                break;
+            }
+            case 6: {
                 std::cout << "\nLogging out!\n\n";
                 pauseScreen();
                 return;

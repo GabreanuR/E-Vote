@@ -1,44 +1,77 @@
 {
-  "regions": {
-    "201": {
-      "name": "North-West Region",
-      "municipalities": ["301", "302"]
+    "localities": {
+        "1": {
+            "municipality": "2",
+            "name": "Sector 1"
+        },
+        "2": {
+            "municipality": "2",
+            "name": "Sector 2"
+        }
     },
-    "202": {
-      "name": "South-East Region",
-      "municipalities": []
-    }
-  },
-  "municipalities": {
-    "301": {
-      "name": "Cluj-Napoca",
-      "region": "201",
-      "localities": ["401", "402"]
+    "municipalities": {
+        "1": {
+            "localities": [],
+            "name": "Iasi",
+            "region": "2"
+        },
+        "2": {
+            "localities": [
+                "1",
+                "2"
+            ],
+            "name": "Bucuresti",
+            "region": "0"
+        },
+        "3": {
+            "localities": [],
+            "name": "Constanta",
+            "region": "1"
+        },
+        "4": {
+            "localities": [],
+            "name": "Craiova",
+            "region": "5"
+        }
     },
-    "302": {
-      "name": "Turda",
-      "region": "201",
-      "localities": []
-    }
-  },
-  "localities": {
-    "401": {
-      "name": "Manastur",
-      "municipality": "301"
+    "nonGovernment": {
+        "1": {
+            "name": "ASMI",
+            "type": "Asociatie Studenteasca"
+        }
     },
-    "402": {
-      "name": "Zorilor",
-      "municipality": "301"
+    "regions": {
+        "0": {
+            "municipalities": [
+                "2"
+            ],
+            "name": "Muntenia"
+        },
+        "1": {
+            "municipalities": [
+                "3"
+            ],
+            "name": "Dobrogea"
+        },
+        "2": {
+            "municipalities": [
+                "1"
+            ],
+            "name": "Moldova"
+        },
+        "3": {
+            "municipalities": [],
+            "name": "Banat si Crisana"
+        },
+        "4": {
+            "municipalities": [],
+            "name": "Transilvania"
+        },
+        "5": {
+            "municipalities": [
+                "4"
+            ],
+            "name": "Oltenia"
+        }
     }
-  },
-  "nonGovernment": {
-    "501": {
-      "name": "Company A",
-      "type": "company"
-    },
-    "502": {
-      "name": "University B",
-      "type": "university"
-    }
-  }
 }
