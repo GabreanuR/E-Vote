@@ -115,7 +115,7 @@ public:
     
     // Methods
     [[nodiscard]] bool canVoteIn(const Election& election) const;
-    [[nodiscard]] bool grantAccess(ElectionLevel level, int entityId);     // Grant access to specific entity
+    bool grantAccess(ElectionLevel level, int entityId);     // Grant access to specific entity
     [[nodiscard]] auto revokeAccess(ElectionLevel level, int entityId) -> bool;    // Revoke access to specific entity
     [[nodiscard]] bool hasAccessTo(ElectionLevel level, int entityId) const;  // Check access to specific entity
     [[nodiscard]] bool hasVotedIn(int electionId) const;

@@ -4,7 +4,7 @@
 #include "../Meniu.h"
 #include "../../Models/User.h"
 
-class ManageUsersMenu : public Meniu {
+class ManageUsersMenu final : public Meniu {
 public:
     void display() override;
 

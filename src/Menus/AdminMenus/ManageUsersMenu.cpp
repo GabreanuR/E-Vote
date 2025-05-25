@@ -81,12 +81,12 @@ void ManageUsersMenu::displayUserDetails(const User& user) {
     const auto& access = user.getRestrictedAccess();
     
     // National access
-    auto nationalIt = access.find(ElectionLevel::national);
+    const auto nationalIt = access.find(ElectionLevel::national);
     std::cout << "  National: " << (nationalIt == access.end() || nationalIt->second.empty() ? "Full" : "Restricted") << "\n";
     
     // Regional access
     std::cout << "  Regions: ";
-    auto regionalIt = access.find(ElectionLevel::regional);
+    const auto regionalIt = access.find(ElectionLevel::regional);
     if (regionalIt == access.end() || regionalIt->second.empty()) {
         std::cout << "Full\n";
     } else {
@@ -99,7 +99,7 @@ void ManageUsersMenu::displayUserDetails(const User& user) {
     
     // Municipal access
     std::cout << "  Municipalities: ";
-    auto municipalIt = access.find(ElectionLevel::municipal);
+    const auto municipalIt = access.find(ElectionLevel::municipal);
     if (municipalIt == access.end() || municipalIt->second.empty()) {
         std::cout << "Full\n";
     } else {
@@ -112,7 +112,7 @@ void ManageUsersMenu::displayUserDetails(const User& user) {
     
     // Local access
     std::cout << "  Localities: ";
-    auto localIt = access.find(ElectionLevel::local);
+    const auto localIt = access.find(ElectionLevel::local);
     if (localIt == access.end() || localIt->second.empty()) {
         std::cout << "Full\n";
     } else {
@@ -260,6 +260,13 @@ void ManageUsersMenu::toggleUserStatus() {
     
     try {
         const int userId = std::stoi(idStr);
+        
+        // Prevent changing status of user with ID 1
+        if (userId == 1) {
+            std::cout << "\nCannot change status of the primary admin user (ID: 1).\n";
+            pauseScreen();
+            return;
+        }
         
         // Find user
         auto it = std::ranges::find_if(users,
@@ -465,17 +472,14 @@ void ManageUsersMenu::manageUserAccess() {
         std::getline(std::cin, entityIdStr);
         
         // Convert level to ElectionLevel
-        ElectionLevel electionLevel;
+        ElectionLevel electionLevel = {};
         switch (level) {
             case 1: electionLevel = ElectionLevel::national; break;
             case 2: electionLevel = ElectionLevel::regional; break;
             case 3: electionLevel = ElectionLevel::municipal; break;
             case 4: electionLevel = ElectionLevel::local; break;
             case 5: electionLevel = ElectionLevel::nonGovernment; break;
-            default:
-                std::cout << "\nInvalid access level.\n";
-                pauseScreen();
-                return;
+            default: ;
         }
         
         // Update access

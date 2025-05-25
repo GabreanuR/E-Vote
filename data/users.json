@@ -52,7 +52,7 @@
             "nonGovernment": [],
             "regions": []
         },
-        "disabled": false,
+        "disabled": true,
         "id": 4,
         "password": "123456",
         "type": "admin",
@@ -82,7 +82,7 @@
             "nonGovernment": [],
             "regions": []
         },
-        "disabled": false,
+        "disabled": true,
         "id": 6,
         "password": "123456",
         "type": "admin",
