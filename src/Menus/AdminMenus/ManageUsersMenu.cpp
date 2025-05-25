@@ -80,15 +80,14 @@ void ManageUsersMenu::displayUserDetails(const User& user) {
     
     const auto& access = user.getRestrictedAccess();
     
-    // National access
-    const auto nationalIt = access.find(ElectionLevel::national);
-    std::cout << "  National: " << (nationalIt == access.end() || nationalIt->second.empty() ? "Full" : "Restricted") << "\n";
+    // National access is always accessible
+    std::cout << "  National: Full Access\n";
     
     // Regional access
     std::cout << "  Regions: ";
     const auto regionalIt = access.find(ElectionLevel::regional);
     if (regionalIt == access.end() || regionalIt->second.empty()) {
-        std::cout << "Full\n";
+        std::cout << "No Access\n";
     } else {
         std::cout << "Restricted to: ";
         for (const auto& id : regionalIt->second) {
@@ -101,7 +100,7 @@ void ManageUsersMenu::displayUserDetails(const User& user) {
     std::cout << "  Municipalities: ";
     const auto municipalIt = access.find(ElectionLevel::municipal);
     if (municipalIt == access.end() || municipalIt->second.empty()) {
-        std::cout << "Full\n";
+        std::cout << "No Access\n";
     } else {
         std::cout << "Restricted to: ";
         for (const auto& id : municipalIt->second) {
@@ -114,7 +113,7 @@ void ManageUsersMenu::displayUserDetails(const User& user) {
     std::cout << "  Localities: ";
     const auto localIt = access.find(ElectionLevel::local);
     if (localIt == access.end() || localIt->second.empty()) {
-        std::cout << "Full\n";
+        std::cout << "No Access\n";
     } else {
         std::cout << "Restricted to: ";
         for (const auto& id : localIt->second) {
@@ -125,9 +124,9 @@ void ManageUsersMenu::displayUserDetails(const User& user) {
     
     // Non-government access
     std::cout << "  Non-Government: ";
-    auto nonGovIt = access.find(ElectionLevel::nonGovernment);
+    const auto nonGovIt = access.find(ElectionLevel::nonGovernment);
     if (nonGovIt == access.end() || nonGovIt->second.empty()) {
-        std::cout << "Full\n";
+        std::cout << "No Access\n";
     } else {
         std::cout << "Restricted to: ";
         for (const auto& id : nonGovIt->second) {
@@ -200,16 +199,6 @@ void ManageUsersMenu::addUser() {
     try {
         // Create new user
         User newUser(username, password, type);
-        
-        // If it's a voter, set restricted access levels
-        if (type == UserType::voter) {
-            // Initialize with restricted access for all levels using -1 as the restricted identifier
-            newUser.grantAccess(ElectionLevel::national, -1);  // Restricted national access
-            newUser.grantAccess(ElectionLevel::regional, -1);  // Restricted regional access
-            newUser.grantAccess(ElectionLevel::municipal, -1); // Restricted municipal access
-            newUser.grantAccess(ElectionLevel::local, -1);     // Restricted local access
-            newUser.grantAccess(ElectionLevel::nonGovernment, -1); // Restricted non-government access
-        }
         
         // Save to users file
         json updatedUsers = users;
@@ -324,6 +313,23 @@ void ManageUsersMenu::deleteUser() {
     try {
         const int userId = std::stoi(idStr);
         
+        // Prevent deleting user with ID 1
+        if (userId == 1) {
+            std::cout << "\nCannot delete the primary admin user (ID: 1).\n";
+            pauseScreen();
+            return;
+        }
+        
+        // Find user
+        auto it = std::ranges::find_if(users,
+            [userId](const json& user) { return user["id"] == userId; });
+        
+        if (it == users.end()) {
+            std::cout << "\nUser not found.\n";
+            pauseScreen();
+            return;
+        }
+        
         // Confirm deletion
         std::cout << "\nAre you sure you want to delete this user? (y/n): ";
         std::string confirm;
@@ -366,6 +372,7 @@ void ManageUsersMenu::manageUserAccess() {
         if (user["type"] == "voter") {  // Only show voters
             std::cout << "ID: " << user["id"] << "\n"
                       << "Username: " << user["username"] << "\n"
+                      << "Status: " << (user["disabled"].get<bool>() ? "Disabled" : "Enabled") << "\n"
                       << "----------------------------------------\n";
         }
     }
@@ -400,109 +407,388 @@ void ManageUsersMenu::manageUserAccess() {
         
         // Display current access
         std::cout << "\nCurrent Access Levels:\n";
+        std::cout << "User Status: " << (user.isDisabled() ? "Disabled (No Voting Rights)" : "Enabled (Can Vote)") << "\n\n";
+        
         const auto& access = user.getRestrictedAccess();
         
-        // National access
-        std::cout << "1. National: " << (access.at(ElectionLevel::national).empty() ? "Full" : "Restricted") << "\n";
-        
         // Regional access
-        std::cout << "2. Regions: ";
-        if (access.at(ElectionLevel::regional).empty()) {
-            std::cout << "Full\n";
+        const auto regionalIt = access.find(ElectionLevel::regional);
+        std::cout << "1. Regions: ";
+        if (regionalIt == access.end() || regionalIt->second.empty()) {
+            std::cout << "No Access\n";
         } else {
             std::cout << "Restricted to: ";
-            for (const auto& id : access.at(ElectionLevel::regional)) {
+            for (const auto& id : regionalIt->second) {
                 std::cout << id << " ";
             }
             std::cout << "\n";
         }
         
         // Municipal access
-        std::cout << "3. Municipalities: ";
-        if (access.at(ElectionLevel::municipal).empty()) {
-            std::cout << "Full\n";
+        const auto municipalIt = access.find(ElectionLevel::municipal);
+        std::cout << "2. Municipalities: ";
+        if (municipalIt == access.end() || municipalIt->second.empty()) {
+            std::cout << "No Access\n";
         } else {
             std::cout << "Restricted to: ";
-            for (const auto& id : access.at(ElectionLevel::municipal)) {
+            for (const auto& id : municipalIt->second) {
                 std::cout << id << " ";
             }
             std::cout << "\n";
         }
         
         // Local access
-        std::cout << "4. Localities: ";
-        if (access.at(ElectionLevel::local).empty()) {
-            std::cout << "Full\n";
+        const auto localIt = access.find(ElectionLevel::local);
+        std::cout << "3. Localities: ";
+        if (localIt == access.end() || localIt->second.empty()) {
+            std::cout << "No Access\n";
         } else {
             std::cout << "Restricted to: ";
-            for (const auto& id : access.at(ElectionLevel::local)) {
+            for (const auto& id : localIt->second) {
                 std::cout << id << " ";
             }
             std::cout << "\n";
         }
         
         // Non-government access
-        std::cout << "5. Non-Government: ";
-        if (access.at(ElectionLevel::nonGovernment).empty()) {
-            std::cout << "Full\n";
+        const auto nonGovIt = access.find(ElectionLevel::nonGovernment);
+        std::cout << "4. Non-Government: ";
+        if (nonGovIt == access.end() || nonGovIt->second.empty()) {
+            std::cout << "No Access\n";
         } else {
             std::cout << "Restricted to: ";
-            for (const auto& id : access.at(ElectionLevel::nonGovernment)) {
+            for (const auto& id : nonGovIt->second) {
                 std::cout << id << " ";
             }
             std::cout << "\n";
         }
         
         // Get access level to modify
-        std::cout << "\nEnter access level to modify (1-5, empty to go back): ";
+        std::cout << "\nEnter access level to modify (1-4, empty to go back): ";
         std::string levelStr;
         std::getline(std::cin, levelStr);
         if (levelStr.empty()) return;
         
         const int level = std::stoi(levelStr);
-        if (level < 1 || level > 5) {
+        if (level < 1 || level > 4) {
             std::cout << "\nInvalid access level.\n";
             pauseScreen();
             return;
         }
         
-        // Get entity ID
-        std::cout << "Enter entity ID (empty for full access): ";
-        std::string entityIdStr;
-        std::getline(std::cin, entityIdStr);
-        
         // Convert level to ElectionLevel
         ElectionLevel electionLevel = {};
         switch (level) {
-            case 1: electionLevel = ElectionLevel::national; break;
-            case 2: electionLevel = ElectionLevel::regional; break;
-            case 3: electionLevel = ElectionLevel::municipal; break;
-            case 4: electionLevel = ElectionLevel::local; break;
-            case 5: electionLevel = ElectionLevel::nonGovernment; break;
+            case 1: electionLevel = ElectionLevel::regional; break;
+            case 2: electionLevel = ElectionLevel::municipal; break;
+            case 3: electionLevel = ElectionLevel::local; break;
+            case 4: electionLevel = ElectionLevel::nonGovernment; break;
             default: ;
         }
-        
-        // Update access
-        if (entityIdStr.empty()) {
-            // Grant full access
-            user.grantAccess(electionLevel, 0);  // 0 indicates full access
-        } else {
+
+        // For regional level, show available regions
+        if (electionLevel == ElectionLevel::regional) {
+            // Load regions data
+            json locations = DataManager::getInstance().loadData("locations");
+            
+            std::cout << "\nAvailable Regions:\n";
+            if (locations.contains("regions")) {
+                for (const auto& [id, region] : locations["regions"].items()) {
+                    std::cout << "ID: " << id << " - " 
+                             << region["name"].get<std::string>() << "\n";
+                }
+            }
+            std::cout << "\nNote: Voters can only have access to one region or none.\n"
+                      << "Selecting a region will clear access to all municipalities and localities.\n";
+            
+            std::cout << "\nEnter region ID:\n"
+                      << "   0: No access to any region (and sub-levels)\n"
+                      << "  >0: Select specific region (clears sub-levels)\n"
+                      << "Enter choice: ";
+            std::string entityIdStr;
+            std::getline(std::cin, entityIdStr);
+            
             try {
                 const int entityId = std::stoi(entityIdStr);
-                user.grantAccess(electionLevel, entityId);
+                
+                if (entityId == 0) {
+                    // Remove access to region and all sub-levels
+                    user.grantAccess(ElectionLevel::regional, 0);
+                    user.grantAccess(ElectionLevel::municipal, 0);
+                    user.grantAccess(ElectionLevel::local, 0);
+                } else if (entityId > 0) {
+                    // Verify the region exists
+                    if (!locations["regions"].contains(std::to_string(entityId))) {
+                        std::cout << "\nInvalid region ID.\n";
+                        pauseScreen();
+                        return;
+                    }
+                    
+                    // Grant access to specific region and clear sub-levels
+                    user.grantAccess(ElectionLevel::regional, entityId);
+                    user.grantAccess(ElectionLevel::municipal, 0);
+                    user.grantAccess(ElectionLevel::local, 0);
+                } else {
+                    std::cout << "\nInvalid region ID. Must be 0 or positive.\n";
+                    pauseScreen();
+                    return;
+                }
+                
+                // Save changes
+                (*it) = user.toJson();
+                if (DataManager::getInstance().saveData("users", users)) {
+                    std::cout << "\nUser access updated successfully!\n";
+                } else {
+                    std::cout << "\nError updating user access.\n";
+                }
             } catch (const std::exception& e) {
                 std::cout << "\nError: " << e.what() << "\n";
+            }
+            
+            pauseScreen();
+            return;
+        }
+        // For municipal level, check regional access first
+        else if (electionLevel == ElectionLevel::municipal) {
+            const auto regionalIt = access.find(ElectionLevel::regional);
+            if (regionalIt == access.end() || regionalIt->second.empty()) {
+                std::cout << "\nYou must have access to a specific region before managing municipal access.\n";
                 pauseScreen();
                 return;
             }
+            
+            // Get the region ID the user has access to
+            const int regionId = *regionalIt->second.begin();
+            
+            // Load municipalities data
+            json locations = DataManager::getInstance().loadData("locations");
+            
+            std::cout << "\nAvailable Municipalities in Region " << regionId << ":\n";
+            if (locations.contains("municipalities")) {
+                bool foundAny = false;
+                for (const auto& [id, municipality] : locations["municipalities"].items()) {
+                    if (municipality["region"].get<std::string>() == std::to_string(regionId)) {
+                        std::cout << "ID: " << id << " - " 
+                                 << municipality["name"].get<std::string>() << "\n";
+                        foundAny = true;
+                    }
+                }
+                if (!foundAny) {
+                    std::cout << "No municipalities found in this region.\n";
+                }
+            }
+            
+            std::cout << "\nEnter municipality ID:\n"
+                      << "   0: No access to municipalities\n"
+                      << "  >0: Select specific municipality from this region\n"
+                      << "Enter choice: ";
+            std::string entityIdStr;
+            std::getline(std::cin, entityIdStr);
+            
+            try {
+                const int entityId = std::stoi(entityIdStr);
+                
+                if (entityId == 0) {
+                    // Remove access to municipalities and localities
+                    user.grantAccess(ElectionLevel::municipal, 0);
+                    user.grantAccess(ElectionLevel::local, 0);
+                } else if (entityId > 0) {
+                    // Verify the municipality belongs to the user's region
+                    bool validMunicipality = false;
+                    if (locations.contains("municipalities")) {
+                        const auto& municipality = locations["municipalities"][std::to_string(entityId)];
+                        if (!municipality.is_null() && 
+                            municipality["region"].get<std::string>() == std::to_string(regionId)) {
+                            validMunicipality = true;
+                        }
+                    }
+                    
+                    if (!validMunicipality) {
+                        std::cout << "\nInvalid municipality ID or municipality not in region " << regionId << ".\n";
+                        pauseScreen();
+                        return;
+                    }
+                    
+                    // Grant access to specific municipality and clear local access
+                    user.grantAccess(ElectionLevel::municipal, entityId);
+                    user.grantAccess(ElectionLevel::local, 0);
+                } else {
+                    std::cout << "\nInvalid municipality ID. Must be 0 or positive.\n";
+                    pauseScreen();
+                    return;
+                }
+                
+                // Save changes
+                (*it) = user.toJson();
+                if (DataManager::getInstance().saveData("users", users)) {
+                    std::cout << "\nUser access updated successfully!\n";
+                } else {
+                    std::cout << "\nError updating user access.\n";
+                }
+            } catch (const std::exception& e) {
+                std::cout << "\nError: " << e.what() << "\n";
+            }
+            
+            pauseScreen();
+            return;
         }
-        
-        // Save changes
-        (*it) = user.toJson();
-        if (DataManager::getInstance().saveData("users", users)) {
-            std::cout << "\nUser access updated successfully!\n";
-        } else {
-            std::cout << "\nError updating user access.\n";
+        // For local level, check municipal access first
+        else if (electionLevel == ElectionLevel::local) {
+            const auto municipalIt = access.find(ElectionLevel::municipal);
+            if (municipalIt == access.end() || municipalIt->second.empty()) {
+                std::cout << "\nYou must have access to a specific municipality before managing local access.\n";
+                pauseScreen();
+                return;
+            }
+            
+            // Get the municipality ID the user has access to
+            const int municipalityId = *municipalIt->second.begin();
+            
+            // Load localities data
+            json locations = DataManager::getInstance().loadData("locations");
+            
+            std::cout << "\nAvailable Localities in Municipality " << municipalityId << ":\n";
+            if (locations.contains("localities")) {
+                bool foundAny = false;
+                for (const auto& [id, locality] : locations["localities"].items()) {
+                    if (locality["municipality"].get<std::string>() == std::to_string(municipalityId)) {
+                        std::cout << "ID: " << id << " - " 
+                                 << locality["name"].get<std::string>() << "\n";
+                        foundAny = true;
+                    }
+                }
+                if (!foundAny) {
+                    std::cout << "No localities found in this municipality.\n";
+                }
+            }
+            
+            std::cout << "\nEnter locality ID:\n"
+                      << "   0: No access to localities\n"
+                      << "  >0: Select specific locality from this municipality\n"
+                      << "Enter choice: ";
+            std::string entityIdStr;
+            std::getline(std::cin, entityIdStr);
+            
+            try {
+                const int entityId = std::stoi(entityIdStr);
+                
+                if (entityId == 0) {
+                    // Remove access to localities
+                    user.grantAccess(ElectionLevel::local, 0);
+                } else if (entityId > 0) {
+                    // Verify the locality belongs to the user's municipality
+                    bool validLocality = false;
+                    if (locations.contains("localities")) {
+                        const auto& locality = locations["localities"][std::to_string(entityId)];
+                        if (!locality.is_null() && 
+                            locality["municipality"].get<std::string>() == std::to_string(municipalityId)) {
+                            validLocality = true;
+                        }
+                    }
+                    
+                    if (!validLocality) {
+                        std::cout << "\nInvalid locality ID or locality not in municipality " << municipalityId << ".\n";
+                        pauseScreen();
+                        return;
+                    }
+                    
+                    // Grant access to specific locality
+                    user.grantAccess(ElectionLevel::local, entityId);
+                } else {
+                    std::cout << "\nInvalid locality ID. Must be 0 or positive.\n";
+                    pauseScreen();
+                    return;
+                }
+                
+                // Save changes
+                (*it) = user.toJson();
+                if (DataManager::getInstance().saveData("users", users)) {
+                    std::cout << "\nUser access updated successfully!\n";
+                } else {
+                    std::cout << "\nError updating user access.\n";
+                }
+            } catch (const std::exception& e) {
+                std::cout << "\nError: " << e.what() << "\n";
+            }
+            
+            pauseScreen();
+            return;
+        }
+        // For non-government level
+        else if (electionLevel == ElectionLevel::nonGovernment) {
+            // Load non-government data
+            json locations = DataManager::getInstance().loadData("locations");
+            
+            std::cout << "\nAvailable Non-Government Entities:\n";
+            if (locations.contains("nonGovernment")) {
+                for (const auto& [id, entity] : locations["nonGovernment"].items()) {
+                    std::cout << "ID: " << id << " - " 
+                             << entity["name"].get<std::string>() << "\n";
+                }
+            }
+            
+            std::cout << "\nEnter entity ID:\n"
+                      << "   0: Clear all non-government access\n"
+                      << "  >0: Add specific entity to access list\n"
+                      << "Enter choice: ";
+            std::string entityIdStr;
+            std::getline(std::cin, entityIdStr);
+            
+            try {
+                const int entityId = std::stoi(entityIdStr);
+                
+                if (entityId == 0) {
+                    // Clear all non-government access
+                    user.grantAccess(ElectionLevel::nonGovernment, 0);
+                } else if (entityId > 0) {
+                    // Verify the entity exists
+                    bool validEntity = false;
+                    if (locations.contains("nonGovernment")) {
+                        const auto& entity = locations["nonGovernment"][std::to_string(entityId)];
+                        if (!entity.is_null()) {
+                            validEntity = true;
+                        }
+                    }
+                    
+                    if (!validEntity) {
+                        std::cout << "\nInvalid entity ID.\n";
+                        pauseScreen();
+                        return;
+                    }
+                    
+                    // Add the entity to the access list (don't clear existing ones)
+                    const auto& currentAccess = user.getRestrictedAccess();
+                    const auto nonGovIt = currentAccess.find(ElectionLevel::nonGovernment);
+                    std::set<int> newAccess;
+                    if (nonGovIt != currentAccess.end()) {
+                        newAccess = nonGovIt->second;
+                    }
+                    newAccess.insert(entityId);
+                    
+                    // Update the access
+                    user.grantAccess(ElectionLevel::nonGovernment, -1);  // Clear first
+                    for (const int id : newAccess) {
+                        user.grantAccess(ElectionLevel::nonGovernment, id);
+                    }
+                } else {
+                    std::cout << "\nInvalid entity ID. Must be 0 or positive.\n";
+                    pauseScreen();
+                    return;
+                }
+                
+                // Save changes
+                (*it) = user.toJson();
+                if (DataManager::getInstance().saveData("users", users)) {
+                    std::cout << "\nUser access updated successfully!\n";
+                } else {
+                    std::cout << "\nError updating user access.\n";
+                }
+            } catch (const std::exception& e) {
+                std::cout << "\nError: " << e.what() << "\n";
+            }
+            
+            pauseScreen();
+            return;
         }
     } catch (const std::exception& e) {
         std::cout << "\nError: " << e.what() << "\n";

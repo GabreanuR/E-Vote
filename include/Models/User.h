@@ -34,16 +34,46 @@ class User {
     // Helper method to initialize access levels based on user type
     void initializeAccessLevels() {
         if (type == UserType::admin) {
-            // Admins have empty restrictedAccess (full access to everything)
-            restrictedAccess.clear();
-        } else {
-            // Voters start with all levels restricted (empty sets)
+            // Load all locations
+            json locations = DataManager::getInstance().loadData("locations");
+            
+            // Initialize with empty sets for all levels
             restrictedAccess = {
                 {ElectionLevel::national, {}},
                 {ElectionLevel::regional, {}},
                 {ElectionLevel::municipal, {}},
                 {ElectionLevel::local, {}},
                 {ElectionLevel::nonGovernment, {}}
+            };
+            
+            // Add all existing locations to their respective levels
+            if (locations.contains("regions")) {
+                for (const auto& [id, _] : locations["regions"].items()) {
+                    restrictedAccess[ElectionLevel::regional].insert(std::stoi(id));
+                }
+            }
+            
+            if (locations.contains("municipalities")) {
+                for (const auto& [id, _] : locations["municipalities"].items()) {
+                    restrictedAccess[ElectionLevel::municipal].insert(std::stoi(id));
+                }
+            }
+            
+            if (locations.contains("localities")) {
+                for (const auto& [id, _] : locations["localities"].items()) {
+                    restrictedAccess[ElectionLevel::local].insert(std::stoi(id));
+                }
+            }
+            
+            if (locations.contains("nonGovernment")) {
+                for (const auto& [id, _] : locations["nonGovernment"].items()) {
+                    restrictedAccess[ElectionLevel::nonGovernment].insert(std::stoi(id));
+                }
+            }
+        } else {
+            // Voters start with only national access
+            restrictedAccess = {
+                {ElectionLevel::national, {}}  // Empty set means full access
             };
         }
     }
@@ -73,6 +103,22 @@ public:
     public:
         explicit UserCreationError(const std::string& message) : std::runtime_error(message) {}
     };
+
+    // Static method to update admin access when new locations are added
+    static void updateAdminAccess(const ElectionLevel level, int entityId) {
+        json users = DataManager::getInstance().loadData("users");
+        
+        // Find admin user (ID 1)
+        auto it = std::ranges::find_if(users,
+            [](const json& user) { return user["id"] == 1; });
+        
+        if (it != users.end()) {
+            User admin(*it);
+            admin.grantAccess(level, entityId);
+            (*it) = admin.toJson();
+            DataManager::getInstance().saveData("users", users);
+        }
+    }
 
     // Constructors
     User(std::string username, std::string password, const UserType type) 

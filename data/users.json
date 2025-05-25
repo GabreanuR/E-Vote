@@ -1,11 +1,37 @@
 [
     {
         "access": {
-            "localities": [],
-            "municipalities": [],
-            "national": false,
-            "nonGovernment": [],
-            "regions": []
+            "localities": [
+                1,
+                2,
+                3,
+                4
+            ],
+            "municipalities": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+            ],
+            "national": true,
+            "nonGovernment": [
+                1,
+                2,
+                3
+            ],
+            "regions": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+            ]
         },
         "disabled": false,
         "id": 1,
@@ -18,7 +44,7 @@
         "access": {
             "localities": [],
             "municipalities": [],
-            "national": false,
+            "national": true,
             "nonGovernment": [],
             "regions": []
         },
@@ -33,7 +59,7 @@
         "access": {
             "localities": [],
             "municipalities": [],
-            "national": false,
+            "national": true,
             "nonGovernment": [],
             "regions": []
         },
@@ -48,15 +74,79 @@
         "access": {
             "localities": [],
             "municipalities": [],
-            "national": false,
+            "national": true,
             "nonGovernment": [],
             "regions": []
         },
-        "disabled": true,
+        "disabled": false,
         "id": 4,
         "password": "123456",
         "type": "admin",
         "username": "Admin4",
+        "votingHistory": []
+    },
+    {
+        "access": {
+            "localities": [
+                4
+            ],
+            "municipalities": [
+                2
+            ],
+            "national": true,
+            "nonGovernment": [
+                1,
+                2
+            ],
+            "regions": [
+                6
+            ]
+        },
+        "disabled": false,
+        "id": 5,
+        "password": "123456",
+        "type": "voter",
+        "username": "Mihai",
+        "votingHistory": []
+    },
+    {
+        "access": {
+            "localities": [
+                -1
+            ],
+            "municipalities": [
+                -1
+            ],
+            "national": true,
+            "nonGovernment": [
+                -1
+            ],
+            "regions": [
+                -1
+            ]
+        },
+        "disabled": false,
+        "id": 8,
+        "password": "123456",
+        "type": "voter",
+        "username": "Voter7",
+        "votingHistory": []
+    },
+    {
+        "access": {
+            "localities": [],
+            "municipalities": [],
+            "national": true,
+            "nonGovernment": [
+                -1
+            ],
+            "regions": []
+        },
+        "disabled": false,
+        "id": 9,
+        "password": "123456",
+        "type": "voter",
+        "username": "Anca",
         "votingHistory": []
     },
     {
@@ -68,48 +158,77 @@
             "regions": []
         },
         "disabled": false,
-        "id": 5,
+        "id": 11,
         "password": "123456",
         "type": "voter",
-        "username": "Mihai",
+        "username": "Mirabela",
         "votingHistory": []
     },
     {
         "access": {
             "localities": [],
             "municipalities": [],
-            "national": false,
+            "national": true,
             "nonGovernment": [],
             "regions": []
         },
         "disabled": true,
-        "id": 6,
+        "id": 12,
         "password": "123456",
-        "type": "admin",
-        "username": "Admin6",
+        "type": "voter",
+        "username": "George",
         "votingHistory": []
     },
     {
         "access": {
             "localities": [
-                1
+                1,
+                2,
+                3,
+                4
             ],
             "municipalities": [
-                1
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
             ],
-            "national": false,
+            "national": true,
             "nonGovernment": [
                 1
             ],
             "regions": [
-                1
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
             ]
         },
         "disabled": false,
-        "id": 7,
+        "id": 19,
+        "password": "123456",
+        "type": "admin",
+        "username": "Admin20",
+        "votingHistory": []
+    },
+    {
+        "access": {
+            "localities": [],
+            "municipalities": [],
+            "national": true,
+            "nonGovernment": [],
+            "regions": []
+        },
+        "disabled": false,
+        "id": 20,
         "password": "123456",
         "type": "voter",
-        "username": "Mihnea",
+        "username": "Ana",
         "votingHistory": []
     }
 ]

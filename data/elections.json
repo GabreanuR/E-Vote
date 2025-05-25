@@ -1,68 +1,68 @@
 [
-  {
-    "id": 1001,
-    "title": "2025 Presidential Election",
-    "status": "active",
-    "type": {
-      "level": "national",
-      "zone": null,
-      "votingSystem": "majority"
+    {
+        "candidates": [
+            {
+                "id": 1,
+                "name": "John Doe",
+                "party": "Independent",
+                "votes": -7
+            },
+            {
+                "id": 2,
+                "name": "Alice Popescu",
+                "party": "Democratic Party",
+                "votes": -7
+            }
+        ],
+        "dates": {
+            "end": "2025-06-10T23:59:59Z",
+            "start": "2025-06-01T00:00:00Z"
+        },
+        "id": 1001,
+        "results": {
+            "invalidVotes": 0,
+            "totalVotes": 0,
+            "validVotes": 0
+        },
+        "status": "active",
+        "title": "2025 Presidential Election",
+        "type": {
+            "level": "national",
+            "votingSystem": "majority",
+            "zone": null
+        }
     },
-    "dates": {
-      "start": "2025-06-01T00:00:00Z",
-      "end": "2025-06-10T23:59:59Z"
-    },
-    "candidates": [
-      {
-        "id": 1,
-        "name": "John Doe",
-        "party": "Independent",
-        "votes": 0
-      },
-      {
-        "id": 2,
-        "name": "Alice Popescu",
-        "party": "Democratic Party",
-        "votes": 0
-      }
-    ],
-    "results": {
-      "totalVotes": 0,
-      "validVotes": 0,
-      "invalidVotes": 0
+    {
+        "candidates": [
+            {
+                "id": 3,
+                "name": "Partidul Verde",
+                "party": "PV",
+                "votes": -7
+            },
+            {
+                "id": 4,
+                "name": "Partidul Liberal",
+                "party": "PL",
+                "votes": -7
+            }
+        ],
+        "dates": {
+            "end": "2025-09-30T23:59:59Z",
+            "start": "2025-09-15T00:00:00Z"
+        },
+        "id": 1002,
+        "results": {
+            "invalidVotes": 0,
+            "totalVotes": 0,
+            "validVotes": 0
+        },
+        "status": "upcoming",
+        "title": "Cluj-Napoca City Council",
+        "type": {
+            "level": "municipal",
+            "votingSystem": "proportional",
+            "zone": 301
+        }
     }
-  },
-  {
-    "id": 1002,
-    "title": "Cluj-Napoca City Council",
-    "status": "upcoming",
-    "type": {
-      "level": "municipal",
-      "zone": 301,
-      "votingSystem": "proportional"
-    },
-    "dates": {
-      "start": "2025-09-15T00:00:00Z",
-      "end": "2025-09-30T23:59:59Z"
-    },
-    "candidates": [
-      {
-        "id": 3,
-        "name": "Partidul Verde",
-        "party": "PV",
-        "votes": 0
-      },
-      {
-        "id": 4,
-        "name": "Partidul Liberal",
-        "party": "PL",
-        "votes": 0
-      }
-    ],
-    "results": {
-      "totalVotes": 0,
-      "validVotes": 0,
-      "invalidVotes": 0
-    }
-  }
 ]

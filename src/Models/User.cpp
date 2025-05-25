@@ -101,8 +101,41 @@ bool User::canVoteIn(const Election& election) const {
 }
 
 bool User::grantAccess(const ElectionLevel level, const int entityId) {
-    if (type == UserType::admin) return false;  // Admins have full access
-    restrictedAccess[level].insert(entityId);
+    // If granting full access (-1), clear the set
+    if (entityId == -1) {
+        restrictedAccess[level].clear();
+    }
+    // If restricting access (0), clear the set and all sub-levels
+    else if (entityId == 0) {
+        restrictedAccess[level].clear();
+        // Clear all sub-levels
+        switch (level) {
+            case ElectionLevel::national:
+                restrictedAccess[ElectionLevel::regional].clear();
+                restrictedAccess[ElectionLevel::municipal].clear();
+                restrictedAccess[ElectionLevel::local].clear();
+                break;
+            case ElectionLevel::regional:
+                restrictedAccess[ElectionLevel::municipal].clear();
+                restrictedAccess[ElectionLevel::local].clear();
+                break;
+            case ElectionLevel::municipal:
+                restrictedAccess[ElectionLevel::local].clear();
+                break;
+            default:
+                break;
+        }
+    }
+    // If granting restricted access, add the entity ID
+    else {
+        // For regional, municipal, and local access, ensure only one entity is selected
+        if (level == ElectionLevel::regional || 
+            level == ElectionLevel::municipal || 
+            level == ElectionLevel::local) {
+            restrictedAccess[level].clear();  // Clear existing entities
+        }
+        restrictedAccess[level].insert(entityId);
+    }
     return true;
 }
 
@@ -114,9 +147,16 @@ bool User::revokeAccess(const ElectionLevel level, const int entityId) {
 
 bool User::hasAccessTo(const ElectionLevel level, const int entityId) const {
     if (type == UserType::admin) return true;  // Admins have full access
+    
+    // Check if the level exists in restrictedAccess
     const auto it = restrictedAccess.find(level);
-    if (it == restrictedAccess.end()) return false;
-    return it->second.empty() || it->second.contains(entityId);
+    if (it == restrictedAccess.end()) return false;  // Level not in map means no access
+    
+    // If the set is empty, it means full access to that level
+    if (it->second.empty()) return true;
+    
+    // Otherwise, check if the specific entity ID is in the set
+    return it->second.contains(entityId);
 }
 
 bool User::hasVotedIn(const int electionId) const {

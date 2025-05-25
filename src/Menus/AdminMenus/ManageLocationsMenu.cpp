@@ -2,6 +2,7 @@
 #include <nlohmann/json.hpp>
 #include "../include/Menus/AdminMenus/ManageLocationsMenu.h"
 #include "../include/Utils/DataManager.h"
+#include "../include/Models/User.h"
 
 using json = nlohmann::json;
 
@@ -85,6 +86,8 @@ void ManageLocationsMenu::addRegion() {
     // Save changes
     if (DataManager::getInstance().saveData("locations", data) &&
         DataManager::getInstance().saveData("counters", counters)) {
+        // Update admin access for the new region
+        User::updateAdminAccess(ElectionLevel::regional, regionId);
         std::cout << "\nRegion added successfully!\n";
     } else {
         std::cout << "\nError adding region.\n";
@@ -149,6 +152,8 @@ void ManageLocationsMenu::addMunicipality() {
     // Save changes
     if (DataManager::getInstance().saveData("locations", data) &&
         DataManager::getInstance().saveData("counters", counters)) {
+        // Update admin access for the new municipality
+        User::updateAdminAccess(ElectionLevel::municipal, municipalityId);
         std::cout << "\nMunicipality added successfully!\n";
     } else {
         std::cout << "\nError adding municipality.\n";
@@ -212,6 +217,8 @@ void ManageLocationsMenu::addLocality() {
     // Save changes
     if (DataManager::getInstance().saveData("locations", data) &&
         DataManager::getInstance().saveData("counters", counters)) {
+        // Update admin access for the new locality
+        User::updateAdminAccess(ElectionLevel::local, localityId);
         std::cout << "\nLocality added successfully!\n";
     } else {
         std::cout << "\nError adding locality.\n";
@@ -259,6 +266,8 @@ void ManageLocationsMenu::addNonGovernment() {
     // Save changes
     if (DataManager::getInstance().saveData("locations", data) &&
         DataManager::getInstance().saveData("counters", counters)) {
+        // Update admin access for the new non-government entity
+        User::updateAdminAccess(ElectionLevel::nonGovernment, nonGovId);
         std::cout << "\nNon-government entity added successfully!\n";
     } else {
         std::cout << "\nError adding non-government entity.\n";
