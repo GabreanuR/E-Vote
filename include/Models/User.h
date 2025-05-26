@@ -35,7 +35,7 @@ class User {
     void initializeAccessLevels() {
         if (type == UserType::admin) {
             // Load all locations
-            json locations = DataManager::getInstance().loadData("locations");
+            json locations = DataManager::getInstance().loadData("data/locations.json");
             
             // Initialize with empty sets for all levels
             restrictedAccess = {
