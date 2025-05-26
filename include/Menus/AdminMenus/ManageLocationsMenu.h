@@ -9,11 +9,16 @@ public:
 
 private:
     static void printMenuText();
-    void addRegion();
-    void addMunicipality();
-    void addLocality();
-    void addNonGovernment();
-    void displayLocations();
+
+    static void addRegion();
+
+    static void addMunicipality();
+
+    static void addLocality();
+
+    static void addNonGovernment();
+
+    static void displayLocations();
 };
 
 #endif

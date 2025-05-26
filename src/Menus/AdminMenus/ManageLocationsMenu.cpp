@@ -1,6 +1,10 @@
 #include <iostream>
 #include "../include/Menus/AdminMenus/ManageLocationsMenu.h"
 #include "../include/Services/LocationService.h"
+#include "../include/Models/Location.h"
+#include "../include/Menus/Meniu.h"
+#include <vector>
+#include <memory>
 
 void ManageLocationsMenu::printMenuText() {
     std::cout << "==================================================\n"
@@ -41,9 +45,13 @@ void ManageLocationsMenu::display() {
                 addNonGovernment();
                 break;
             case 5:
+                std::cout << "\nDisplaying Locations...\n\n";
+                pauseScreen();
                 displayLocations();
                 break;
             case 6:
+                std::cout << "\nGoing Back...\n\n";
+                pauseScreen();
                 return;
             default:
                 break;
@@ -52,169 +60,164 @@ void ManageLocationsMenu::display() {
 }
 
 void ManageLocationsMenu::addRegion() {
-    Meniu::clearScreen();
+    clearScreen();
     std::cout << "===== Add New Region =====\n\n";
 
-    std::string name;
-    std::cout << "Enter region name (empty to go back): ";
-    std::getline(std::cin, name);
-    if (name.empty()) {
-        return;
+    try {
+        Region newRegion;
+        std::cin >> newRegion; 
+        if (newRegion.getName().empty()) {
+            std::cout << "\nRegion creation cancelled (name was empty after input attempt).\n";
+        } else {
+            LocationService::getInstance().addRegion(newRegion.getName());
+            std::cout << "\nRegion '" << newRegion.getName() << "' added successfully!\n";
+        }
+    } catch (const UserInputCancelledException&) {
+        std::cout << "\nRegion creation cancelled by user.\n";
     }
-
-    LocationService::getInstance().addRegion(name);
-    std::cout << "\nRegion added successfully!\n";
-    Meniu::pauseScreen();
+    
+    pauseScreen();
 }
 
 void ManageLocationsMenu::addMunicipality() {
-    Meniu::clearScreen();
+    clearScreen();
     std::cout << "===== Add New Municipality =====\n\n";
 
-    // Get municipality name
-    std::string name;
-    std::cout << "Enter municipality name (empty to go back): ";
-    std::getline(std::cin, name);
-    if (name.empty()) {
+    std::cout << "Available regions:\n";
+    const auto& regions = LocationService::getInstance().getAllRegions();
+    if (regions.empty()) {
+        std::cout << "No regions available to assign to. Please add a region first.\n";
+        pauseScreen();
         return;
     }
-
-    // Display available regions
-    std::cout << "\nAvailable regions:\n";
-    for (const auto& region : LocationService::getInstance().getAllRegions()) {
+    for (const auto& region : regions) {
         std::cout << region->getId() << ": " << region->getName() << "\n";
     }
-
-    // Get region ID
-    std::string regionIdStr;
-    std::cout << "\nEnter region ID (empty to go back): ";
-    std::getline(std::cin, regionIdStr);
-    if (regionIdStr.empty()) {
-        return;
-    }
+    std::cout << "\nEnter details for the new municipality: \n";
 
     try {
-        int regionId = std::stoi(regionIdStr);
-        if (LocationService::getInstance().getRegion(regionId)) {
-            LocationService::getInstance().addMunicipality(name, regionId);
-            std::cout << "\nMunicipality added successfully!\n";
+        Municipality newMunicipality;
+        std::cin >> newMunicipality;
+        if (newMunicipality.getName().empty()) {
+            std::cout << "\nMunicipality creation cancelled (name was empty after input attempt).\n";
+        } else if (LocationService::getInstance().getRegion(newMunicipality.getRegionId())) {
+            LocationService::getInstance().addMunicipality(newMunicipality.getName(), newMunicipality.getRegionId());
+            std::cout << "\nMunicipality '" << newMunicipality.getName() << "' added successfully!\n";
         } else {
-            std::cout << "\nInvalid region ID.\n";
+            std::cout << "\nInvalid or non-existent Region ID provided: " << newMunicipality.getRegionId() << ". Municipality not added.\n";
         }
-    } catch (const std::exception& e) {
-        std::cout << "\nInvalid region ID.\n";
+    } catch (const UserInputCancelledException&) {
+        std::cout << "\nMunicipality creation cancelled by user.\n";
     }
-
-    Meniu::pauseScreen();
+    pauseScreen();
 }
 
 void ManageLocationsMenu::addLocality() {
-    Meniu::clearScreen();
+    clearScreen();
     std::cout << "===== Add New Locality =====\n\n";
 
-    // Get locality name
-    std::string name;
-    std::cout << "Enter locality name (empty to go back): ";
-    std::getline(std::cin, name);
-    if (name.empty()) {
+    std::cout << "Available municipalities:\n";
+    const auto& municipalities = LocationService::getInstance().getAllMunicipalities();
+    if (municipalities.empty()) {
+        std::cout << "No municipalities available to assign to. Please add a municipality first.\n";
+        pauseScreen();
         return;
     }
-
-    // Display available municipalities
-    std::cout << "\nAvailable municipalities:\n";
-    for (const auto& municipality : LocationService::getInstance().getAllMunicipalities()) {
-        std::cout << municipality->getId() << ": " << municipality->getName() << "\n";
+    for (const auto& mun : municipalities) {
+        std::cout << mun->getId() << ": " << mun->getName() << "\n";
     }
-
-    // Get municipality ID
-    std::string municipalityIdStr;
-    std::cout << "\nEnter municipality ID (empty to go back): ";
-    std::getline(std::cin, municipalityIdStr);
-    if (municipalityIdStr.empty()) {
-        return;
-    }
+    std::cout << "\nEnter details for the new locality: \n";
 
     try {
-        int municipalityId = std::stoi(municipalityIdStr);
-        if (LocationService::getInstance().getMunicipality(municipalityId)) {
-            LocationService::getInstance().addLocality(name, municipalityId);
-            std::cout << "\nLocality added successfully!\n";
+        Locality newLocality;
+        std::cin >> newLocality;
+        if (newLocality.getName().empty()) {
+            std::cout << "\nLocality creation cancelled (name was empty after input attempt).\n";
+        } else if (LocationService::getInstance().getMunicipality(newLocality.getMunicipalityId())) {
+            LocationService::getInstance().addLocality(newLocality.getName(), newLocality.getMunicipalityId());
+            std::cout << "\nLocality '" << newLocality.getName() << "' added successfully!\n";
         } else {
-            std::cout << "\nInvalid municipality ID.\n";
+            std::cout << "\nInvalid or non-existent Municipality ID provided: " << newLocality.getMunicipalityId() << ". Locality not added.\n";
         }
-    } catch (const std::exception& e) {
-        std::cout << "\nInvalid municipality ID.\n";
+    } catch (const UserInputCancelledException&) {
+        std::cout << "\nLocality creation cancelled by user.\n";
     }
-
-    Meniu::pauseScreen();
+    pauseScreen();
 }
 
 void ManageLocationsMenu::addNonGovernment() {
-    Meniu::clearScreen();
+    clearScreen();
     std::cout << "===== Add New Non-Government Entity =====\n\n";
+    std::cout << "Enter details for the new non-government entity: \n";
 
-    // Get entity name
-    std::string name;
-    std::cout << "Enter entity name (empty to go back): ";
-    std::getline(std::cin, name);
-    if (name.empty()) {
-        return;
+    try {
+        NonGovernment newNonGov;
+        std::cin >> newNonGov;
+        if (newNonGov.getName().empty()) {
+            std::cout << "\nNon-government entity creation cancelled (name was empty after input attempt).\n";
+        } else if (newNonGov.getEntityType().empty() && !newNonGov.getName().empty()) {
+            std::cout << "\nNon-government entity creation requires an entity type.\n";
+        } else {
+            LocationService::getInstance().addNonGovernment(newNonGov.getName(), newNonGov.getEntityType());
+            std::cout << "\nNon-government entity '" << newNonGov.getName() << "' added successfully!\n";
+        }
+    } catch (const UserInputCancelledException&) {
+        std::cout << "\nNon-government entity creation cancelled by user.\n";
     }
-
-    // Get entity type
-    std::string type;
-    std::cout << "Enter entity type (e.g., company, university) (empty to go back): ";
-    std::getline(std::cin, type);
-    if (type.empty()) {
-        return;
-    }
-
-    LocationService::getInstance().addNonGovernment(name, type);
-    std::cout << "\nNon-government entity added successfully!\n";
-    Meniu::pauseScreen();
+    pauseScreen();
 }
 
 void ManageLocationsMenu::displayLocations() {
-    Meniu::clearScreen();
-    std::cout << "===== All Locations =====\n\n";
+    clearScreen();
+    std::cout << "===== All Locations (using operator<<) =====\n\n";
 
-    // Display regions and their municipalities
-    std::cout << "Regions:\n";
-    for (const auto& region : LocationService::getInstance().getAllRegions()) {
-        std::cout << region->getId() << ": " << region->getName() << "\n";
-        std::cout << "  Municipalities: ";
-        if (region->getMunicipalities().empty()) {
-            std::cout << "None\n";
-        } else {
-            for (const auto& m : region->getMunicipalities()) {
-                std::cout << m->getId() << " (" << m->getName() << ") ";
+    std::cout << "--- Regions ---\n";
+    const auto& regions = LocationService::getInstance().getAllRegions();
+    if (regions.empty()) {
+        std::cout << "No regions to display.\n";
+    } else {
+        for (const auto& regionPtr : regions) {
+            if (regionPtr) {
+                std::cout << *regionPtr << "\n";
             }
-            std::cout << "\n";
         }
     }
 
-    // Display municipalities and their localities
-    std::cout << "\nMunicipalities:\n";
-    for (const auto& municipality : LocationService::getInstance().getAllMunicipalities()) {
-        std::cout << municipality->getId() << ": " << municipality->getName() 
-                  << " (Region: " << municipality->getRegionId() << ")\n";
-        std::cout << "  Localities: ";
-        if (municipality->getLocalities().empty()) {
-            std::cout << "None\n";
-        } else {
-            for (const auto& l : municipality->getLocalities()) {
-                std::cout << l->getId() << " (" << l->getName() << ") ";
+    std::cout << "\n--- Municipalities ---\n";
+    const auto& municipalities = LocationService::getInstance().getAllMunicipalities();
+    if (municipalities.empty()) {
+        std::cout << "No municipalities to display.\n";
+    } else {
+        for (const auto& munPtr : municipalities) {
+            if (munPtr) {
+                std::cout << *munPtr << "\n";
             }
-            std::cout << "\n";
         }
     }
 
-    // Display non-government entities
-    std::cout << "\nNon-Government Entities:\n";
-    for (const auto& entity : LocationService::getInstance().getAllNonGovernment()) {
-        std::cout << entity->getId() << ": " << entity->getName() 
-                  << " (" << entity->getEntityType() << ")\n";
+    std::cout << "\n--- Localities ---\n";
+    const auto& localities = LocationService::getInstance().getAllLocalities();
+    if (localities.empty()) {
+        std::cout << "No localities to display.\n";
+    } else {
+        for (const auto& locPtr : localities) {
+            if (locPtr) {
+                std::cout << *locPtr << "\n";
+            }
+        }
+    }
+    
+    std::cout << "\n--- Non-Government Entities ---\n";
+    const auto& nonGovs = LocationService::getInstance().getAllNonGovernment();
+    if (nonGovs.empty()) {
+        std::cout << "No non-government entities to display.\n";
+    } else {
+        for (const auto& ngPtr : nonGovs) {
+            if (ngPtr) {
+                std::cout << *ngPtr << "\n";
+            }
+        }
     }
 
-    Meniu::pauseScreen();
-} 
+    pauseScreen();
+}

@@ -1,19 +1,117 @@
 {
-    "localities": {},
-    "municipalities": {},
-    "nonGovernment": {},
+    "localities": {
+        "1": {
+            "id": 1,
+            "municipalityId": 1,
+            "name": "Sector 1"
+        },
+        "2": {
+            "id": 2,
+            "municipalityId": 1,
+            "name": "Sector 2"
+        },
+        "3": {
+            "id": 3,
+            "municipalityId": 8,
+            "name": "Cluj-Vest"
+        }
+    },
+    "municipalities": {
+        "1": {
+            "localities": [
+                1,
+                2
+            ],
+            "name": "Bucuresti",
+            "regionId": 1
+        },
+        "2": {
+            "localities": [],
+            "name": "Pitesti",
+            "regionId": 1
+        },
+        "3": {
+            "localities": [],
+            "name": "Iasi",
+            "regionId": 2
+        },
+        "4": {
+            "localities": [],
+            "name": "Arad",
+            "regionId": 4
+        },
+        "5": {
+            "localities": [],
+            "name": "Oradea",
+            "regionId": 4
+        },
+        "6": {
+            "localities": [],
+            "name": "Ploiesti",
+            "regionId": 1
+        },
+        "7": {
+            "localities": [],
+            "name": "Constanta",
+            "regionId": 5
+        },
+        "8": {
+            "localities": [
+                3
+            ],
+            "name": "Cluj",
+            "regionId": 6
+        }
+    },
+    "nonGovernment": {
+        "1": {
+            "entityType": "Asociatie Studenteasca",
+            "id": 1,
+            "name": "ASMI"
+        },
+        "2": {
+            "entityType": "Sindicat",
+            "id": 2,
+            "name": "EuroPol"
+        }
+    },
     "regions": {
-        "14": {
-            "municipalities": [],
+        "1": {
+            "municipalities": [
+                1,
+                2,
+                6
+            ],
             "name": "Muntenia"
         },
-        "15": {
-            "municipalities": [],
+        "2": {
+            "municipalities": [
+                3
+            ],
             "name": "Moldova"
         },
-        "16": {
+        "3": {
             "municipalities": [],
             "name": "Oltenia"
+        },
+        "4": {
+            "municipalities": [
+                4,
+                5
+            ],
+            "name": "Crisana si Banat"
+        },
+        "5": {
+            "municipalities": [
+                7
+            ],
+            "name": "Dobrogea"
+        },
+        "6": {
+            "municipalities": [
+                8
+            ],
+            "name": "Transilvania"
         }
     }
 }
