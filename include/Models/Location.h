@@ -13,10 +13,6 @@ using json = nlohmann::json;
 class Municipality;
 class Locality;
 
-struct UserInputCancelledException final : std::runtime_error {
-    UserInputCancelledException() : std::runtime_error("User cancelled input.") {}
-};
-
 class Location {
     int id;
     std::string name;

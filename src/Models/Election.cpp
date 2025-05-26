@@ -101,14 +101,14 @@ void Election::addCandidate(const Candidate& candidate) {
     // Potentially save changes or update other state
 }
 
-void Election::removeCandidate(int candidateId) {
-    candidates.erase(
-        std::remove_if(candidates.begin(), candidates.end(),
-                       [candidateId](const Candidate& c){ return c.id == candidateId; }),
-        candidates.end()
-    );
-    // Potentially save changes or update other state
-}
+// void Election::removeCandidate(int candidateId) {
+//     candidates.erase(
+//         std::remove_if(candidates.begin(), candidates.end(),
+//                        [candidateId](const Candidate& c){ return c.id == candidateId; }),
+//         candidates.end()
+//     );
+//     // Potentially save changes or update other state
+// }
 
 void Election::start() {
     status = "active";

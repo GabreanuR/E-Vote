@@ -22,4 +22,8 @@ enum class LocationType {
     non_government
 };
 
+struct UserInputCancelledException final : std::runtime_error {
+    UserInputCancelledException() : std::runtime_error("User cancelled input.") {}
+};
+
 #endif // TYPES_H

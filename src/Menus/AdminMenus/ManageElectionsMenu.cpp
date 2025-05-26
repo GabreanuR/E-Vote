@@ -1,15 +1,20 @@
 #include <iostream>
-#include "../../../include/Menus/AdminMenus/ManageElectionsMenu.h"
-#include "../../../include/Services/ElectionService.h"
+#include <string>
+#include <stdexcept>
+#include "../include/Menus/AdminMenus/ManageElectionsMenu.h"
+#include "../include/Menus/AdminMenus/ManageCandidatesMenu.h"
+#include "../include/Services/ElectionService.h"
+#include "../include/Models/Election.h"
 
 void ManageElectionsMenu::printMenuText() {
     std::cout << "==================================================\n"
-              << "Manage Elections\n"
+              << "Manage Elections Menu\n"
               << "==================================================\n"
-              << "1. Create New Election\n"
-              << "2. Manage Existing Elections\n"
-              << "3. View Election Results\n"
-              << "0. Back\n";
+              << "1. Create Election\n"
+              << "2. Start/Close Election\n"
+              << "3. View Elections\n"
+              << "4. Manage Candidates for an Election\n"
+              << "5. Back\n";
 }
 
 void ManageElectionsMenu::display() {
@@ -17,34 +22,46 @@ void ManageElectionsMenu::display() {
         clearScreen();
         printMenuText();
 
-        std::cout << "Enter your choice: ";
-        std::string choice;
-        std::getline(std::cin, choice);
-
-        if (choice == "0") {
-            break;
-        }
-
-        switch (std::stoi(choice)) {
+        switch (getValidatedInput(1, 5, printMenuText)) {
             case 1:
-                std::cout << "\nCreating New Election...\n\n";
+                std::cout << "\nCreating Election...\n\n";
                 pauseScreen();
-                ElectionService::getInstance().createElection();
+                createElection();
                 break;
             case 2:
-                std::cout << "\nManaging Existing Elections...\n\n";
+                std::cout << "\nStarting/Closing Election...\n\n";
                 pauseScreen();
-                ElectionService::getInstance().manageExistingElections();
+                toggleElectionStatus();
                 break;
             case 3:
-                std::cout << "\nViewing Election Results...\n\n";
+                std::cout << "\nViewing Elections...\n\n";
                 pauseScreen();
-                ElectionService::getInstance().viewElectionResults();
+                viewElections();
                 break;
-            default:
-                std::cout << "\nInvalid choice. Please try again.\n";
+            case 4:
+                std::cout << "\nManaging Candidates for an Election...\n\n";
                 pauseScreen();
+                ManageCandidatesMenu().display();
+                break;
+            case 5:
+                std::cout << "\nGoing Back...\n\n";
+                pauseScreen();
+                return;
+            default:
                 break;
         }
     }
 }
+
+void ManageElectionsMenu::createElection() {
+
+}
+
+void ManageElectionsMenu::toggleElectionStatus() {
+
+}
+
+void ManageElectionsMenu::viewElections() {
+}
+
+
