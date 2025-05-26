@@ -5,7 +5,7 @@
 #include <algorithm>
 
 // Static members initialization
-const std::string User::countersFile = "counters";
+const std::string User::countersFile = "data/counters.json";
 
 // Private static methods
 int User::generateId() {
@@ -128,11 +128,12 @@ bool User::grantAccess(const ElectionLevel level, const int entityId) {
     }
     // If granting restricted access, add the entity ID
     else {
-        // For regional, municipal, and local access, ensure only one entity is selected
-        if (level == ElectionLevel::regional || 
-            level == ElectionLevel::municipal || 
-            level == ElectionLevel::local) {
-            restrictedAccess[level].clear();  // Clear existing entities
+        // For regional, municipal, and local access, ensure only one entity is selected for non-admins
+        if (type != UserType::admin &&
+            (level == ElectionLevel::regional || 
+             level == ElectionLevel::municipal || 
+             level == ElectionLevel::local)) {
+            restrictedAccess[level].clear();  // Clear existing entities only for non-admins
         }
         restrictedAccess[level].insert(entityId);
     }
@@ -370,4 +371,18 @@ json User::toJson() const {
 
 User User::fromJson(const json& data) {
     return User(data);
+}
+
+void User::updateAdminAccess(const ElectionLevel level, int entityId) {
+    json usersData = DataManager::getInstance().loadData("data/users.json");
+    
+    // Find admin user (ID 1)
+    auto it = std::ranges::find_if(usersData, [](const json& user) { return user["id"] == 1; });
+    
+    if (it != usersData.end()) {
+        User admin(*it);
+        admin.grantAccess(level, entityId);
+        (*it) = admin.toJson();
+        DataManager::getInstance().saveData("data/users.json", usersData);
+    }
 }

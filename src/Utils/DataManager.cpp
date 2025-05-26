@@ -93,8 +93,33 @@ void DataManager::loadCandidates() {
 void DataManager::loadLocations() {
     json data = loadFromFile(locations_file);
     locations.clear();
-    for (const auto& locationData : data) {
-        locations.emplace_back(locationData);
+
+    // Load regions
+    if (data.contains("regions")) {
+        for (const auto& [id, regionData] : data["regions"].items()) {
+            locations.emplace_back(std::make_shared<Region>(regionData));
+        }
+    }
+
+    // Load municipalities
+    if (data.contains("municipalities")) {
+        for (const auto& [id, municipalityData] : data["municipalities"].items()) {
+            locations.emplace_back(std::make_shared<Municipality>(municipalityData));
+        }
+    }
+
+    // Load localities
+    if (data.contains("localities")) {
+        for (const auto& [id, localityData] : data["localities"].items()) {
+            locations.emplace_back(std::make_shared<Locality>(localityData));
+        }
+    }
+
+    // Load non-government entities
+    if (data.contains("nonGovernment")) {
+        for (const auto& [id, entityData] : data["nonGovernment"].items()) {
+            locations.emplace_back(std::make_shared<NonGovernment>(entityData));
+        }
     }
 }
 
@@ -133,7 +158,7 @@ void DataManager::saveCandidates() {
 void DataManager::saveLocations() {
     json data = json::array();
     for (const auto& location : locations) {
-        data.push_back(location.toJson());
+        data.push_back(location->toJson());
     }
     saveToFile(locations_file, data);
 }
@@ -168,24 +193,24 @@ void DataManager::removeUser(int userId) {
     );
 }
 
-void DataManager::addElection(const Election& election) {
-    elections.push_back(election);
-}
+// void DataManager::addElection(const Election& election) {
+//     elections.push_back(election);
+// }
 
-void DataManager::updateElection(const Election& election) {
-    for (auto& e : elections) {
-        if (e.getId() == election.getId()) {
-            e = election;
-            break;
-        }
-    }
-}
+// void DataManager::updateElection(const Election& election) {
+//     for (auto& e : elections) {
+//         if (e.getId() == election.getId()) {
+//             e = election;
+//             break;
+//         }
+//     }
+// }
 
 void DataManager::addCandidate(const Candidate& candidate) {
     candidates.push_back(candidate);
 }
 
-void DataManager::addLocation(const Location& location) {
+void DataManager::addLocation(const std::shared_ptr<Location>& location) {
     locations.push_back(location);
 }
 
@@ -221,10 +246,10 @@ Candidate* DataManager::findCandidate(int candidateId) {
     return nullptr;
 }
 
-Location* DataManager::findLocation(int locationId) {
-    for (auto& location : locations) {
-        if (location.getId() == locationId) {
-            return &location;
+std::shared_ptr<Location> DataManager::findLocation(int locationId) {
+    for (const auto& location_ptr : locations) {
+        if (location_ptr->getId() == locationId) {
+            return location_ptr;
         }
     }
     return nullptr;

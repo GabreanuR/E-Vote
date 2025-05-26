@@ -105,20 +105,7 @@ public:
     };
 
     // Static method to update admin access when new locations are added
-    static void updateAdminAccess(const ElectionLevel level, int entityId) {
-        json users = DataManager::getInstance().loadData("users");
-        
-        // Find admin user (ID 1)
-        auto it = std::ranges::find_if(users,
-            [](const json& user) { return user["id"] == 1; });
-        
-        if (it != users.end()) {
-            User admin(*it);
-            admin.grantAccess(level, entityId);
-            (*it) = admin.toJson();
-            DataManager::getInstance().saveData("users", users);
-        }
-    }
+    static void updateAdminAccess(const ElectionLevel level, int entityId);
 
     // Constructors
     User(std::string username, std::string password, const UserType type) 

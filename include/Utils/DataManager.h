@@ -11,6 +11,10 @@ class User;
 class Election;
 class Candidate;
 class Location;
+class Region;
+class Municipality;
+class Locality;
+class NonGovernment;
 class VoteLog;
 
 using json = nlohmann::json;
@@ -24,7 +28,7 @@ private:
     std::vector<User> users;
     std::vector<Election> elections;
     std::vector<Candidate> candidates;
-    std::vector<Location> locations;
+    std::vector<std::shared_ptr<Location>> locations;
     std::vector<VoteLog> voteLogs;
 
     // File paths
@@ -72,7 +76,7 @@ public:
     const std::vector<User>& getUsers() const { return users; }
     const std::vector<Election>& getElections() const { return elections; }
     const std::vector<Candidate>& getCandidates() const { return candidates; }
-    const std::vector<Location>& getLocations() const { return locations; }
+    const std::vector<std::shared_ptr<Location>>& getLocations() const { return locations; }
     const std::vector<VoteLog>& getVoteLogs() const { return voteLogs; }
     
     // Methods to add/update/remove data
@@ -85,7 +89,7 @@ public:
     
     void addCandidate(const Candidate& candidate);
     
-    void addLocation(const Location& location);
+    void addLocation(const std::shared_ptr<Location>& location);
     
     void addVoteLog(const VoteLog& voteLog);
     
@@ -93,7 +97,7 @@ public:
     User* findUser(int userId);
     Election* findElection(int electionId);
     Candidate* findCandidate(int candidateId);
-    Location* findLocation(int locationId);
+    std::shared_ptr<Location> findLocation(int locationId);
 };
 
 #endif //DATAMANAGER_H

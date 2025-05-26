@@ -1,137 +1,19 @@
 {
-    "localities": {
-        "1": {
-            "municipality": "2",
-            "name": "Sector 1"
-        },
-        "2": {
-            "municipality": "2",
-            "name": "Sector 2"
-        },
-        "3": {
-            "municipality": "2",
-            "name": "Sector 3"
-        },
-        "4": {
-            "municipality": "2",
-            "name": "Sector 4"
-        }
-    },
-    "municipalities": {
-        "1": {
-            "localities": [],
-            "name": "Iasi",
-            "region": "2"
-        },
-        "2": {
-            "localities": [
-                "1",
-                "2",
-                "3",
-                "4"
-            ],
-            "name": "Bucuresti",
-            "region": "6"
-        },
-        "3": {
-            "localities": [],
-            "name": "Constanta",
-            "region": "1"
-        },
-        "4": {
-            "localities": [],
-            "name": "Craiova",
-            "region": "5"
-        },
-        "5": {
-            "localities": [],
-            "name": "Cluj",
-            "region": "4"
-        },
-        "6": {
-            "localities": [],
-            "name": "Oradea",
-            "region": "3"
-        },
-        "7": {
-            "localities": [],
-            "name": "Calarasi",
-            "region": "6"
-        },
-        "8": {
-            "localities": [],
-            "name": "Pitesti",
-            "region": "6"
-        }
-    },
-    "nonGovernment": {
-        "1": {
-            "name": "ASMI",
-            "type": "Asociatie Studenteasca"
-        },
-        "2": {
-            "name": "PNL",
-            "type": "Partid Politic"
-        },
-        "3": {
-            "name": "EuroPol",
-            "type": "Sindicat"
-        }
-    },
+    "localities": {},
+    "municipalities": {},
+    "nonGovernment": {},
     "regions": {
-        "1": {
-            "municipalities": [
-                "3"
-            ],
-            "name": "Dobrogea"
-        },
-        "10": {
+        "14": {
             "municipalities": [],
-            "name": "Bulgaria"
-        },
-        "2": {
-            "municipalities": [
-                "1"
-            ],
-            "name": "Moldova"
-        },
-        "3": {
-            "municipalities": [
-                "6"
-            ],
-            "name": "Banat si Crisana"
-        },
-        "4": {
-            "municipalities": [
-                "5"
-            ],
-            "name": "Transilvania"
-        },
-        "5": {
-            "municipalities": [
-                "4"
-            ],
-            "name": "Oltenia"
-        },
-        "6": {
-            "municipalities": [
-                "2",
-                "7",
-                "8"
-            ],
             "name": "Muntenia"
         },
-        "7": {
+        "15": {
             "municipalities": [],
-            "name": "R. Moldova"
+            "name": "Moldova"
         },
-        "8": {
+        "16": {
             "municipalities": [],
-            "name": "Ungaria"
-        },
-        "9": {
-            "municipalities": [],
-            "name": "Serbia"
+            "name": "Oltenia"
         }
     }
 }
