@@ -8,22 +8,17 @@
 
 using json = nlohmann::json;
 
-// Forward declarations
 class User;
 enum class ElectionLevel;
 
 class LocationService {
-private:
     static LocationService* instance;
     LocationService() = default;
     ~LocationService() = default;
 
-    // Helper methods
-    std::shared_ptr<Location> createLocationFromJson(const json& data);
-    void buildLocationHierarchy();
-    void saveLocationHierarchy();
+    static std::shared_ptr<Location> createLocationFromJson(const json& data);
+    void buildLocationHierarchy() const;
 
-    // Location collections
     std::vector<std::shared_ptr<Region>> regions;
     std::vector<std::shared_ptr<Municipality>> municipalities;
     std::vector<std::shared_ptr<Locality>> localities;
@@ -32,29 +27,24 @@ private:
 public:
     static LocationService& getInstance();
 
-    // Location management methods
-    void addRegion(const std::string& name);
-    void addMunicipality(const std::string& name, int regionId);
-    void addLocality(const std::string& name, int municipalityId);
-    void addNonGovernment(const std::string& name, const std::string& entityType);
-
-    // Location retrieval methods
-    std::shared_ptr<Region> getRegion(int id) const;
-    std::shared_ptr<Municipality> getMunicipality(int id) const;
-    std::shared_ptr<Locality> getLocality(int id) const;
-    std::shared_ptr<NonGovernment> getNonGovernment(int id) const;
-
-    void displayLocations();
-
-    // Location listing methods
-    const std::vector<std::shared_ptr<Region>>& getAllRegions() const { return regions; }
-    const std::vector<std::shared_ptr<Municipality>>& getAllMunicipalities() const { return municipalities; }
-    const std::vector<std::shared_ptr<Locality>>& getAllLocalities() const { return localities; }
-    const std::vector<std::shared_ptr<NonGovernment>>& getAllNonGovernment() const { return nonGovernmentEntities; }
-
-    // Data persistence methods
     void loadLocations();
-    void saveLocations();
+    void saveLocations() const;
+
+    bool addRegion(const std::string& name);
+    bool addMunicipality(const std::string& name, int regionId);
+    bool addLocality(const std::string& name, int municipalityId);
+    bool addNonGovernment(const std::string& name, const std::string& entityType);
+
+    [[nodiscard]] std::shared_ptr<Region> getRegion(int id) const;
+    [[nodiscard]] std::shared_ptr<Municipality> getMunicipality(int id) const;
+    [[nodiscard]] std::shared_ptr<Locality> getLocality(int id) const;
+    [[nodiscard]] std::shared_ptr<NonGovernment> getNonGovernment(int id) const;
+
+    [[nodiscard]] const std::vector<std::shared_ptr<Region>>& getAllRegions() const { return regions; }
+    [[nodiscard]] const std::vector<std::shared_ptr<Municipality>>& getAllMunicipalities() const { return municipalities; }
+    [[nodiscard]] const std::vector<std::shared_ptr<Locality>>& getAllLocalities() const { return localities; }
+    [[nodiscard]] const std::vector<std::shared_ptr<NonGovernment>>& getAllNonGovernment() const { return nonGovernmentEntities; }
+
 };
 
-#endif // LOCATIONSERVICE_H 
+#endif

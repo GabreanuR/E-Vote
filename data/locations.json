@@ -25,6 +25,16 @@
             "name": "Bucuresti",
             "regionId": 1
         },
+        "10": {
+            "localities": [],
+            "name": "Popesti",
+            "regionId": 1
+        },
+        "11": {
+            "localities": [],
+            "name": "Popesti",
+            "regionId": 2
+        },
         "2": {
             "localities": [],
             "name": "Pitesti",
@@ -61,6 +71,11 @@
             ],
             "name": "Cluj",
             "regionId": 6
+        },
+        "9": {
+            "localities": [],
+            "name": "Suceava",
+            "regionId": 2
         }
     },
     "nonGovernment": {
@@ -80,13 +95,16 @@
             "municipalities": [
                 1,
                 2,
-                6
+                6,
+                10
             ],
             "name": "Muntenia"
         },
         "2": {
             "municipalities": [
-                3
+                3,
+                9,
+                11
             ],
             "name": "Moldova"
         },
@@ -112,6 +130,10 @@
                 8
             ],
             "name": "Transilvania"
+        },
+        "7": {
+            "municipalities": [],
+            "name": "R. Moldova"
         }
     }
 }

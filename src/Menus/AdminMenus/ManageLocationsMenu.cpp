@@ -59,23 +59,24 @@ void ManageLocationsMenu::display() {
     }
 }
 
-void ManageLocationsMenu::addRegion() {
+void ManageLocationsMenu::addRegion(){
     clearScreen();
     std::cout << "===== Add New Region =====\n\n";
 
     try {
         Region newRegion;
-        std::cin >> newRegion; 
+        std::cin >> newRegion;
         if (newRegion.getName().empty()) {
             std::cout << "\nRegion creation cancelled (name was empty after input attempt).\n";
         } else {
-            LocationService::getInstance().addRegion(newRegion.getName());
-            std::cout << "\nRegion '" << newRegion.getName() << "' added successfully!\n";
+            if (LocationService::getInstance().addRegion(newRegion.getName())) {
+                std::cout << "\nRegion '" << newRegion.getName() << "' added successfully!\n";
+            }
         }
     } catch (const UserInputCancelledException&) {
         std::cout << "\nRegion creation cancelled by user.\n";
     }
-    
+
     pauseScreen();
 }
 
@@ -101,8 +102,9 @@ void ManageLocationsMenu::addMunicipality() {
         if (newMunicipality.getName().empty()) {
             std::cout << "\nMunicipality creation cancelled (name was empty after input attempt).\n";
         } else if (LocationService::getInstance().getRegion(newMunicipality.getRegionId())) {
-            LocationService::getInstance().addMunicipality(newMunicipality.getName(), newMunicipality.getRegionId());
-            std::cout << "\nMunicipality '" << newMunicipality.getName() << "' added successfully!\n";
+            if (LocationService::getInstance().addMunicipality(newMunicipality.getName(), newMunicipality.getRegionId())) {
+                std::cout << "\nMunicipality '" << newMunicipality.getName() << "' added successfully!\n";
+            }
         } else {
             std::cout << "\nInvalid or non-existent Region ID provided: " << newMunicipality.getRegionId() << ". Municipality not added.\n";
         }
@@ -134,8 +136,9 @@ void ManageLocationsMenu::addLocality() {
         if (newLocality.getName().empty()) {
             std::cout << "\nLocality creation cancelled (name was empty after input attempt).\n";
         } else if (LocationService::getInstance().getMunicipality(newLocality.getMunicipalityId())) {
-            LocationService::getInstance().addLocality(newLocality.getName(), newLocality.getMunicipalityId());
-            std::cout << "\nLocality '" << newLocality.getName() << "' added successfully!\n";
+            if (LocationService::getInstance().addLocality(newLocality.getName(), newLocality.getMunicipalityId())) {
+                std::cout << "\nLocality '" << newLocality.getName() << "' added successfully!\n";
+            }
         } else {
             std::cout << "\nInvalid or non-existent Municipality ID provided: " << newLocality.getMunicipalityId() << ". Locality not added.\n";
         }
@@ -158,8 +161,9 @@ void ManageLocationsMenu::addNonGovernment() {
         } else if (newNonGov.getEntityType().empty() && !newNonGov.getName().empty()) {
             std::cout << "\nNon-government entity creation requires an entity type.\n";
         } else {
-            LocationService::getInstance().addNonGovernment(newNonGov.getName(), newNonGov.getEntityType());
-            std::cout << "\nNon-government entity '" << newNonGov.getName() << "' added successfully!\n";
+            if (LocationService::getInstance().addNonGovernment(newNonGov.getName(), newNonGov.getEntityType())) {
+                std::cout << "\nNon-government entity '" << newNonGov.getName() << "' added successfully!\n";
+            }
         }
     } catch (const UserInputCancelledException&) {
         std::cout << "\nNon-government entity creation cancelled by user.\n";

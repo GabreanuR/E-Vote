@@ -1,39 +1,39 @@
-#include "../../include/Services/LocationService.h"
-#include "../../include/Utils/DataManager.h"
-#include "../../include/Models/User.h"
-#include "../../include/Utils/Types.h"
-#include "../../include/Menus/Meniu.h"
-#include <iostream>
+#include "../include/Services/LocationService.h"
+#include "../include/Utils/DataManager.h"
+#include "../include/Models/User.h"
+#include "../include/Utils/Types.h"
 #include <algorithm>
+#include <vector>
+#include <memory>
+#include <iostream>
 
 LocationService* LocationService::instance = nullptr;
 
 LocationService& LocationService::getInstance() {
     if (instance == nullptr) {
         instance = new LocationService();
-        instance->loadLocations(); // Load locations when instance is created
+        instance->loadLocations();
     }
     return *instance;
 }
 
 std::shared_ptr<Location> LocationService::createLocationFromJson(const json& data) {
     const std::string type = data["type"].get<std::string>();
-    
+
     if (type == "region") {
         return std::make_shared<Region>(data);
-    } else if (type == "municipality") {
+    } if (type == "municipality") {
         return std::make_shared<Municipality>(data);
-    } else if (type == "locality") {
+    } if (type == "locality") {
         return std::make_shared<Locality>(data);
-    } else if (type == "nonGovernment") {
+    } if (type == "nonGovernment") {
         return std::make_shared<NonGovernment>(data);
     }
     
     return nullptr;
 }
 
-void LocationService::buildLocationHierarchy() {
-    // Clear existing relationships
+void LocationService::buildLocationHierarchy() const {
     for (auto& region : regions) {
         region->clearMunicipalities();
     }
@@ -41,55 +41,21 @@ void LocationService::buildLocationHierarchy() {
         municipality->clearLocalities();
     }
 
-    // Build region-municipality relationships
     for (auto& municipality : municipalities) {
-        auto region = getRegion(municipality->getRegionId());
-        if (region) {
-            region->addMunicipality(municipality);
+        if (auto region_ptr = getRegion(municipality->getRegionId())) {
+            region_ptr->addMunicipality(municipality);
         }
     }
 
-    // Build municipality-locality relationships
     for (auto& locality : localities) {
-        auto municipality = getMunicipality(locality->getMunicipalityId());
-        if (municipality) {
-            municipality->addLocality(locality);
+        if (auto municipality_ptr = getMunicipality(locality->getMunicipalityId())) {
+            municipality_ptr->addLocality(locality);
         }
     }
-}
-
-void LocationService::saveLocationHierarchy() {
-    json data;
-    
-    // Save regions
-    data["regions"] = json::object();
-    for (const auto& region : regions) {
-        data["regions"][std::to_string(region->getId())] = region->toJson();
-    }
-    
-    // Save municipalities
-    data["municipalities"] = json::object();
-    for (const auto& municipality : municipalities) {
-        data["municipalities"][std::to_string(municipality->getId())] = municipality->toJson();
-    }
-    
-    // Save localities
-    data["localities"] = json::object();
-    for (const auto& locality : localities) {
-        data["localities"][std::to_string(locality->getId())] = locality->toJson();
-    }
-    
-    // Save non-government entities
-    data["nonGovernment"] = json::object();
-    for (const auto& entity : nonGovernmentEntities) {
-        data["nonGovernment"][std::to_string(entity->getId())] = entity->toJson();
-    }
-    
-    DataManager::getInstance().saveData("data/locations.json", data);
 }
 
 void LocationService::loadLocations() {
-    json data = DataManager::getInstance().loadData("data/locations.json");
+    json data = DataManager::loadData("data/locations.json");
     
     regions.clear();
     municipalities.clear();
@@ -98,32 +64,32 @@ void LocationService::loadLocations() {
     
     if (data.contains("regions")) {
         for (auto& [id_str, region_data_val] : data["regions"].items()) {
-            json region_data = region_data_val; // Make a mutable copy
-            region_data["id"] = std::stoi(id_str); // Add id from key
+            json region_data = region_data_val;
+            region_data["id"] = std::stoi(id_str);
             regions.push_back(std::make_shared<Region>(region_data));
         }
     }
     
     if (data.contains("municipalities")) {
         for (auto& [id_str, mun_data_val] : data["municipalities"].items()) {
-            json mun_data = mun_data_val; // Make a mutable copy
-            mun_data["id"] = std::stoi(id_str); // Add id from key
+            json mun_data = mun_data_val;
+            mun_data["id"] = std::stoi(id_str);
             municipalities.push_back(std::make_shared<Municipality>(mun_data));
         }
     }
     
     if (data.contains("localities")) {
         for (auto& [id_str, loc_data_val] : data["localities"].items()) {
-            json loc_data = loc_data_val; // Make a mutable copy
-            loc_data["id"] = std::stoi(id_str); // Add id from key
+            json loc_data = loc_data_val;
+            loc_data["id"] = std::stoi(id_str);
             localities.push_back(std::make_shared<Locality>(loc_data));
         }
     }
     
     if (data.contains("nonGovernment")) {
         for (auto& [id_str, ng_data_val] : data["nonGovernment"].items()) {
-            json ng_data = ng_data_val; // Make a mutable copy
-            ng_data["id"] = std::stoi(id_str); // Add id from key
+            json ng_data = ng_data_val;
+            ng_data["id"] = std::stoi(id_str);
             nonGovernmentEntities.push_back(std::make_shared<NonGovernment>(ng_data));
         }
     }
@@ -131,12 +97,40 @@ void LocationService::loadLocations() {
     buildLocationHierarchy();
 }
 
-void LocationService::saveLocations() {
-    saveLocationHierarchy();
+void LocationService::saveLocations() const {
+    json data;
+
+    data["regions"] = json::object();
+    for (const auto& region : regions) {
+        data["regions"][std::to_string(region->getId())] = region->toJson();
+    }
+
+    data["municipalities"] = json::object();
+    for (const auto& municipality : municipalities) {
+        data["municipalities"][std::to_string(municipality->getId())] = municipality->toJson();
+    }
+
+    data["localities"] = json::object();
+    for (const auto& locality : localities) {
+        data["localities"][std::to_string(locality->getId())] = locality->toJson();
+    }
+
+    data["nonGovernment"] = json::object();
+    for (const auto& entity : nonGovernmentEntities) {
+        data["nonGovernment"][std::to_string(entity->getId())] = entity->toJson();
+    }
+
+    DataManager::saveData("data/locations.json", data);
 }
 
-void LocationService::addRegion(const std::string& name) {
-    // Determine next region ID from existing regions
+bool LocationService::addRegion(const std::string& name) {
+    for (const auto& existingRegion : regions) {
+        if (existingRegion->getName() == name) {
+            std::cerr << "Error: A region with the name '" << name << "' already exists.\n";
+            return false;
+        }
+    }
+
     int nextRegionId = 1;
     if (!regions.empty()) {
         int maxId = 0;
@@ -147,22 +141,28 @@ void LocationService::addRegion(const std::string& name) {
         }
         nextRegionId = maxId + 1;
     }
-    
-    // Create new region
-    auto region = std::make_shared<Region>(nextRegionId, name);
+
+    const auto region = std::make_shared<Region>(nextRegionId, name);
     regions.push_back(region);
-    
-    // No longer update counters.json for regionId
-    
-    // Save changes
-    saveLocations();
-    
-    // Update admin access
+
     User::updateAdminAccess(ElectionLevel::regional, nextRegionId);
+    return true;
 }
 
-void LocationService::addMunicipality(const std::string& name, int regionId) {
-    // Determine next municipality ID
+bool LocationService::addMunicipality(const std::string& name, int regionId) {
+    const auto parentRegion = getRegion(regionId);
+    if (!parentRegion) {
+        std::cerr << "Error: Parent region with ID " << regionId << " not found. Municipality not added.\n";
+        return false;
+    }
+
+    for (const auto& existingMunicipality : parentRegion->getMunicipalities()) {
+        if (existingMunicipality->getName() == name) {
+            std::cerr << "Error: A municipality with the name '" << name << "' already exists in region '" << parentRegion->getName() << "'. \n";
+            return false;
+        }
+    }
+
     int nextMunicipalityId = 1;
     if (!municipalities.empty()) {
         int maxId = 0;
@@ -173,16 +173,30 @@ void LocationService::addMunicipality(const std::string& name, int regionId) {
         }
         nextMunicipalityId = maxId + 1;
     }
+
+    const auto newMunicipality = std::make_shared<Municipality>(nextMunicipalityId, name, regionId);
+    municipalities.push_back(newMunicipality);
+
+    parentRegion->addMunicipality(newMunicipality);
     
-    auto municipality = std::make_shared<Municipality>(nextMunicipalityId, name, regionId);
-    municipalities.push_back(municipality);
-    
-    saveLocations();
     User::updateAdminAccess(ElectionLevel::municipal, nextMunicipalityId);
+    return true;
 }
 
-void LocationService::addLocality(const std::string& name, int municipalityId) {
-    // Determine next locality ID
+bool LocationService::addLocality(const std::string& name, int municipalityId) {
+    const auto parentMunicipality = getMunicipality(municipalityId);
+    if (!parentMunicipality) {
+        std::cerr << "Error: Parent municipality with ID " << municipalityId << " not found. Locality not added.\n";
+        return false;
+    }
+
+    for (const auto& existingLocality : parentMunicipality->getLocalities()) {
+        if (existingLocality->getName() == name) {
+            std::cerr << "Error: A locality with the name '" << name << "' already exists in municipality '" << parentMunicipality->getName() << "'. \n";
+            return false;
+        }
+    }
+
     int nextLocalityId = 1;
     if (!localities.empty()) {
         int maxId = 0;
@@ -193,16 +207,24 @@ void LocationService::addLocality(const std::string& name, int municipalityId) {
         }
         nextLocalityId = maxId + 1;
     }
+
+    const auto newLocality = std::make_shared<Locality>(nextLocalityId, name, municipalityId);
+    localities.push_back(newLocality);
+
+    parentMunicipality->addLocality(newLocality);
     
-    auto locality = std::make_shared<Locality>(nextLocalityId, name, municipalityId);
-    localities.push_back(locality);
-    
-    saveLocations();
     User::updateAdminAccess(ElectionLevel::local, nextLocalityId);
+    return true;
 }
 
-void LocationService::addNonGovernment(const std::string& name, const std::string& entityType) {
-    // Determine next non-government ID
+bool LocationService::addNonGovernment(const std::string& name, const std::string& entityType) {
+    for (const auto& existingEntity : nonGovernmentEntities) {
+        if (existingEntity->getName() == name) {
+            std::cerr << "Error: A non-government entity with the name '" << name << "' already exists.\n";
+            return false;
+        }
+    }
+
     int nextNonGovId = 1;
     if (!nonGovernmentEntities.empty()) {
         int maxId = 0;
@@ -213,79 +235,34 @@ void LocationService::addNonGovernment(const std::string& name, const std::strin
         }
         nextNonGovId = maxId + 1;
     }
-    
-    auto entity = std::make_shared<NonGovernment>(nextNonGovId, name, entityType);
+
+    const auto entity = std::make_shared<NonGovernment>(nextNonGovId, name, entityType);
     nonGovernmentEntities.push_back(entity);
-    
-    saveLocations();
+
     User::updateAdminAccess(ElectionLevel::nonGovernment, nextNonGovId);
+    return true;
 }
 
 std::shared_ptr<Region> LocationService::getRegion(int id) const {
-    auto it = std::find_if(regions.begin(), regions.end(),
-        [id](const std::shared_ptr<Region>& r) { return r->getId() == id; });
+    const auto it = std::ranges::find_if(regions,
+                                   [id](const std::shared_ptr<Region>& r) { return r->getId() == id; });
     return it != regions.end() ? *it : nullptr;
 }
 
 std::shared_ptr<Municipality> LocationService::getMunicipality(int id) const {
-    auto it = std::find_if(municipalities.begin(), municipalities.end(),
-        [id](const std::shared_ptr<Municipality>& m) { return m->getId() == id; });
+    const auto it = std::ranges::find_if(municipalities,
+                                         [id](const std::shared_ptr<Municipality>& m) { return m->getId() == id; });
     return it != municipalities.end() ? *it : nullptr;
 }
 
 std::shared_ptr<Locality> LocationService::getLocality(int id) const {
-    auto it = std::find_if(localities.begin(), localities.end(),
-        [id](const std::shared_ptr<Locality>& l) { return l->getId() == id; });
+    const auto it = std::ranges::find_if(localities,
+                                         [id](const std::shared_ptr<Locality>& l) { return l->getId() == id; });
     return it != localities.end() ? *it : nullptr;
 }
 
 std::shared_ptr<NonGovernment> LocationService::getNonGovernment(int id) const {
-    auto it = std::find_if(nonGovernmentEntities.begin(), nonGovernmentEntities.end(),
-        [id](const std::shared_ptr<NonGovernment>& n) { return n->getId() == id; });
+    const auto it = std::ranges::find_if(nonGovernmentEntities,
+                                         [id](const std::shared_ptr<NonGovernment>& n) { return n->getId() == id; });
     return it != nonGovernmentEntities.end() ? *it : nullptr;
 }
-
-void LocationService::displayLocations() {
-    Meniu::clearScreen();
-    std::cout << "===== All Locations =====\n\n";
-
-    // Display regions and their municipalities
-    std::cout << "Regions:\n";
-    for (const auto& region : regions) {
-        std::cout << region->getId() << ": " << region->getName() << "\n";
-        std::cout << "  Municipalities: ";
-        if (region->getMunicipalities().empty()) {
-            std::cout << "None\n";
-        } else {
-            for (const auto& m : region->getMunicipalities()) {
-                std::cout << m->getId() << " (" << m->getName() << ") ";
-            }
-            std::cout << "\n";
-        }
-    }
-
-    // Display municipalities and their localities
-    std::cout << "\nMunicipalities:\n";
-    for (const auto& municipality : municipalities) {
-        std::cout << municipality->getId() << ": " << municipality->getName() 
-                  << " (Region: " << municipality->getRegionId() << ")\n";
-        std::cout << "  Localities: ";
-        if (municipality->getLocalities().empty()) {
-            std::cout << "None\n";
-        } else {
-            for (const auto& l : municipality->getLocalities()) {
-                std::cout << l->getId() << " (" << l->getName() << ") ";
-            }
-            std::cout << "\n";
-        }
-    }
-
-    // Display non-government entities
-    std::cout << "\nNon-Government Entities:\n";
-    for (const auto& entity : nonGovernmentEntities) {
-        std::cout << entity->getId() << ": " << entity->getName() 
-                  << " (" << entity->getEntityType() << ")\n";
-    }
-
-    Meniu::pauseScreen();
-} 
