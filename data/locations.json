@@ -37,6 +37,11 @@
             "name": "Popesti",
             "regionId": 2
         },
+        "12": {
+            "localities": [],
+            "name": "Bruxelles",
+            "regionId": 8
+        },
         "2": {
             "localities": [],
             "name": "Pitesti",
@@ -88,6 +93,10 @@
         "2": {
             "entityType": "Sindicat",
             "name": "EuroPol"
+        },
+        "3": {
+            "entityType": "Partid Politic",
+            "name": "PNL"
         }
     },
     "regions": {
@@ -134,6 +143,12 @@
         "7": {
             "municipalities": [],
             "name": "R. Moldova"
+        },
+        "8": {
+            "municipalities": [
+                12
+            ],
+            "name": "Belgia"
         }
     }
 }
