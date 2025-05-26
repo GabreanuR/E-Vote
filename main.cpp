@@ -1,14 +1,16 @@
 #include "Menus/MainMenu.h"
 #include "Services/LocationService.h"
+#include "Services/CandidateService.h"
 
 int main() {
     LocationService::getInstance();
+    CandidateService::getInstance();
 
     MainMenu menu;
     menu.display();
 
+    CandidateService::getInstance().saveCandidates();
     LocationService::getInstance().saveLocations();
-
     return 0;
 }
 
