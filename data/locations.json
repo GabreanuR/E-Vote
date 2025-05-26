@@ -1,26 +1,28 @@
 {
     "localities": {
         "1": {
-            "id": 1,
             "municipalityId": 1,
             "name": "Sector 1"
         },
         "2": {
-            "id": 2,
             "municipalityId": 1,
             "name": "Sector 2"
         },
         "3": {
-            "id": 3,
             "municipalityId": 8,
             "name": "Cluj-Vest"
+        },
+        "4": {
+            "municipalityId": 1,
+            "name": "Sector 4"
         }
     },
     "municipalities": {
         "1": {
             "localities": [
                 1,
-                2
+                2,
+                4
             ],
             "name": "Bucuresti",
             "regionId": 1
@@ -81,12 +83,10 @@
     "nonGovernment": {
         "1": {
             "entityType": "Asociatie Studenteasca",
-            "id": 1,
             "name": "ASMI"
         },
         "2": {
             "entityType": "Sindicat",
-            "id": 2,
             "name": "EuroPol"
         }
     },
@@ -94,17 +94,17 @@
         "1": {
             "municipalities": [
                 1,
+                10,
                 2,
-                6,
-                10
+                6
             ],
             "name": "Muntenia"
         },
         "2": {
             "municipalities": [
+                11,
                 3,
-                9,
-                11
+                9
             ],
             "name": "Moldova"
         },
