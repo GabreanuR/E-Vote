@@ -19,6 +19,8 @@ public:
 
     // Serialization
     [[nodiscard]] json toJson() const;
+
+    int getId();
 };
 
 #endif

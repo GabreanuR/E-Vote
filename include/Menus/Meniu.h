@@ -8,7 +8,6 @@ public:
     virtual void display() = 0;
     virtual ~Meniu() = default;
 
-    // Utility methods
     static void clearScreen();
     static void pauseScreen();
 

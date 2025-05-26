@@ -9,4 +9,4 @@ public:
     static void printMenuText();
 };
 
-#endif //MANAGEUSERSMENU_H
+#endif

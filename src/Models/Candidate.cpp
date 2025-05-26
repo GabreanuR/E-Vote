@@ -17,3 +17,6 @@ json Candidate::toJson() const {
     };
 }
 
+int Candidate::getId() {
+}
+
