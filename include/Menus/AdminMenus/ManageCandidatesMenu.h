@@ -9,6 +9,7 @@ public:
 
 private:
     static void printMenuText();
+    static void printSortMenuText();
 
     static void createCandidate();
 

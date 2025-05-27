@@ -1,1 +1,42 @@
-[] 
+[
+    {
+        "description": "Romania Bogata",
+        "electionId": null,
+        "id": 1,
+        "name": "Mihai",
+        "politicalParty": "PNL",
+        "votes": 0
+    },
+    {
+        "description": "Pentru Muncitori",
+        "electionId": null,
+        "id": 2,
+        "name": "Anca",
+        "politicalParty": "PSD",
+        "votes": 0
+    },
+    {
+        "description": "Romania Mare",
+        "electionId": null,
+        "id": 3,
+        "name": "Stefania",
+        "politicalParty": "AUR",
+        "votes": 0
+    },
+    {
+        "description": "Progres!",
+        "electionId": null,
+        "id": 4,
+        "name": "Radu",
+        "politicalParty": "USR",
+        "votes": 0
+    },
+    {
+        "description": "Un Bucuresti Patriotic",
+        "electionId": null,
+        "id": 5,
+        "name": "Gigi",
+        "politicalParty": "AUR",
+        "votes": 0
+    }
+]

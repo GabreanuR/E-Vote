@@ -173,7 +173,7 @@ void ManageLocationsMenu::addNonGovernment() {
 
 void ManageLocationsMenu::displayLocations() {
     clearScreen();
-    std::cout << "===== All Locations (using operator<<) =====\n\n";
+    std::cout << "===== All Locations =====\n\n";
 
     std::cout << "--- Regions ---\n";
     const auto& regions = LocationService::getInstance().getAllRegions();
