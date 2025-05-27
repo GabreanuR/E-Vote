@@ -1,6 +1,8 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#include <stdexcept>
+
 enum class UserType {
     voter,
     admin
@@ -28,8 +30,13 @@ enum class ElectionStatus {
     closed
 };
 
+enum class VotingSystemType {
+    majority,
+    proportional
+};
+
 struct UserInputCancelledException final : std::runtime_error {
     UserInputCancelledException() : std::runtime_error("User cancelled input.") {}
 };
 
-#endif // TYPES_H
+#endif

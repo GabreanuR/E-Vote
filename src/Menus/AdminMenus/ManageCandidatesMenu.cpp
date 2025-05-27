@@ -2,6 +2,7 @@
 #include "../include/Services/CandidateService.h"
 #include "../include/Services/ElectionService.h"
 #include "../include/Models/Candidate.h"
+#include "../include/Models/Election.h"
 #include "../include/Utils/Types.h"
 #include <iostream>
 #include <string>
@@ -74,20 +75,49 @@ void ManageCandidatesMenu::addCandidateToElection() {
               << "==================================================\n";
 
     try {
+        std::cout << "--- Available Unassigned Candidates ---\n";
+        const auto& allCandidates = CandidateService::getInstance().getAllCandidates();
+        std::vector<std::shared_ptr<Candidate>> unassignedCandidates;
+        for (const auto& cand : allCandidates) {
+            if (cand && cand->getElectionId() == -1) {
+                unassignedCandidates.push_back(cand);
+            }
+        }
+
+        if (unassignedCandidates.empty()) {
+            std::cout << "No unassigned candidates available in the system.\n";
+            pauseScreen();
+            return;
+        }
+        for (const auto& cand : unassignedCandidates) {
+            std::cout << "ID: " << cand->getId() << ", Name: " << cand->getName() 
+                      << ", Party: " << cand->getPoliticalParty() << "\n";
+        }
+        std::cout << "-------------------------------------\n";
+
         std::string inputStr;
-        int electionIdToAssignTo;
         int candidateIdToAssign;
-        std::cout << "Enter ID of the candidate to assign (or press Enter to cancel): ";
+        std::shared_ptr<Candidate> selectedCandidate = nullptr;
+        std::cout << "Enter ID of the candidate to assign (from the list above, or press Enter to cancel): ";
         while (true) {
             std::getline(std::cin, inputStr);
             if (inputStr.empty() && std::cin.eof()) { std::cin.clear(); throw UserInputCancelledException(); }
             if (inputStr.empty()) throw UserInputCancelledException();
             try {
                 candidateIdToAssign = std::stoi(inputStr);
-                if (!CandidateService::getInstance().getCandidate(candidateIdToAssign)) {
-                    std::cerr << "Error: Candidate with ID " << candidateIdToAssign << " not found. Please enter a valid Candidate ID: ";
+                bool foundInUnassigned = false;
+                for (const auto& cand : unassignedCandidates) {
+                    if (cand->getId() == candidateIdToAssign) {
+                        selectedCandidate = cand;
+                        foundInUnassigned = true;
+                        break;
+                    }
+                }
+                if (!foundInUnassigned) {
+                    std::cerr << "Error: Candidate with ID " << candidateIdToAssign << " is not in the list of unassigned candidates or does not exist. Please enter a valid ID: ";
                     continue;
                 }
+                std::cout << "Selected Candidate: " << selectedCandidate->getName() << " (ID: " << selectedCandidate->getId() << ")\n";
                 break;
             } catch (const std::invalid_argument&) {
                 std::cerr << "Invalid input for Candidate ID. Please enter a number: ";
@@ -96,17 +126,46 @@ void ManageCandidatesMenu::addCandidateToElection() {
             }
         }
 
-        std::cout << "Enter Election ID to assign the candidate to (or press Enter to cancel): ";
+        std::cout << "\n--- Available Elections (Status: Created) ---\n";
+        const auto& allElections = ElectionService::getInstance().getAllElections();
+        std::vector<std::shared_ptr<Election>> createdElections;
+        for (const auto& election : allElections) {
+            if (election && election->getStatus() == ElectionStatus::created) {
+                createdElections.push_back(election);
+            }
+        }
+
+        if (createdElections.empty()) {
+            std::cout << "No elections with 'Created' status found. Cannot assign candidate.\n";
+            pauseScreen();
+            return;
+        }
+        for (const auto& election : createdElections) {
+            std::cout << "ID: " << election->getId() << ", Name: " << election->getName() 
+                      << ", Level: " << Election::electionLevelToString(election->getElectionLevel()) 
+                      << ", System: " << Election::votingSystemTypeToString(election->getVotingSystem()) << "\n";
+        }
+        std::cout << "------------------------------------------\n";
+
+        int electionIdToAssignTo;
+        std::cout << "Enter ID of the election to assign the candidate to (or press Enter to cancel): ";
         while (true) {
             std::getline(std::cin, inputStr);
             if (inputStr.empty() && std::cin.eof()) { std::cin.clear(); throw UserInputCancelledException(); }
             if (inputStr.empty()) throw UserInputCancelledException();
             try {
                 electionIdToAssignTo = std::stoi(inputStr);
-                if (!ElectionService::getInstance().getElection(electionIdToAssignTo)) {
-                    std::cerr << "Error: Election with ID " << electionIdToAssignTo << " not found or service stubbed. Please enter a valid Election ID: ";
+                auto election = ElectionService::getInstance().getElection(electionIdToAssignTo);
+                if (!election) {
+                    std::cerr << "Error: Election with ID " << electionIdToAssignTo << " not found. Please enter a valid Election ID: ";
                     continue;
                 }
+                if (election->getStatus() != ElectionStatus::created) {
+                    std::cerr << "Error: Election with ID " << electionIdToAssignTo << " is not in 'Created' status. Current status: " 
+                              << Election::electionStatusToString(election->getStatus()) << ". Please select an election with 'Created' status: ";
+                    continue;
+                }
+                std::cout << "Selected Election: " << election->getName() << " (ID: " << election->getId() << ")\n";
                 break;
             } catch (const std::invalid_argument&) {
                 std::cerr << "Invalid input for Election ID. Please enter a number: ";
@@ -115,9 +174,10 @@ void ManageCandidatesMenu::addCandidateToElection() {
             }
         }
 
-        if (CandidateService::getInstance().assignCandidateToElection(candidateIdToAssign, electionIdToAssignTo)) {
+        if (CandidateService::getInstance().assignCandidateToElection(selectedCandidate->getId(), electionIdToAssignTo)) {
+            std::cout << "\nCandidate successfully assigned to election.\n";
         } else {
-            std::cout << "\nFailed to assign candidate to election. See error above or check logs.\n";
+            std::cout << "\nFailed to assign candidate to election. The candidate might already be assigned to this election or another error occurred.\n";
         }
 
     } catch (const UserInputCancelledException& e) {
@@ -129,38 +189,38 @@ void ManageCandidatesMenu::addCandidateToElection() {
 }
 
 void ManageCandidatesMenu::printSortMenuText() {
-    std::cout << "Sort by:\n"
-              << "  1. Candidate ID (Ascending)\n"
-              << "  2. Name (Alphabetical)\n"
-              << "  3. Election ID (Unassigned first, then by ID Ascending)\n"
-              << "  0. Display Unsorted (Current Order)\n";
+    std::cout << "==================================================\n"
+              << "View All Candidates\n"
+              << "==================================================\n"
+              << "Select display/sort option (default is by Candidate ID):\n"
+              << "  1. Sort by Name (Alphabetical)\n"
+              << "  2. Sort by Election ID (Unassigned first, then by ID Ascending)\n"
+              << "  3. Back\n";
 }
 
 void ManageCandidatesMenu::viewCandidates() {
     clearScreen();
-    std::cout << "==================================================\n"
-              << "View All Candidates\n"
-              << "==================================================\n";
 
     std::vector<std::shared_ptr<Candidate>> allCandidates = CandidateService::getInstance().getAllCandidates();
 
     if (allCandidates.empty()) {
         std::cout << "No candidates found in the system.\n";
-    } else {
+        pauseScreen();
+        return;
+    }
+
+        printSortMenuText();
+
         switch (getValidatedInput(1, 3, printSortMenuText)) {
+
             case 1:
-                std::ranges::sort(allCandidates, [](const auto& a, const auto& b) {
-                    return a->getId() < b->getId();
-                });
-                std::cout << "\n--- Candidates Sorted by ID ---\n";
-                break;
-            case 2:
                 std::ranges::sort(allCandidates, [](const auto& a, const auto& b) {
                     return a->getName() < b->getName();
                 });
                 std::cout << "\n--- Candidates Sorted by Name ---\n";
+
                 break;
-            case 3:
+            case 2:
                 std::ranges::sort(allCandidates, [](const auto& a, const auto& b) {
                     const int idWEa = a->getElectionId();
                     const int idWEb = b->getElectionId();
@@ -174,8 +234,14 @@ void ManageCandidatesMenu::viewCandidates() {
                     return a->getId() < b->getId();
                 });
                 std::cout << "\n--- Candidates Sorted by Election ID (Unassigned First) ---\n";
+
                 break;
+            case 3:
+                std::cout << "\nGoing Back...\n";
+                pauseScreen();
+                return;
             default:
+
                 break;
         }
 
@@ -186,7 +252,7 @@ void ManageCandidatesMenu::viewCandidates() {
                 std::cout << "Null candidate pointer encountered.\n--------------------------------------------------\n";
             }
         }
-    }
+
     pauseScreen();
 }
 

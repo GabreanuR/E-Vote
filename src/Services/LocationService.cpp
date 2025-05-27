@@ -266,3 +266,19 @@ std::shared_ptr<NonGovernment> LocationService::getNonGovernment(int id) const {
                                          [id](const std::shared_ptr<NonGovernment>& n) { return n->getId() == id; });
     return it != nonGovernmentEntities.end() ? *it : nullptr;
 }
+
+std::vector<std::shared_ptr<Location>> LocationService::getAllRegionsAsBase() const {
+    return {regions.begin(), regions.end()};
+}
+
+std::vector<std::shared_ptr<Location>> LocationService::getAllMunicipalitiesAsBase() const {
+    return {municipalities.begin(), municipalities.end()};
+}
+
+std::vector<std::shared_ptr<Location>> LocationService::getAllLocalitiesAsBase() const {
+    return {localities.begin(), localities.end()};
+}
+
+std::vector<std::shared_ptr<Location>> LocationService::getAllNonGovernmentAsBase() const {
+    return {nonGovernmentEntities.begin(), nonGovernmentEntities.end()};
+} 

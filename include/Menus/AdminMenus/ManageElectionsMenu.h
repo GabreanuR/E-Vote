@@ -10,9 +10,15 @@ public:
 private:
     static void printMenuText();
 
+    static void printToggleElectionStatusMenuText();
+
     static void createElection();
 
     static void toggleElectionStatus();
+
+    static void openElection();
+
+    static void closeElection();
 
     static void viewElections();
 };

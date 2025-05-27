@@ -5,7 +5,6 @@
 #include <vector>
 #include <memory>
 #include "nlohmann/json.hpp"
-#include <stdexcept>
 #include "../Utils/Types.h"
 
 using json = nlohmann::json;

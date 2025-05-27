@@ -45,6 +45,11 @@ public:
     [[nodiscard]] const std::vector<std::shared_ptr<Locality>>& getAllLocalities() const { return localities; }
     [[nodiscard]] const std::vector<std::shared_ptr<NonGovernment>>& getAllNonGovernment() const { return nonGovernmentEntities; }
 
+    [[nodiscard]] std::vector<std::shared_ptr<Location>> getAllRegionsAsBase() const;
+    [[nodiscard]] std::vector<std::shared_ptr<Location>> getAllMunicipalitiesAsBase() const;
+    [[nodiscard]] std::vector<std::shared_ptr<Location>> getAllLocalitiesAsBase() const;
+    [[nodiscard]] std::vector<std::shared_ptr<Location>> getAllNonGovernmentAsBase() const;
+
 };
 
 #endif

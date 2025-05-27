@@ -11,7 +11,6 @@ public:
     static void clearScreen();
     static void pauseScreen();
 
-protected:
     static int getValidatedInput(int min, int max, const std::function<void()>& reprintMenu);
 };
 

@@ -1,27 +1,25 @@
 #include "../../include/Models/Candidate.h"
-#include <limits> // Required for std::numeric_limits
-#include <iomanip> // For std::quoted (potentially if names have spaces)
 
-// Default constructor
+#include <iostream>
+
+#include "Utils/Types.h"
+
 Candidate::Candidate() : id(0), electionId(-1), votes(0) {}
 
-// Parameterized constructor
 Candidate::Candidate(int id, std::string name, int electionId, std::string politicalParty, std::string description)
     : id(id), name(std::move(name)), electionId(electionId), politicalParty(std::move(politicalParty)), description(std::move(description)), votes(0) {}
 
-// JSON-based constructor (delegates to fromJson)
 Candidate::Candidate(const json& data) : id(0), electionId(-1), votes(0) {
     fromJson(data);
 }
 
-// Copy constructor
 Candidate::Candidate(const Candidate& other)
     : id(other.id), name(other.name), electionId(other.electionId), politicalParty(other.politicalParty), description(other.description), votes(other.votes) {}
 
-// Assignment operator
+
 Candidate& Candidate::operator=(const Candidate& other) {
     if (this == &other) {
-        return *this; // Handle self-assignment
+        return *this;
     }
     id = other.id;
     name = other.name;
@@ -32,7 +30,6 @@ Candidate& Candidate::operator=(const Candidate& other) {
     return *this;
 }
 
-// Equality operator
 bool Candidate::operator==(const Candidate& other) const {
     return id == other.id &&
            name == other.name &&
@@ -42,7 +39,6 @@ bool Candidate::operator==(const Candidate& other) const {
            votes == other.votes;
 }
 
-// Getters
 int Candidate::getId() const { return id; }
 const std::string& Candidate::getName() const { return name; }
 int Candidate::getElectionId() const { return electionId; }
@@ -50,7 +46,6 @@ const std::string& Candidate::getPoliticalParty() const { return politicalParty;
 const std::string& Candidate::getDescription() const { return description; }
 int Candidate::getVotes() const { return votes; }
 
-// Setters
 void Candidate::setId(int newId) { id = newId; }
 void Candidate::setName(const std::string& newName) { name = newName; }
 void Candidate::setElectionId(int newElectionId) { electionId = newElectionId; }
@@ -58,7 +53,6 @@ void Candidate::setPoliticalParty(const std::string& newParty) { politicalParty 
 void Candidate::setDescription(const std::string& newDescription) { description = newDescription; }
 void Candidate::setVotes(int newVotes) { votes = newVotes; }
 
-// Serialization
 json Candidate::toJson() const {
     json data;
     data["id"] = id;
@@ -74,7 +68,6 @@ json Candidate::toJson() const {
     return data;
 }
 
-// Deserialization
 void Candidate::fromJson(const json& data) {
     if (data.contains("id") && data["id"].is_number_integer()) {
         id = data["id"].get<int>();
@@ -102,7 +95,6 @@ void Candidate::fromJson(const json& data) {
     }
 }
 
-// Virtual print helper
 void Candidate::print(std::ostream& os) const {
     os << "Candidate ID: " << id << "\\n"
        << "Name: " << name << "\\n";
@@ -118,13 +110,12 @@ void Candidate::print(std::ostream& os) const {
        << "Votes: " << votes;
 }
 
-// Virtual read helper
 void Candidate::read(std::istream& is) {
     std::string tempName, tempParty, tempDescription;
 
     std::cout << "Enter Candidate Name (or press Enter to cancel): ";
     std::getline(is, tempName);
-    if (tempName.empty() && is.eof()) { is.clear(); throw UserInputCancelledException(); } // Handle EOF with empty line
+    if (tempName.empty() && is.eof()) { is.clear(); throw UserInputCancelledException(); }
     if (tempName.empty()) throw UserInputCancelledException();
     name = tempName;
 
@@ -137,17 +128,15 @@ void Candidate::read(std::istream& is) {
     std::cout << "Enter Description (or press Enter to cancel): ";
     std::getline(is, tempDescription);
     if (tempDescription.empty() && is.eof()) { is.clear(); throw UserInputCancelledException(); }
-    if (tempDescription.empty()) throw UserInputCancelledException(); // Allow empty description if intended or enforce non-empty
+    if (tempDescription.empty()) throw UserInputCancelledException();
     description = tempDescription;
-    
+
 }
 
-// Non-member operator!=
 bool operator!=(const Candidate& lhs, const Candidate& rhs) {
     return !(lhs == rhs);
 }
 
-// Friend stream operators
 std::ostream& operator<<(std::ostream& os, const Candidate& candidate) {
     candidate.print(os);
     return os;

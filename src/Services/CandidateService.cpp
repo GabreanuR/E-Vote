@@ -1,12 +1,11 @@
 #include "../../include/Services/CandidateService.h"
-#include "../../include/Services/ElectionService.h" // For validating electionId in assignCandidateToElection
+#include "../../include/Services/ElectionService.h"
 #include <fstream>
-#include <algorithm> // For std::max_element and std::sort (if needed later)
-#include <iostream> // For std::cerr
+#include <iostream>
 
 CandidateService* CandidateService::instance = nullptr;
 
-CandidateService::CandidateService() : nextId(1) { // Start ID generation from 1
+CandidateService::CandidateService() : nextId(1) {
     loadCandidates();
 }
 
@@ -23,7 +22,6 @@ void CandidateService::loadCandidates() {
         int maxId = 0;
         for (const auto& item : data) {
             try {
-                // Candidate constructor and fromJson now handle std::optional<int> electionId
                 auto candidate = std::make_shared<Candidate>(item);
                 candidates.push_back(candidate);
                 if (candidate->getId() > maxId) {
@@ -35,17 +33,14 @@ void CandidateService::loadCandidates() {
         }
         nextId = maxId + 1;
     } else {
-        // If the file doesn't exist, is empty, or not an array, start fresh.
-        // nextId is already 1.
         std::cout << "No candidate data found or data is invalid in " << dataFile << ". Starting with an empty candidate list." << std::endl;
-        nextId = 1; // Ensure nextId is 1 if file is empty/invalid
+        nextId = 1;
     }
 }
 
 void CandidateService::saveCandidates() const {
     json data = json::array();
     for (const auto& candidate : candidates) {
-        // Candidate::toJson now handles std::optional<int> electionId (writes null if not set)
         data.push_back(candidate->toJson());
     }
     DataManager::saveData(dataFile, data);
@@ -68,7 +63,6 @@ bool CandidateService::addCandidate(const std::string& name, const std::string& 
     return true;
 }
 
-// New method to assign a candidate to an election (only once)
 bool CandidateService::assignCandidateToElection(int candidateId, int electionId) {
     auto candidate = getCandidate(candidateId);
     if (!candidate) {
@@ -76,7 +70,6 @@ bool CandidateService::assignCandidateToElection(int candidateId, int electionId
         return false;
     }
 
-    // Check if already assigned (i.e., electionId is not -1)
     if (candidate->getElectionId() != -1) {
         std::cerr << "Error: Candidate '" << candidate->getName() << "' (ID: " << candidateId 
                   << ") is already assigned to Election ID: " << candidate->getElectionId() 
@@ -84,34 +77,19 @@ bool CandidateService::assignCandidateToElection(int candidateId, int electionId
         return false;
     }
     
-    // Ensure the target election ID is not the unassigned marker
     if (electionId == -1) {
-        std::cerr << "Error: Cannot assign candidate to invalid Election ID -1.\\n";
+        std::cerr << "Error: Cannot assign candidate to invalid Election ID -1 (this ID is for unassigned candidates).\n";
         return false;
     }
 
-    // Validate the electionId using ElectionService (stubbed for now)
-    if (!ElectionService::getInstance().getElection(electionId)) {
-        std::cerr << "Error: Election with ID " << electionId << " not found or ElectionService is stubbed. Cannot assign candidate.\\n";
-        // Note: If ElectionService::getElection is a stub that always returns nullptr for testing,
-        // this assignment will always fail. This needs a working ElectionService.
-        return false;
-    }
-    
-    // Check for uniqueness of candidate name WITHIN the target election before assigning
-    auto candidatesInTargetElection = getCandidatesForElection(electionId);
-    for (const auto& existingCandInElec : candidatesInTargetElection) {
-        if (existingCandInElec->getName() == candidate->getName()) {
-            std::cerr << "Error: Another candidate named '" << candidate->getName() 
-                      << "' already exists in Election ID " << electionId << ". Cannot assign.\\n";
-            return false;
-        }
+    if (!ElectionService::getInstance().addCandidateToElection(electionId, candidateId)) {
+        std::cerr << "CandidateService: Failed to update election (ID: " << electionId << ") with candidate (ID: " << candidateId << "). Assignment aborted.\n";
+        return false; 
     }
 
-    candidate->setElectionId(electionId); // This sets the std::optional<int>
-    // saveCandidates(); // Save on program exit
-    std::cout << "Candidate '" << candidate->getName() << "' (ID: " << candidateId 
-              << ") successfully assigned to Election ID: " << electionId << ".\\n";
+    candidate->setElectionId(electionId);
+    std::cout << "CandidateService: Candidate '" << candidate->getName() << "' (ID: " << candidateId 
+              << ") successfully assigned to Election ID: " << electionId << " and election record updated.\\n";
     return true;
 }
 
@@ -128,11 +106,10 @@ std::vector<std::shared_ptr<Candidate>> CandidateService::getAllCandidates() con
     return candidates;
 }
 
-// Gets candidates specifically assigned to an election
 std::vector<std::shared_ptr<Candidate>> CandidateService::getCandidatesForElection(int electionId) const {
     std::vector<std::shared_ptr<Candidate>> electionCandidates;
-    if (electionId == -1) { // Don't return candidates for the unassigned marker unless specifically intended
-        return electionCandidates; // Or, could return all unassigned candidates if that becomes a feature.
+    if (electionId == -1) {
+        return electionCandidates;
     }
     for (const auto& candidate : candidates) {
         if (candidate->getElectionId() == electionId) {

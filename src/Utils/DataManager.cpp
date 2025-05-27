@@ -3,7 +3,6 @@
 #include "../../include/Models/Election.h"
 #include "../../include/Models/Candidate.h"
 #include "../../include/Models/Location.h"
-#include "../../include/Models/VoteLog.h"
 #include <fstream>
 #include <iostream>
 #include <nlohmann/json.hpp>
@@ -55,7 +54,6 @@ void DataManager::loadAllData() {
     loadElections();
     loadCandidates();
     loadLocations();
-    loadVoteLogs();
 }
 
 void DataManager::saveAllData() {
@@ -63,7 +61,6 @@ void DataManager::saveAllData() {
     saveElections();
     saveCandidates();
     saveLocations();
-    saveVoteLogs();
 }
 
 void DataManager::loadUsers() {
@@ -78,7 +75,7 @@ void DataManager::loadElections() {
     json data = loadFromFile(elections_file);
     elections.clear();
     for (const auto& electionData : data) {
-        elections.emplace_back(electionData);
+        elections.push_back(Election::fromJson(electionData));
     }
 }
 
@@ -94,28 +91,24 @@ void DataManager::loadLocations() {
     json data = loadFromFile(locations_file);
     locations.clear();
 
-    // Load regions
     if (data.contains("regions")) {
         for (const auto& [id, regionData] : data["regions"].items()) {
             locations.emplace_back(std::make_shared<Region>(regionData));
         }
     }
 
-    // Load municipalities
     if (data.contains("municipalities")) {
         for (const auto& [id, municipalityData] : data["municipalities"].items()) {
             locations.emplace_back(std::make_shared<Municipality>(municipalityData));
         }
     }
 
-    // Load localities
     if (data.contains("localities")) {
         for (const auto& [id, localityData] : data["localities"].items()) {
             locations.emplace_back(std::make_shared<Locality>(localityData));
         }
     }
 
-    // Load non-government entities
     if (data.contains("nonGovernment")) {
         for (const auto& [id, entityData] : data["nonGovernment"].items()) {
             locations.emplace_back(std::make_shared<NonGovernment>(entityData));
@@ -123,13 +116,6 @@ void DataManager::loadLocations() {
     }
 }
 
-void DataManager::loadVoteLogs() {
-    json data = loadFromFile(votes_log_file);
-    voteLogs.clear();
-    for (const auto& voteLogData : data) {
-        voteLogs.emplace_back(voteLogData);
-    }
-}
 
 void DataManager::saveUsers() {
     json data = json::array();
@@ -163,15 +149,8 @@ void DataManager::saveLocations() {
     saveToFile(locations_file, data);
 }
 
-void DataManager::saveVoteLogs() {
-    json data = json::array();
-    for (const auto& voteLog : voteLogs) {
-        data.push_back(voteLog.toJson());
-    }
-    saveToFile(votes_log_file, data);
-}
 
-// Data manipulation methods
+
 void DataManager::addUser(const User& user) {
     users.push_back(user);
 }
@@ -193,19 +172,6 @@ void DataManager::removeUser(int userId) {
     );
 }
 
-// void DataManager::addElection(const Election& election) {
-//     elections.push_back(election);
-// }
-
-// void DataManager::updateElection(const Election& election) {
-//     for (auto& e : elections) {
-//         if (e.getId() == election.getId()) {
-//             e = election;
-//             break;
-//         }
-//     }
-// }
-
 void DataManager::addCandidate(const Candidate& candidate) {
     candidates.push_back(candidate);
 }
@@ -214,11 +180,8 @@ void DataManager::addLocation(const std::shared_ptr<Location>& location) {
     locations.push_back(location);
 }
 
-void DataManager::addVoteLog(const VoteLog& voteLog) {
-    voteLogs.push_back(voteLog);
-}
 
-// Helper methods to find data
+
 User* DataManager::findUser(int userId) {
     for (auto& user : users) {
         if (user.getId() == userId) {

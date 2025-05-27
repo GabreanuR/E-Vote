@@ -5,65 +5,59 @@
 #include <vector>
 #include <nlohmann/json.hpp>
 #include "../Utils/Types.h"
-// #include "VotingStrategy.h" // Will remove for now
-// #include "Candidate.h" // Candidate objects not stored directly, only IDs
 
 using json = nlohmann::json;
 
 class Election {
-private:
     int id;
     std::string name;
     ElectionLevel electionLevel;
-    std::string votingSystem; // Placeholder, could be its own class later
+    VotingSystemType votingSystem;
     ElectionStatus status;
     std::vector<int> candidateIds;
+    int locationId;
     int voteTotal;
 
 public:
-    // Constructors
-    Election(int id, const std::string& name, ElectionLevel level, const std::string& votingSystem);
-    Election(); // Default constructor for convenience, e.g. for json deserialization
+    Election(int id, const std::string& name, ElectionLevel level, VotingSystemType votingSystem, int locationId = 0);
+    Election();
 
-    // Getters
     int getId() const { return id; }
     const std::string& getName() const { return name; }
     ElectionLevel getElectionLevel() const { return electionLevel; }
-    const std::string& getVotingSystem() const { return votingSystem; }
+    VotingSystemType getVotingSystem() const { return votingSystem; }
     ElectionStatus getStatus() const { return status; }
     const std::vector<int>& getCandidateIds() const { return candidateIds; }
+    int getLocationId() const { return locationId; }
     int getVoteTotal() const { return voteTotal; }
 
-    // Setters
-    void setId(int newId) { id = newId; } // Typically ID is set on creation
+    void setId(int newId) { id = newId; }
     void setName(const std::string& newName) { name = newName; }
     void setElectionLevel(ElectionLevel newLevel) { electionLevel = newLevel; }
-    void setVotingSystem(const std::string& newSystem) { votingSystem = newSystem; }
+    void setVotingSystem(VotingSystemType newSystem) { votingSystem = newSystem; }
     void setStatus(ElectionStatus newStatus) { status = newStatus; }
-    // candidateIds will be managed by add/remove methods
+    void setLocationId(int newLocationId) { locationId = newLocationId; }
     void setVoteTotal(int newVoteTotal) { voteTotal = newVoteTotal; }
 
-    // Methods
     void addCandidateId(int candidateId);
     void removeCandidateId(int candidateId);
     bool hasCandidate(int candidateId) const;
 
-
-    // Serialization
     [[nodiscard]] json toJson() const;
     static Election fromJson(const json& j);
 
-
-    // Utility for converting ElectionLevel to string and back (for JSON)
     static std::string electionLevelToString(ElectionLevel level);
     static ElectionLevel stringToElectionLevel(const std::string& levelStr);
 
-    // Utility for converting ElectionStatus to string and back (for JSON)
     static std::string electionStatusToString(ElectionStatus status);
     static ElectionStatus stringToElectionStatus(const std::string& statusStr);
+
+    static std::string votingSystemTypeToString(VotingSystemType type);
+    static VotingSystemType stringToVotingSystemType(const std::string& typeStr);
 };
 
-// operator<< for easy printing
 std::ostream& operator<<(std::ostream& os, const Election& election);
+
+std::istream& operator>>(std::istream& is, Election& election);
 
 #endif

@@ -35,11 +35,9 @@ void UserService::displayUserDetails(const User& user) {
               << "Access Levels:\n";
     
     const auto& access = user.getRestrictedAccess();
-    
-    // National access is always accessible
+
     std::cout << "  National: Full Access\n";
-    
-    // Regional access
+
     std::cout << "  Regions: ";
     const auto regionalIt = access.find(ElectionLevel::regional);
     if (regionalIt == access.end() || regionalIt->second.empty()) {
@@ -51,8 +49,7 @@ void UserService::displayUserDetails(const User& user) {
         }
         std::cout << "\n";
     }
-    
-    // Municipal access
+
     std::cout << "  Municipalities: ";
     const auto municipalIt = access.find(ElectionLevel::municipal);
     if (municipalIt == access.end() || municipalIt->second.empty()) {
@@ -64,8 +61,7 @@ void UserService::displayUserDetails(const User& user) {
         }
         std::cout << "\n";
     }
-    
-    // Local access
+
     std::cout << "  Localities: ";
     const auto localIt = access.find(ElectionLevel::local);
     if (localIt == access.end() || localIt->second.empty()) {
@@ -77,8 +73,7 @@ void UserService::displayUserDetails(const User& user) {
         }
         std::cout << "\n";
     }
-    
-    // Non-government access
+
     std::cout << "  Non-Government: ";
     const auto nonGovIt = access.find(ElectionLevel::nonGovernment);
     if (nonGovIt == access.end() || nonGovIt->second.empty()) {
@@ -98,7 +93,6 @@ void UserService::addUser() {
     Meniu::clearScreen();
     std::cout << "===== Add New User =====\n\n";
 
-    // Get user type
     std::cout << "User Type:\n"
               << "1. Voter\n"
               << "2. Admin\n"
@@ -115,34 +109,29 @@ void UserService::addUser() {
     }
     
     const UserType type = (choice == "2") ? UserType::admin : UserType::voter;
-    
-    // Get username
+
     std::string username;
     std::cout << "Enter username (empty to go back): ";
     std::getline(std::cin, username);
     if (username.empty()) return;
-    
-    // Validate username
+
     if (!validateUsername(username)) {
         std::cout << "\nUsername must be at least 3 characters long.\n";
         Meniu::pauseScreen();
         return;
     }
-    
-    // Check if username already exists
+
     if (usernameExists(username)) {
         std::cout << "\nUsername already exists.\n";
         Meniu::pauseScreen();
         return;
     }
-    
-    // Get password
+
     std::string password;
     std::cout << "Enter password (empty to go back): ";
     std::getline(std::cin, password);
     if (password.empty()) return;
-    
-    // Validate password
+
     if (!validatePassword(password)) {
         std::cout << "\nPassword must be at least 6 characters long.\n";
         Meniu::pauseScreen();
@@ -150,10 +139,8 @@ void UserService::addUser() {
     }
     
     try {
-        // Create new user
         User newUser(username, password, type);
-        
-        // Save user
+
         json users = DataManager::getInstance().loadData("users");
         users.push_back(newUser.toJson());
         
@@ -173,10 +160,8 @@ void UserService::toggleUserStatus() {
     Meniu::clearScreen();
     std::cout << "===== Toggle User Status =====\n\n";
 
-    // Load users
     json users = DataManager::getInstance().loadData("users");
 
-    // Display users
     for (const auto& user : users) {
         std::cout << "ID: " << user["id"] << "\n"
                   << "Username: " << user["username"] << "\n"
@@ -184,8 +169,7 @@ void UserService::toggleUserStatus() {
                   << "Status: " << (user["disabled"].get<bool>() ? "Disabled" : "Enabled") << "\n"
                   << "----------------------------------------\n";
     }
-    
-    // Get user ID
+
     std::cout << "\nEnter user ID to toggle (empty to go back): ";
     std::string idStr;
     std::getline(std::cin, idStr);
@@ -194,14 +178,12 @@ void UserService::toggleUserStatus() {
     try {
         const int userId = std::stoi(idStr);
 
-        // Prevent changing status of user with ID 1
         if (userId == 1) {
             std::cout << "\nCannot change status of the primary admin user (ID: 1).\n";
             Meniu::pauseScreen();
             return;
         }
-        
-        // Find user
+
         auto it = std::ranges::find_if(users,
             [userId](const json& user) { return user["id"] == userId; });
 
@@ -210,11 +192,9 @@ void UserService::toggleUserStatus() {
             Meniu::pauseScreen();
             return;
         }
-        
-        // Toggle status
+
         (*it)["disabled"] = !(*it)["disabled"].get<bool>();
 
-        // Save changes
         if (DataManager::getInstance().saveData("users", users)) {
             std::cout << "\nUser status updated successfully!\n";
         } else {
@@ -231,7 +211,6 @@ void UserService::deleteUser() {
     Meniu::clearScreen();
     std::cout << "===== Delete User =====\n\n";
 
-    // Load users
     json users = DataManager::getInstance().loadData("users");
 
     if (users.empty()) {
@@ -240,15 +219,13 @@ void UserService::deleteUser() {
         return;
     }
 
-    // Display users
     for (const auto& user : users) {
         std::cout << "ID: " << user["id"] << "\n"
                   << "Username: " << user["username"] << "\n"
                   << "Type: " << user["type"] << "\n"
                   << "----------------------------------------\n";
     }
-    
-    // Get user ID
+
     std::cout << "\nEnter user ID to delete (empty to go back): ";
     std::string idStr;
     std::getline(std::cin, idStr);
@@ -257,14 +234,12 @@ void UserService::deleteUser() {
     try {
         const int userId = std::stoi(idStr);
 
-        // Prevent deleting user with ID 1
         if (userId == 1) {
             std::cout << "\nCannot delete the primary admin user (ID: 1).\n";
             Meniu::pauseScreen();
             return;
         }
-        
-        // Find user
+
         auto it = std::ranges::find_if(users,
             [userId](const json& user) { return user["id"] == userId; });
 
@@ -273,8 +248,7 @@ void UserService::deleteUser() {
             Meniu::pauseScreen();
             return;
         }
-        
-        // Confirm deletion
+
         std::cout << "\nAre you sure you want to delete this user? (y/n): ";
         std::string confirm;
         std::getline(std::cin, confirm);
@@ -285,7 +259,6 @@ void UserService::deleteUser() {
             return;
         }
 
-        // Delete user
         if (User::deleteUser(userId)) {
             std::cout << "\nUser deleted successfully!\n";
         } else {
@@ -302,7 +275,6 @@ void UserService::manageUserAccess() {
     Meniu::clearScreen();
     std::cout << "===== Manage User Access =====\n\n";
 
-    // Load users
     json users = DataManager::getInstance().loadData("users");
 
     if (users.empty()) {
@@ -311,7 +283,6 @@ void UserService::manageUserAccess() {
         return;
     }
 
-    // Display users
     for (const auto& user : users) {
         if (user["type"] == "voter") {  // Only show voters
             std::cout << "ID: " << user["id"] << "\n"
@@ -320,8 +291,7 @@ void UserService::manageUserAccess() {
                       << "----------------------------------------\n";
         }
     }
-    
-    // Get user ID
+
     std::cout << "\nEnter user ID to manage access (empty to go back): ";
     std::string idStr;
     std::getline(std::cin, idStr);
@@ -330,7 +300,6 @@ void UserService::manageUserAccess() {
     try {
         const int userId = std::stoi(idStr);
 
-        // Find user
         auto it = std::ranges::find_if(users,
             [userId](const json& user) { return user["id"] == userId; });
 
@@ -346,16 +315,13 @@ void UserService::manageUserAccess() {
             return;
         }
 
-        // Create User object
         User user(*it);
 
-        // Display current access
         std::cout << "\nCurrent Access Levels:\n";
         std::cout << "User Status: " << (user.isDisabled() ? "Disabled (No Voting Rights)" : "Enabled (Can Vote)") << "\n\n";
 
         const auto& access = user.getRestrictedAccess();
 
-        // Regional access
         const auto regionalIt = access.find(ElectionLevel::regional);
         std::cout << "1. Regions: ";
         if (regionalIt == access.end() || regionalIt->second.empty()) {
@@ -368,7 +334,6 @@ void UserService::manageUserAccess() {
             std::cout << "\n";
         }
 
-        // Municipal access
         const auto municipalIt = access.find(ElectionLevel::municipal);
         std::cout << "2. Municipalities: ";
         if (municipalIt == access.end() || municipalIt->second.empty()) {
@@ -381,7 +346,6 @@ void UserService::manageUserAccess() {
             std::cout << "\n";
         }
 
-        // Local access
         const auto localIt = access.find(ElectionLevel::local);
         std::cout << "3. Localities: ";
         if (localIt == access.end() || localIt->second.empty()) {
@@ -394,7 +358,6 @@ void UserService::manageUserAccess() {
             std::cout << "\n";
         }
 
-        // Non-government access
         const auto nonGovIt = access.find(ElectionLevel::nonGovernment);
         std::cout << "4. Non-Government: ";
         if (nonGovIt == access.end() || nonGovIt->second.empty()) {
@@ -407,7 +370,6 @@ void UserService::manageUserAccess() {
             std::cout << "\n";
         }
 
-        // Get access level to modify
         std::cout << "\nEnter access level to modify (1-4, empty to go back): ";
         std::string levelStr;
         std::getline(std::cin, levelStr);
@@ -420,7 +382,6 @@ void UserService::manageUserAccess() {
             return;
         }
 
-        // Convert level to ElectionLevel
         ElectionLevel electionLevel = {};
         switch (level) {
             case 1: electionLevel = ElectionLevel::regional; break;
@@ -430,9 +391,7 @@ void UserService::manageUserAccess() {
             default: ;
         }
 
-        // For regional level, show available regions
         if (electionLevel == ElectionLevel::regional) {
-            // Load regions data
             json locations = DataManager::getInstance().loadData("locations");
 
             std::cout << "\nAvailable Regions:\n";
@@ -456,19 +415,16 @@ void UserService::manageUserAccess() {
                 const int entityId = std::stoi(entityIdStr);
 
                 if (entityId == 0) {
-                    // Remove access to region and all sub-levels
                     user.grantAccess(ElectionLevel::regional, 0);
                     user.grantAccess(ElectionLevel::municipal, 0);
                     user.grantAccess(ElectionLevel::local, 0);
                 } else if (entityId > 0) {
-                    // Verify the region exists
                     if (!locations["regions"].contains(std::to_string(entityId))) {
                         std::cout << "\nInvalid region ID.\n";
                         Meniu::pauseScreen();
                         return;
                     }
 
-                    // Grant access to specific region and clear sub-levels
                     user.grantAccess(ElectionLevel::regional, entityId);
                     user.grantAccess(ElectionLevel::municipal, 0);
                     user.grantAccess(ElectionLevel::local, 0);
@@ -478,7 +434,6 @@ void UserService::manageUserAccess() {
                     return;
                 }
 
-                // Save changes
                 (*it) = user.toJson();
                 if (DataManager::getInstance().saveData("users", users)) {
                     std::cout << "\nUser access updated successfully!\n";
@@ -492,7 +447,6 @@ void UserService::manageUserAccess() {
             Meniu::pauseScreen();
             return;
         }
-        // For municipal level, check regional access first
         else if (electionLevel == ElectionLevel::municipal) {
             const auto regionalIt = access.find(ElectionLevel::regional);
             if (regionalIt == access.end() || regionalIt->second.empty()) {
@@ -502,10 +456,8 @@ void UserService::manageUserAccess() {
                 return;
             }
 
-            // Get the region ID the user has access to
             const int regionId = *regionalIt->second.begin();
 
-            // Load municipalities data
             json locations = DataManager::getInstance().loadData("locations");
 
             std::cout << "\nAvailable Municipalities in Region " << regionId << ":\n";
@@ -534,11 +486,9 @@ void UserService::manageUserAccess() {
                 const int entityId = std::stoi(entityIdStr);
 
                 if (entityId == 0) {
-                    // Remove access to municipalities and localities
                     user.grantAccess(ElectionLevel::municipal, 0);
                     user.grantAccess(ElectionLevel::local, 0);
                 } else if (entityId > 0) {
-                    // Verify the municipality belongs to the user's region
                     bool validMunicipality = false;
                     if (locations.contains("municipalities")) {
                         const auto& municipality = locations["municipalities"][std::to_string(entityId)];
@@ -554,7 +504,6 @@ void UserService::manageUserAccess() {
                         return;
                     }
 
-                    // Grant access to specific municipality and clear local access
                     user.grantAccess(ElectionLevel::municipal, entityId);
                     user.grantAccess(ElectionLevel::local, 0);
                 } else {
@@ -563,7 +512,6 @@ void UserService::manageUserAccess() {
                     return;
                 }
 
-                // Save changes
                 (*it) = user.toJson();
                 if (DataManager::getInstance().saveData("users", users)) {
                     std::cout << "\nUser access updated successfully!\n";
@@ -577,7 +525,6 @@ void UserService::manageUserAccess() {
             Meniu::pauseScreen();
             return;
         }
-        // For local level, check municipal access first
         else if (electionLevel == ElectionLevel::local) {
             const auto municipalIt = access.find(ElectionLevel::municipal);
             if (municipalIt == access.end() || municipalIt->second.empty()) {
@@ -586,10 +533,8 @@ void UserService::manageUserAccess() {
                 return;
             }
 
-            // Get the municipality ID the user has access to
             const int municipalityId = *municipalIt->second.begin();
 
-            // Load localities data
             json locations = DataManager::getInstance().loadData("locations");
 
             std::cout << "\nAvailable Localities in Municipality " << municipalityId << ":\n";
@@ -618,10 +563,10 @@ void UserService::manageUserAccess() {
                 const int entityId = std::stoi(entityIdStr);
 
                 if (entityId == 0) {
-                    // Remove access to localities
+
                     user.grantAccess(ElectionLevel::local, 0);
                 } else if (entityId > 0) {
-                    // Verify the locality belongs to the user's municipality
+
                     bool validLocality = false;
                     if (locations.contains("localities")) {
                         const auto& locality = locations["localities"][std::to_string(entityId)];
@@ -637,7 +582,7 @@ void UserService::manageUserAccess() {
                         return;
                     }
 
-                    // Grant access to specific locality
+
                     user.grantAccess(ElectionLevel::local, entityId);
                 } else {
                     std::cout << "\nInvalid locality ID. Must be 0 or positive.\n";
@@ -645,7 +590,7 @@ void UserService::manageUserAccess() {
                     return;
                 }
 
-                // Save changes
+
                 (*it) = user.toJson();
                 if (DataManager::getInstance().saveData("users", users)) {
                     std::cout << "\nUser access updated successfully!\n";
@@ -659,9 +604,9 @@ void UserService::manageUserAccess() {
             Meniu::pauseScreen();
             return;
         }
-        // For non-government level
+
         else if (electionLevel == ElectionLevel::nonGovernment) {
-            // Load non-government data
+
             json locations = DataManager::getInstance().loadData("locations");
 
             std::cout << "\nAvailable Non-Government Entities:\n";
@@ -683,10 +628,10 @@ void UserService::manageUserAccess() {
                 const int entityId = std::stoi(entityIdStr);
 
                 if (entityId == 0) {
-                    // Clear all non-government access
+
                     user.grantAccess(ElectionLevel::nonGovernment, 0);
                 } else if (entityId > 0) {
-                    // Verify the entity exists
+
                     bool validEntity = false;
                     if (locations.contains("nonGovernment")) {
                         const auto& entity = locations["nonGovernment"][std::to_string(entityId)];
@@ -701,7 +646,6 @@ void UserService::manageUserAccess() {
                         return;
                     }
 
-                    // Add the entity to the access list (don't clear existing ones)
                     const auto& currentAccess = user.getRestrictedAccess();
                     const auto nonGovIt = currentAccess.find(ElectionLevel::nonGovernment);
                     std::set<int> newAccess;
@@ -710,8 +654,7 @@ void UserService::manageUserAccess() {
                     }
                     newAccess.insert(entityId);
 
-                    // Update the access
-                    user.grantAccess(ElectionLevel::nonGovernment, -1);  // Clear first
+                    user.grantAccess(ElectionLevel::nonGovernment, -1);
                     for (const int id : newAccess) {
                         user.grantAccess(ElectionLevel::nonGovernment, id);
                     }
@@ -744,13 +687,11 @@ void UserService::manageUserAccess() {
 }
 
 bool UserService::validateUsername(const std::string& username) {
-    // Username must be between 3 and 20 characters
     if (username.length() < 3 || username.length() > 20) {
         std::cout << "Username must be between 3 and 20 characters.\n";
         return false;
     }
 
-    // Username can only contain letters, numbers, and underscores
     for (char c : username) {
         if (!std::isalnum(c) && c != '_') {
             std::cout << "Username can only contain letters, numbers, and underscores.\n";
@@ -758,7 +699,6 @@ bool UserService::validateUsername(const std::string& username) {
         }
     }
 
-    // Username must start with a letter
     if (!std::isalpha(username[0])) {
         std::cout << "Username must start with a letter.\n";
         return false;
@@ -768,7 +708,6 @@ bool UserService::validateUsername(const std::string& username) {
 }
 
 bool UserService::validatePassword(const std::string& password) {
-    // Password must be at least 8 characters
     if (password.length() < 8) {
         std::cout << "Password must be at least 8 characters long.\n";
         return false;
