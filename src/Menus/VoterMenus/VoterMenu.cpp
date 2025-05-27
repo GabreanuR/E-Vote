@@ -28,13 +28,13 @@ void VoterMenu::display() {
             case 1: {
                 std::cout << "\nVoting in Election...\n\n";
                 pauseScreen();
-                ElectionService::getInstance().voteInElection();
+                //ElectionService::getInstance().voteInElection();
                 break;
             }
             case 2: {
                 std::cout << "\nViewing Election Results...\n\n";
                 pauseScreen();
-                ElectionService::getInstance().viewElectionResults();
+                //ElectionService::getInstance().viewElectionResults();
                 break;
             }
             default: {

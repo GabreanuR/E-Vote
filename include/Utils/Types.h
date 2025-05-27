@@ -22,6 +22,12 @@ enum class LocationType {
     non_government
 };
 
+enum class ElectionStatus {
+    created,
+    open,
+    closed
+};
+
 struct UserInputCancelledException final : std::runtime_error {
     UserInputCancelledException() : std::runtime_error("User cancelled input.") {}
 };

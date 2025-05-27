@@ -9,7 +9,7 @@ using json = nlohmann::json;
 
 void MajorityVoting::computeResults(Election& election) {
     // Get candidates and their votes
-    const auto& candidates = election.getCandidates();
+    //const auto& candidates = election.getCandidates();
     
     // Find the candidate with the most votes
     // auto winner = std::max_element(candidates.begin(), candidates.end(),

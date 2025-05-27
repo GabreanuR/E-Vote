@@ -3,60 +3,67 @@
 
 #include <string>
 #include <vector>
-#include <memory>
 #include <nlohmann/json.hpp>
 #include "../Utils/Types.h"
-#include "VotingStrategy.h"
-#include "Candidate.h"
+// #include "VotingStrategy.h" // Will remove for now
+// #include "Candidate.h" // Candidate objects not stored directly, only IDs
 
 using json = nlohmann::json;
 
 class Election {
 private:
     int id;
-    std::string title;
-    std::string level;         // "national", "local", etc.
-    std::string zone;          // "" or "Cluj", etc.
-    std::string status;        // "active" / "inactive"
-    std::string votingSystem;  // "majority" / "proportional"
-    std::string startDate, endDate;
-    std::vector<Candidate> candidates;
-    std::unique_ptr<VotingStrategy> strategy;
+    std::string name;
+    ElectionLevel electionLevel;
+    std::string votingSystem; // Placeholder, could be its own class later
+    ElectionStatus status;
+    std::vector<int> candidateIds;
+    int voteTotal;
 
 public:
-    // Constructor
-    Election(int id, const std::string& title, const std::string& level, 
-            const std::string& zone, const std::string& votingSystem);
-    explicit Election(const json& data);
-    
+    // Constructors
+    Election(int id, const std::string& name, ElectionLevel level, const std::string& votingSystem);
+    Election(); // Default constructor for convenience, e.g. for json deserialization
+
     // Getters
     int getId() const { return id; }
-    const std::string& getTitle() const { return title; }
-    const std::string& getLevel() const { return level; }
-    const std::string& getZone() const { return zone; }
-    const std::string& getStatus() const { return status; }
+    const std::string& getName() const { return name; }
+    ElectionLevel getElectionLevel() const { return electionLevel; }
     const std::string& getVotingSystem() const { return votingSystem; }
-    const std::string& getStartDate() const { return startDate; }
-    const std::string& getEndDate() const { return endDate; }
-    const std::vector<Candidate>& getCandidates() const { return candidates; }
-    
+    ElectionStatus getStatus() const { return status; }
+    const std::vector<int>& getCandidateIds() const { return candidateIds; }
+    int getVoteTotal() const { return voteTotal; }
+
     // Setters
-    void setTitle(const std::string& newTitle) { title = newTitle; }
-    void setLevel(const std::string& newLevel) { level = newLevel; }
-    void setZone(const std::string& newZone) { zone = newZone; }
-    void setStatus(const std::string& newStatus) { status = newStatus; }
+    void setId(int newId) { id = newId; } // Typically ID is set on creation
+    void setName(const std::string& newName) { name = newName; }
+    void setElectionLevel(ElectionLevel newLevel) { electionLevel = newLevel; }
     void setVotingSystem(const std::string& newSystem) { votingSystem = newSystem; }
-    void setStartDate(const std::string& newDate) { startDate = newDate; }
-    void setEndDate(const std::string& newDate) { endDate = newDate; }
-    
+    void setStatus(ElectionStatus newStatus) { status = newStatus; }
+    // candidateIds will be managed by add/remove methods
+    void setVoteTotal(int newVoteTotal) { voteTotal = newVoteTotal; }
+
     // Methods
-    void computeResults();
-    void addCandidate(const Candidate& candidate);
-    void removeCandidate(int candidateId);
-    bool isActive() const { return status == "active"; }
-    void start();
-    void end();
+    void addCandidateId(int candidateId);
+    void removeCandidateId(int candidateId);
+    bool hasCandidate(int candidateId) const;
+
+
+    // Serialization
     [[nodiscard]] json toJson() const;
+    static Election fromJson(const json& j);
+
+
+    // Utility for converting ElectionLevel to string and back (for JSON)
+    static std::string electionLevelToString(ElectionLevel level);
+    static ElectionLevel stringToElectionLevel(const std::string& levelStr);
+
+    // Utility for converting ElectionStatus to string and back (for JSON)
+    static std::string electionStatusToString(ElectionStatus status);
+    static ElectionStatus stringToElectionStatus(const std::string& statusStr);
 };
+
+// operator<< for easy printing
+std::ostream& operator<<(std::ostream& os, const Election& election);
 
 #endif

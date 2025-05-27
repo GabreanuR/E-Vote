@@ -7,7 +7,7 @@
 
 void ProportionalVoting::computeResults(Election& election) {
     // Get candidates and their votes
-    const auto& candidates = election.getCandidates();
+    //const auto& candidates = election.getCandidates();
     
     // // Calculate total votes
     // int totalVotes = 0;
