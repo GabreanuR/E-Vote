@@ -1,1 +1,36 @@
-[]
+[
+    {
+        "candidateIds": [
+            1,
+            2
+        ],
+        "electionLevel": "national",
+        "endDate": 0,
+        "id": 1,
+        "locationId": 0,
+        "name": "Alegeri Prezidentiale",
+        "startDate": 0,
+        "status": "closed",
+        "voteTotal": 0,
+        "votersWhoVoted": [],
+        "votingSystem": "majority"
+    },
+    {
+        "candidateIds": [
+            4,
+            5
+        ],
+        "electionLevel": "municipal",
+        "endDate": 0,
+        "id": 2,
+        "locationId": 1,
+        "name": "Alegeri Bucuresti",
+        "startDate": 0,
+        "status": "open",
+        "voteTotal": 1,
+        "votersWhoVoted": [
+            21
+        ],
+        "votingSystem": "majority"
+    }
+]

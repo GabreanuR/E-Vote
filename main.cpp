@@ -15,19 +15,17 @@ int main() {
 
         MainMenu mainMenu;
         mainMenu.display();
-
-    } catch (const std::exception& e) {
+    } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
         return 1;
     }
 
     try {
-        LocationService::getInstance().saveLocations();
-        CandidateService::getInstance().saveCandidates();
-        ElectionService::getInstance().saveElections();
-        UserService::getInstance().saveUsers();
-
-    } catch (const std::exception& e) {
+        LocationService::getInstance().saveLocationsToDataManager();
+        CandidateService::getInstance().saveCandidatesToDataManager();
+        ElectionService::getInstance().saveElectionsToDataManager();
+        UserService::getInstance().saveUsersToDataManager();
+    } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
         return 2;
     }

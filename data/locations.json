@@ -15,6 +15,10 @@
         "4": {
             "municipalityId": 1,
             "name": "Sector 4"
+        },
+        "5": {
+            "municipalityId": 1,
+            "name": "Sector 6"
         }
     },
     "municipalities": {
@@ -22,7 +26,8 @@
             "localities": [
                 1,
                 2,
-                4
+                4,
+                5
             ],
             "name": "Bucuresti",
             "regionId": 1
@@ -41,6 +46,11 @@
             "localities": [],
             "name": "Bruxelles",
             "regionId": 8
+        },
+        "13": {
+            "localities": [],
+            "name": "Kiev",
+            "regionId": 9
         },
         "2": {
             "localities": [],
@@ -97,6 +107,10 @@
         "3": {
             "entityType": "Partid Politic",
             "name": "PNL"
+        },
+        "4": {
+            "entityType": "Partid Politic",
+            "name": "AUR"
         }
     },
     "regions": {
@@ -149,6 +163,12 @@
                 12
             ],
             "name": "Belgia"
+        },
+        "9": {
+            "municipalities": [
+                13
+            ],
+            "name": "Ucraina"
         }
     }
 }

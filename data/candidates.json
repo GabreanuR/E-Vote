@@ -1,7 +1,7 @@
 [
     {
         "description": "Romania Bogata",
-        "electionId": null,
+        "electionId": 1,
         "id": 1,
         "name": "Mihai",
         "politicalParty": "PNL",
@@ -9,7 +9,7 @@
     },
     {
         "description": "Pentru Muncitori",
-        "electionId": null,
+        "electionId": 1,
         "id": 2,
         "name": "Anca",
         "politicalParty": "PSD",
@@ -25,15 +25,15 @@
     },
     {
         "description": "Progres!",
-        "electionId": null,
+        "electionId": 2,
         "id": 4,
         "name": "Radu",
         "politicalParty": "USR",
-        "votes": 0
+        "votes": 1
     },
     {
         "description": "Un Bucuresti Patriotic",
-        "electionId": null,
+        "electionId": 2,
         "id": 5,
         "name": "Gigi",
         "politicalParty": "AUR",
