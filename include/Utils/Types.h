@@ -13,7 +13,7 @@ enum class ElectionLevel {
     regional,
     municipal,
     local,
-    nonGovernment
+    non_governmental
 };
 
 enum class LocationType {

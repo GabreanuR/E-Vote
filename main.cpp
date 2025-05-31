@@ -1,19 +1,37 @@
-#include "Menus/MainMenu.h"
-#include "Services/LocationService.h"
-#include "Services/CandidateService.h"
-#include "Services/ElectionService.h"
+#include "include/Menus/MainMenu.h"
+#include "include/Services/UserService.h"
+#include "include/Services/ElectionService.h"
+#include "include/Services/CandidateService.h"
+#include "include/Services/LocationService.h"
+#include <iostream>
+#include <exception>
 
 int main() {
-    LocationService::getInstance();
-    CandidateService::getInstance();
-    ElectionService::getInstance();
+    try {
+        UserService::getInstance();
+        ElectionService::getInstance();
+        CandidateService::getInstance();
+        LocationService::getInstance();
 
-    MainMenu menu;
-    menu.display();
+        MainMenu mainMenu;
+        mainMenu.display();
 
-    ElectionService::getInstance().saveElections();
-    CandidateService::getInstance().saveCandidates();
-    LocationService::getInstance().saveLocations();
+    } catch (const std::exception& e) {
+        std::cerr << e.what() << std::endl;
+        return 1;
+    }
+
+    try {
+        LocationService::getInstance().saveLocations();
+        CandidateService::getInstance().saveCandidates();
+        ElectionService::getInstance().saveElections();
+        UserService::getInstance().saveUsers();
+
+    } catch (const std::exception& e) {
+        std::cerr << e.what() << std::endl;
+        return 2;
+    }
+
     return 0;
 }
 
