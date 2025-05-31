@@ -8,10 +8,8 @@
 
 ### Voter Mode
 - Login with ID and password
-- View open elections available to your voter type (Student, Professional, etc.)
-- Cast votes (randomly generated in demo mode)
+- Cast votes
 - View previous results and your own public votes
-- Change your vote if the election is still active
 
 ### Admin Mode
 - Create new elections (e.g., Referendum, Local)
@@ -20,10 +18,9 @@
 - View results of all elections
 
 ### Simulation
-- Voters are preloaded from a `.txt` file
-- Voting is randomly simulated to showcase election logic
+- Data is loaded from `.json` files
 - Terminal menu-driven interface
-- Support for public/private vote visibility and dynamic election behavior
+- Dynamic election behavior
 
 ---
 
