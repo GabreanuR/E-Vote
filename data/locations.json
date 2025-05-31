@@ -19,6 +19,10 @@
         "5": {
             "municipalityId": 1,
             "name": "Sector 6"
+        },
+        "6": {
+            "municipalityId": 1,
+            "name": "Sector 5"
         }
     },
     "municipalities": {
@@ -27,7 +31,8 @@
                 1,
                 2,
                 4,
-                5
+                5,
+                6
             ],
             "name": "Bucuresti",
             "regionId": 1
@@ -51,6 +56,11 @@
             "localities": [],
             "name": "Kiev",
             "regionId": 9
+        },
+        "14": {
+            "localities": [],
+            "name": "Sofia",
+            "regionId": 10
         },
         "2": {
             "localities": [],
@@ -111,6 +121,10 @@
         "4": {
             "entityType": "Partid Politic",
             "name": "AUR"
+        },
+        "5": {
+            "entityType": "Partid Politic",
+            "name": "USR"
         }
     },
     "regions": {
@@ -122,6 +136,16 @@
                 6
             ],
             "name": "Muntenia"
+        },
+        "10": {
+            "municipalities": [
+                14
+            ],
+            "name": "Bulgaria"
+        },
+        "11": {
+            "municipalities": [],
+            "name": "Ungaria"
         },
         "2": {
             "municipalities": [

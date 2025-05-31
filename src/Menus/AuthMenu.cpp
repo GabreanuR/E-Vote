@@ -66,7 +66,7 @@ void AuthMenu::display() {
                 VoterMenu voterMenu(currentUser);
                 voterMenu.display();
             } else {
-                AdminMenu adminMenu(currentUser);
+                AdminMenu adminMenu;
                 adminMenu.display();
             }
             return;

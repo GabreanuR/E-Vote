@@ -4,12 +4,12 @@
 #include "Models/User.h"
 
 void MainMenu::printMainMenuText() {
-    std::cout << "==================================================\n";
-    std::cout << "Welcome to the E-VOTE System!\n";
-    std::cout << "==================================================\n";
-    std::cout << "1. Login as Voter\n";
-    std::cout << "2. Login as Admin\n";
-    std::cout << "3. Exit\n";
+    std::cout << "==================================================\n"
+            << "Welcome to the E-VOTE System!\n"
+            << "==================================================\n"
+            << "1. Login as Voter\n"
+            << "2. Login as Admin\n"
+            << "3. Exit\n";
 }
 
 void MainMenu::display() {

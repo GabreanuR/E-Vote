@@ -3,15 +3,16 @@
 #include "../include/Menus/AdminMenus/ManageElectionsMenu.h"
 #include "../include/Menus/AdminMenus/ManageUsersMenu.h"
 #include "../include/Menus/AdminMenus/ManageLocationsMenu.h"
+#include "../include/Models/User.h"
 
 void AdminMenu::printAdminMenuText() {
     std::cout << "==================================================\n"
-              << "Admin Dashboard\n"
-              << "==================================================\n"
-              << "1. Manage Elections\n"
-              << "2. Manage Users\n"
-              << "3. Manage Locations\n"
-              << "4. Logout\n";
+            << "Admin Dashboard\n"
+            << "==================================================\n"
+            << "1. Manage Elections\n"
+            << "2. Manage Users\n"
+            << "3. Manage Locations\n"
+            << "4. Logout\n";
 }
 
 void AdminMenu::display() {
