@@ -17,7 +17,7 @@
     },
     {
         "description": "Romania Mare",
-        "electionId": null,
+        "electionId": 3,
         "id": 3,
         "name": "Stefania",
         "politicalParty": "AUR",
@@ -37,6 +37,14 @@
         "id": 5,
         "name": "Gigi",
         "politicalParty": "AUR",
+        "votes": 0
+    },
+    {
+        "description": "NIMIC",
+        "electionId": null,
+        "id": 6,
+        "name": "Florin",
+        "politicalParty": "PNL",
         "votes": 0
     }
 ]

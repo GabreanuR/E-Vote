@@ -5,11 +5,9 @@
             2
         ],
         "electionLevel": "national",
-        "endDate": 0,
         "id": 1,
         "locationId": 0,
         "name": "Alegeri Prezidentiale",
-        "startDate": 0,
         "status": "closed",
         "voteTotal": 0,
         "votersWhoVoted": [],
@@ -21,16 +19,27 @@
             5
         ],
         "electionLevel": "municipal",
-        "endDate": 0,
         "id": 2,
         "locationId": 1,
         "name": "Alegeri Bucuresti",
-        "startDate": 0,
         "status": "open",
         "voteTotal": 1,
         "votersWhoVoted": [
             21
         ],
+        "votingSystem": "majority"
+    },
+    {
+        "candidateIds": [
+            3
+        ],
+        "electionLevel": "local",
+        "id": 3,
+        "locationId": 1,
+        "name": "Alegeri Sector 5 Primar",
+        "status": "created",
+        "voteTotal": 0,
+        "votersWhoVoted": [],
         "votingSystem": "majority"
     }
 ]
