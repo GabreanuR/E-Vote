@@ -1,7 +1,9 @@
 #ifndef MANAGEELECTIONSMENU_H
 #define MANAGEELECTIONSMENU_H
 
+#include <memory>
 #include "../Meniu.h"
+#include "../include/Models/Election.h"
 
 class ManageElectionsMenu final : public Meniu {
 public:
@@ -21,6 +23,8 @@ private:
     static void closeElection();
 
     static void viewElections();
+
+    static void displayElectionResults(const std::shared_ptr<Election> &electionPtr);
 };
 
 #endif
