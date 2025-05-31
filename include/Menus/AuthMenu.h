@@ -4,13 +4,13 @@
 #include "Menus/Meniu.h"
 #include "Models/User.h"
 #include <string>
+#include <memory>
 
 class AuthMenu final : public Meniu {
-    static const std::string jsonPath;
     UserType userType;
-    std::string authenticatedUser;
+    std::shared_ptr<User> currentUser;
 
-    [[nodiscard]] bool verifyCredentials(const std::string& username, const std::string& password) const;
+    [[nodiscard]] std::shared_ptr<User> attemptLogin(const std::string &username, const std::string &password) const;
 
 public:
     explicit AuthMenu(UserType type);

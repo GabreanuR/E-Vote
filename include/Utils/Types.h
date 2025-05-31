@@ -36,7 +36,8 @@ enum class VotingSystemType {
 };
 
 struct UserInputCancelledException final : std::runtime_error {
-    UserInputCancelledException() : std::runtime_error("User cancelled input.") {}
+    UserInputCancelledException() : std::runtime_error("User cancelled input.") {
+    }
 };
 
 #endif

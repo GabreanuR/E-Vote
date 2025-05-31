@@ -35,7 +35,7 @@ void MainMenu::display() {
                     return;
                 default: ;
             }
-        } catch (const std::exception& e) {
+        } catch (const std::exception &e) {
             std::cerr << "\nError: " << e.what() << "\n";
             pauseScreen();
         }

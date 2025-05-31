@@ -1,28 +1,37 @@
 #include "Menus/AuthMenu.h"
 #include "Menus/VoterMenus/VoterMenu.h"
 #include "Menus/AdminMenus/AdminMenu.h"
-#include "Utils/DataManager.h"
-#include <nlohmann/json.hpp>
+#include "Services/UserService.h"
+#include "Models/User.h"
 #include <iostream>
+#include <memory>
 
-using json = nlohmann::json;
+AuthMenu::AuthMenu(const UserType type) : userType(type) {
+}
 
-const std::string AuthMenu::jsonPath = "data/users.json";
+std::shared_ptr<User> AuthMenu::attemptLogin(const std::string &username, const std::string &password) const {
+    const UserService &userService = UserService::getInstance();
+    std::shared_ptr<User> user = userService.getUserByUsername(username);
 
-AuthMenu::AuthMenu(const UserType type) : userType(type) {}
-
-bool AuthMenu::verifyCredentials(const std::string& username, const std::string& password) const {
-    const json userList = DataManager::getInstance().loadData(jsonPath);
-    
-    for (const auto& user : userList) {
-        if (user["username"] == username && 
-            user["password"] == password &&
-            user["type"].get<std::string>() == (userType == UserType::admin ? "admin" : "voter") &&
-            !user["disabled"].get<bool>()) {
-            return true;
-        }
+    if (!user) {
+        return nullptr;
     }
-    return false;
+
+    if (user->isDisabled()) {
+        std::cout << "Account disabled. Please contact an administrator." << std::endl;
+        return nullptr;
+    }
+
+    if (user->getType() != userType) {
+        std::cout << "Access denied. User type does not match login type." << std::endl;
+        return nullptr;
+    }
+
+    if (user->getPassword() != password) {
+        return nullptr;
+    }
+
+    return user;
 }
 
 void AuthMenu::display() {
@@ -35,28 +44,48 @@ void AuthMenu::display() {
 
         std::cout << "Username: ";
         std::getline(std::cin, username);
+        if (username.empty()) {
+            std::cout << "Login cancelled." << std::endl;
+            return;
+        }
 
         std::cout << "Password: ";
         std::getline(std::cin, password);
+        if (password.empty()) {
+            std::cout << "Login cancelled." << std::endl;
+            return;
+        }
 
-        if (verifyCredentials(username, password)) {
-            authenticatedUser = username;
-            std::cout << "\nLogin successful! Welcome, " << username << ".\n";
+        currentUser = attemptLogin(username, password);
+
+        if (currentUser) {
+            std::cout << "\nLogin successful! Welcome, " << currentUser->getUsername() << ".\n";
             pauseScreen();
 
             if (userType == UserType::voter) {
-                VoterMenu voterMenu;
+                VoterMenu voterMenu(currentUser);
                 voterMenu.display();
             } else {
-                AdminMenu adminMenu;
+                AdminMenu adminMenu(currentUser);
                 adminMenu.display();
             }
-
             return;
-        } else {
-            std::cout << "\nInvalid credentials. Attempts left: " << attempts << "\n";
-            pauseScreen();
         }
+
+        const std::shared_ptr<User> existingUser = UserService::getInstance().getUserByUsername(username);
+        bool specificMessageAlreadyShown = false;
+
+        if (existingUser && (existingUser->isDisabled() || existingUser->getType() != userType))
+            specificMessageAlreadyShown = true;
+
+        if (!specificMessageAlreadyShown) {
+            std::cout << "\nInvalid username or password.";
+        }
+
+        std::cout << " Attempts left: " << attempts << "\n";
+        pauseScreen();
+        clearScreen();
+        std::cout << (userType == UserType::voter ? "=== Voter Login ===\n" : "=== Admin Login ===\n");
     }
 
     std::cout << "\nToo many failed attempts. Returning to main menu...\n";
