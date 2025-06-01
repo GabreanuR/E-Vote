@@ -6,6 +6,7 @@
 class ManageUsersMenu final : public Meniu {
 public:
     void display() override;
+
     static void printMenuText();
 };
 

@@ -218,6 +218,9 @@
     },
     {
         "access": {
+            "localities": [
+                1
+            ],
             "municipalities": [
                 1
             ],
@@ -229,7 +232,7 @@
                 1
             ]
         },
-        "disabled": true,
+        "disabled": false,
         "id": 23,
         "password": "123456",
         "type": "voter",
@@ -283,5 +286,34 @@
         "password": "123456",
         "type": "admin",
         "username": "Mihail"
+    },
+    {
+        "access": {
+            "localities": [
+                1
+            ],
+            "municipalities": [
+                1
+            ],
+            "national": true,
+            "regions": [
+                1
+            ]
+        },
+        "disabled": false,
+        "id": 25,
+        "password": "123456",
+        "type": "voter",
+        "username": "Alex"
+    },
+    {
+        "access": {
+            "national": true
+        },
+        "disabled": false,
+        "id": 26,
+        "password": "123456",
+        "type": "voter",
+        "username": "Andra"
     }
 ]

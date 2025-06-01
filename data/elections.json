@@ -22,24 +22,29 @@
         "id": 2,
         "locationId": 1,
         "name": "Alegeri Bucuresti",
-        "status": "open",
-        "voteTotal": 1,
+        "status": "closed",
+        "voteTotal": 2,
         "votersWhoVoted": [
-            21
+            21,
+            23
         ],
         "votingSystem": "majority"
     },
     {
         "candidateIds": [
-            3
+            3,
+            6
         ],
         "electionLevel": "local",
         "id": 3,
         "locationId": 1,
         "name": "Alegeri Sector 5 Primar",
-        "status": "created",
-        "voteTotal": 0,
-        "votersWhoVoted": [],
+        "status": "closed",
+        "voteTotal": 2,
+        "votersWhoVoted": [
+            23,
+            25
+        ],
         "votingSystem": "majority"
     }
 ]

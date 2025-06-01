@@ -29,7 +29,7 @@
         "id": 4,
         "name": "Radu",
         "politicalParty": "USR",
-        "votes": 1
+        "votes": 2
     },
     {
         "description": "Un Bucuresti Patriotic",
@@ -41,10 +41,10 @@
     },
     {
         "description": "NIMIC",
-        "electionId": null,
+        "electionId": 3,
         "id": 6,
         "name": "Florin",
         "politicalParty": "PNL",
-        "votes": 0
+        "votes": 2
     }
 ]
