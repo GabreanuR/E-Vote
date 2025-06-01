@@ -866,11 +866,9 @@ bool UserService::toggleUserStatusInstance(const int userId) const {
     }
     if (const auto user = getUser(userId)) {
         if (user->getType() == UserType::admin && !user->isDisabled()) {
-            int adminCount = 0;
             int enabledAdminCount = 0;
             for (const auto &u: usersCache) {
                 if (u && u->getType() == UserType::admin) {
-                    adminCount++;
                     if (!u->isDisabled()) enabledAdminCount++;
                 }
             }

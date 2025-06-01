@@ -38,7 +38,7 @@ public:
     void setElectionLevel(const ElectionLevel newLevel) { this->electionLevel = newLevel; }
     void setVotingSystem(const VotingSystemType newSystem) { this->votingSystem = newSystem; }
     void setStatus(const ElectionStatus newStatus) { this->status = newStatus; }
-    void setLocationId(const int id) { this->locationId = id; }
+    void setLocationId(const int newLocationId) { this->locationId = newLocationId; }
 
     void addCandidateId(int candidateId);
 
