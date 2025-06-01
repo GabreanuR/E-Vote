@@ -61,7 +61,7 @@
             "nonGovernment": [],
             "regions": []
         },
-        "disabled": false,
+        "disabled": true,
         "id": 2,
         "password": "123456",
         "type": "admin",
@@ -80,20 +80,6 @@
         "password": "123456",
         "type": "admin",
         "username": "Admin5"
-    },
-    {
-        "access": {
-            "localities": [],
-            "municipalities": [],
-            "national": true,
-            "nonGovernment": [],
-            "regions": []
-        },
-        "disabled": false,
-        "id": 4,
-        "password": "123456",
-        "type": "admin",
-        "username": "Admin4"
     },
     {
         "access": {
@@ -315,5 +301,27 @@
         "password": "123456",
         "type": "voter",
         "username": "Andra"
+    },
+    {
+        "access": {
+            "localities": [
+                1
+            ],
+            "municipalities": [
+                1
+            ],
+            "national": true,
+            "nonGovernment": [
+                1
+            ],
+            "regions": [
+                1
+            ]
+        },
+        "disabled": false,
+        "id": 27,
+        "password": "123456",
+        "type": "voter",
+        "username": "Ada"
     }
 ]

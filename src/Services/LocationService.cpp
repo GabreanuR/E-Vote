@@ -324,9 +324,70 @@ std::vector<std::shared_ptr<Location> > LocationService::getAllLocalitiesAsBase(
 }
 
 std::vector<std::shared_ptr<Location> > LocationService::getAllNonGovernmentAsBase() const {
-    std::vector<std::shared_ptr<Location> > baseLocations;
-    for (const auto &entity: nonGovernmentEntitiesCache) {
-        if (entity) baseLocations.push_back(entity);
+    std::vector<std::shared_ptr<Location> > baseNonGov;
+    for (const auto &ng: nonGovernmentEntitiesCache) {
+        baseNonGov.push_back(ng);
     }
-    return baseLocations;
+    return baseNonGov;
+}
+
+std::string LocationService::getLocationName(const ElectionLevel level, const int entityId) const {
+    switch (level) {
+        case ElectionLevel::regional: {
+            if (const auto region = getRegion(entityId)) return region->getName();
+            break;
+        }
+        case ElectionLevel::municipal: {
+            if (const auto mun = getMunicipality(entityId)) return mun->getName();
+            break;
+        }
+        case ElectionLevel::local: {
+            if (const auto loc = getLocality(entityId)) return loc->getName();
+            break;
+        }
+        case ElectionLevel::non_governmental: {
+            if (const auto ng = getNonGovernment(entityId)) return ng->getName();
+            break;
+        }
+        case ElectionLevel::national: 
+            return "National"; 
+        default:
+            break;
+    }
+    return "Unknown Entity (ID: " + std::to_string(entityId) + ")";
+}
+
+std::vector<int> LocationService::getAllLocationIds(const ElectionLevel level) const {
+    std::vector<int> ids;
+    switch (level) {
+        case ElectionLevel::regional: {
+            for (const auto &region: getAllRegions()) {
+                if (region) ids.push_back(region->getId());
+            }
+            break;
+        }
+        case ElectionLevel::municipal: {
+            for (const auto &mun: getAllMunicipalities()) {
+                if (mun) ids.push_back(mun->getId());
+            }
+            break;
+        }
+        case ElectionLevel::local: {
+            for (const auto &loc: getAllLocalities()) {
+                if (loc) ids.push_back(loc->getId());
+            }
+            break;
+        }
+        case ElectionLevel::non_governmental: {
+            for (const auto &ng: getAllNonGovernment()) {
+                if (ng) ids.push_back(ng->getId());
+            }
+            break;
+        }
+        case ElectionLevel::national: 
+            break;
+        default:
+            break;
+    }
+    return ids;
 }

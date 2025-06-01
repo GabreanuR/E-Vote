@@ -72,6 +72,9 @@ public:
     [[nodiscard]] std::vector<std::shared_ptr<Location> > getAllLocalitiesAsBase() const;
 
     [[nodiscard]] std::vector<std::shared_ptr<Location> > getAllNonGovernmentAsBase() const;
+
+    [[nodiscard]] std::string getLocationName(ElectionLevel level, int entityId) const;
+    [[nodiscard]] std::vector<int> getAllLocationIds(ElectionLevel level) const;
 };
 
 #endif
