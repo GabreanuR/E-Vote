@@ -1,15 +1,17 @@
-#include "../../include/Models/Location.h"
+#include "../include/Models/Location.h"
 #include <algorithm>
 #include <iostream>
 #include <string>
 #include <stdexcept>
 #include <utility>
 
-Location::Location() : id(0){}
+Location::Location() : id(0) {
+}
 
-Location::Location(const int id, std::string  name) : id(id), name(std::move(name)) {}
+Location::Location(const int id, std::string name) : id(id), name(std::move(name)) {
+}
 
-Location& Location::operator=(const Location& other) {
+Location &Location::operator=(const Location &other) {
     if (this != &other) {
         id = other.id;
         name = other.name;
@@ -17,11 +19,11 @@ Location& Location::operator=(const Location& other) {
     return *this;
 }
 
-bool Location::operator==(const Location& other) const {
+bool Location::operator==(const Location &other) const {
     return this->id == other.id && this->name == other.name;
 }
 
-void Location::fromJson(const json& data) {
+void Location::fromJson(const json &data) {
     if (data.contains("id")) {
         id = data["id"].get<int>();
     }
@@ -30,11 +32,11 @@ void Location::fromJson(const json& data) {
     }
 }
 
-void Location::print(std::ostream& out) const {
+void Location::print(std::ostream &out) const {
     out << "ID: " << id << ", Name: " << name;
 }
 
-void Location::read(std::istream& in) {
+void Location::read(std::istream &in) {
     std::cout << "Enter Name (or press Enter to cancel): ";
     std::string line;
     if (in.peek() == '\n') {
@@ -52,27 +54,28 @@ void Location::read(std::istream& in) {
     }
 }
 
-std::ostream& operator<<(std::ostream& os, const Location& loc) {
+std::ostream &operator<<(std::ostream &os, const Location &loc) {
     loc.print(os);
     return os;
 }
 
-std::istream& operator>>(std::istream& is, Location& loc) {
+std::istream &operator>>(std::istream &is, Location &loc) {
     loc.read(is);
     return is;
 }
 
-bool operator!=(const Location& ob1, const Location& ob2) {
+bool operator!=(const Location &ob1, const Location &ob2) {
     return !(ob1 == ob2);
 }
 
-Region::Region(const int id, const std::string& name) : Location(id, name) {}
+Region::Region(const int id, const std::string &name) : Location(id, name) {
+}
 
-Region::Region(const Region& other) : Location(other) {
+Region::Region(const Region &other) : Location(other) {
     municipalities = other.municipalities;
 }
 
-Region& Region::operator=(const Region& other) {
+Region &Region::operator=(const Region &other) {
     if (this != &other) {
         Location::operator=(other);
         municipalities = other.municipalities;
@@ -88,19 +91,19 @@ void Region::addMunicipality(const std::shared_ptr<Municipality> &municipality) 
 
 void Region::removeMunicipality(int municipalityId) {
     std::erase_if(municipalities,
-                  [municipalityId](const std::shared_ptr<Location>& m) {
+                  [municipalityId](const std::shared_ptr<Location> &m) {
                       return m->getId() == municipalityId;
                   });
 }
 
 bool Region::hasMunicipality(int municipalityId) const {
     return std::ranges::any_of(municipalities,
-                               [municipalityId](const std::shared_ptr<Location>& m) {
+                               [municipalityId](const std::shared_ptr<Location> &m) {
                                    return m->getId() == municipalityId;
                                });
 }
 
-const std::vector<std::shared_ptr<Municipality>> & Region::getMunicipalities() const {
+const std::vector<std::shared_ptr<Municipality> > &Region::getMunicipalities() const {
     return municipalities;
 }
 
@@ -108,13 +111,13 @@ json Region::toJson() const {
     json data;
     data["name"] = getName();
     data["municipalities"] = json::array();
-    for (const auto& m : municipalities) {
+    for (const auto &m: municipalities) {
         data["municipalities"].push_back(m->getId());
     }
     return data;
 }
 
-void Region::print(std::ostream& os) const {
+void Region::print(std::ostream &os) const {
     Location::print(os);
     os << ", Municipalities: [";
     for (size_t i = 0; i < municipalities.size(); ++i) {
@@ -132,19 +135,21 @@ void Region::displayRegionSummary() const {
         std::cout << "  No municipalities.\n";
     } else {
         std::cout << "  Municipalities:\n";
-        for (const auto& mun : municipalities) {
+        for (const auto &mun: municipalities) {
             std::cout << "    - " << mun->getName() << " (ID: " << mun->getId() << ")\n";
         }
     }
 }
 
-Municipality::Municipality(const int id, const std::string& name, const int regionId) : Location(id, name), regionId(regionId) {}
+Municipality::Municipality(const int id, const std::string &name, const int regionId) : Location(id, name),
+    regionId(regionId) {
+}
 
-Municipality::Municipality(const Municipality& other) : Location(other), regionId(other.regionId) {
+Municipality::Municipality(const Municipality &other) : Location(other), regionId(other.regionId) {
     localities = other.localities;
 }
 
-Municipality& Municipality::operator=(const Municipality& other) {
+Municipality &Municipality::operator=(const Municipality &other) {
     if (this != &other) {
         Location::operator=(other);
         regionId = other.regionId;
@@ -161,19 +166,19 @@ void Municipality::addLocality(const std::shared_ptr<Locality> &locality) {
 
 void Municipality::removeLocality(int localityId) {
     std::erase_if(localities,
-                  [localityId](const std::shared_ptr<Location>& l) {
+                  [localityId](const std::shared_ptr<Location> &l) {
                       return l->getId() == localityId;
                   });
 }
 
 bool Municipality::hasLocality(int localityId) const {
     return std::ranges::any_of(localities,
-                               [localityId](const std::shared_ptr<Location>& l) {
+                               [localityId](const std::shared_ptr<Location> &l) {
                                    return l->getId() == localityId;
                                });
 }
 
-const std::vector<std::shared_ptr<Locality>> & Municipality::getLocalities() const {
+const std::vector<std::shared_ptr<Locality> > &Municipality::getLocalities() const {
     return localities;
 }
 
@@ -182,20 +187,20 @@ json Municipality::toJson() const {
     data["name"] = getName();
     data["regionId"] = regionId;
     data["localities"] = json::array();
-    for (const auto& l : localities) {
+    for (const auto &l: localities) {
         data["localities"].push_back(l->getId());
     }
     return data;
 }
 
-void Municipality::fromJson(const json& data) {
+void Municipality::fromJson(const json &data) {
     Location::fromJson(data);
     if (data.contains("regionId")) {
         regionId = data["regionId"].get<int>();
     }
 }
 
-void Municipality::print(std::ostream& os) const {
+void Municipality::print(std::ostream &os) const {
     Location::print(os);
     os << ", Region ID: " << regionId;
     os << ", Localities: [";
@@ -208,7 +213,7 @@ void Municipality::print(std::ostream& os) const {
     os << "]";
 }
 
-void Municipality::read(std::istream& is) {
+void Municipality::read(std::istream &is) {
     Location::read(is);
 
     std::string line;
@@ -223,10 +228,11 @@ void Municipality::read(std::istream& is) {
         try {
             regionId = std::stoi(line);
             break;
-        } catch (const std::invalid_argument&) {
+        } catch (const std::invalid_argument &) {
             std::cout << "Invalid input. Not a number. Please enter a numeric Region ID (or press Enter to cancel): ";
-        } catch (const std::out_of_range&) {
-            std::cout << "Invalid input. Number out of range. Please enter a numeric Region ID (or press Enter to cancel): ";
+        } catch (const std::out_of_range &) {
+            std::cout <<
+                    "Invalid input. Number out of range. Please enter a numeric Region ID (or press Enter to cancel): ";
         }
 
         std::getline(is, line);
@@ -236,22 +242,24 @@ void Municipality::read(std::istream& is) {
     }
 }
 
-void Municipality::displayMunicipalityDetails(const LocationService&) const {
+void Municipality::displayMunicipalityDetails(const LocationService &) const {
     std::cout << "Municipality Details for '" << getName() << "' (ID: " << getId() << "):\n";
     std::cout << "  Region ID: " << this->regionId << "\n";
     if (localities.empty()) {
         std::cout << "  No localities.\n";
     } else {
         std::cout << "  Localities:\n";
-        for (const auto& loc : localities) {
+        for (const auto &loc: localities) {
             std::cout << "    - " << loc->getName() << " (ID: " << loc->getId() << ")\n";
         }
     }
 }
 
-Locality::Locality(const int id, const std::string& name, const int municipalityId) : Location(id, name), municipalityId(municipalityId) {}
+Locality::Locality(const int id, const std::string &name, const int municipalityId) : Location(id, name),
+    municipalityId(municipalityId) {
+}
 
-Locality& Locality::operator=(const Locality& other) {
+Locality &Locality::operator=(const Locality &other) {
     if (this != &other) {
         Location::operator=(other);
         municipalityId = other.municipalityId;
@@ -266,19 +274,19 @@ json Locality::toJson() const {
     return data;
 }
 
-void Locality::fromJson(const json& data) {
+void Locality::fromJson(const json &data) {
     Location::fromJson(data);
     if (data.contains("municipalityId")) {
         municipalityId = data["municipalityId"].get<int>();
     }
 }
 
-void Locality::print(std::ostream& os) const {
+void Locality::print(std::ostream &os) const {
     Location::print(os);
     os << ", Municipality ID: " << municipalityId;
 }
 
-void Locality::read(std::istream& is) {
+void Locality::read(std::istream &is) {
     Location::read(is);
 
     std::string line;
@@ -292,10 +300,12 @@ void Locality::read(std::istream& is) {
         try {
             municipalityId = std::stoi(line);
             break;
-        } catch (const std::invalid_argument&) {
-            std::cout << "Invalid input. Not a number. Please enter a numeric Municipality ID (or press Enter to cancel): ";
-        } catch (const std::out_of_range&) {
-            std::cout << "Invalid input. Number out of range. Please enter a numeric Municipality ID (or press Enter to cancel): ";
+        } catch (const std::invalid_argument &) {
+            std::cout <<
+                    "Invalid input. Not a number. Please enter a numeric Municipality ID (or press Enter to cancel): ";
+        } catch (const std::out_of_range &) {
+            std::cout <<
+                    "Invalid input. Number out of range. Please enter a numeric Municipality ID (or press Enter to cancel): ";
         }
         std::getline(is, line);
         if (line.empty()) {
@@ -304,14 +314,16 @@ void Locality::read(std::istream& is) {
     }
 }
 
-void Locality::showHierarchy(const LocationService&) const {
+void Locality::showHierarchy(const LocationService &) const {
     std::cout << "Locality Hierarchy for '" << getName() << "' (ID: " << getId() << "):\n";
     std::cout << "  Municipality ID: " << this->municipalityId << "\n";
 }
 
-NonGovernment::NonGovernment(const int id, const std::string& name, std::string  entityType) : Location(id, name), entityType(std::move(entityType)) {}
+NonGovernment::NonGovernment(const int id, const std::string &name, std::string entityType) : Location(id, name),
+    entityType(std::move(entityType)) {
+}
 
-NonGovernment& NonGovernment::operator=(const NonGovernment& other) {
+NonGovernment &NonGovernment::operator=(const NonGovernment &other) {
     if (this != &other) {
         Location::operator=(other);
         entityType = other.entityType;
@@ -326,19 +338,19 @@ json NonGovernment::toJson() const {
     return data;
 }
 
-void NonGovernment::fromJson(const json& data) {
+void NonGovernment::fromJson(const json &data) {
     Location::fromJson(data);
     if (data.contains("entityType")) {
         entityType = data["entityType"].get<std::string>();
     }
 }
 
-void NonGovernment::print(std::ostream& os) const {
+void NonGovernment::print(std::ostream &os) const {
     Location::print(os);
     os << ", Entity Type: " << entityType;
 }
 
-void NonGovernment::read(std::istream& is) {
+void NonGovernment::read(std::istream &is) {
     Location::read(is);
 
     std::cout << "Enter Entity Type (or press Enter to cancel): ";

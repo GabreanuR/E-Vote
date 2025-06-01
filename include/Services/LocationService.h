@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <vector>
+#include <string>
 #include <nlohmann/json.hpp>
 #include "../Models/Location.h"
 
@@ -12,44 +13,67 @@ class User;
 enum class ElectionLevel;
 
 class LocationService {
-    static LocationService* instance;
-    LocationService() = default;
+    static LocationService *instance;
+
+    LocationService();
+
     ~LocationService() = default;
 
-    static std::shared_ptr<Location> createLocationFromJson(const json& data);
+    std::string locationsFilePath_ = "data/locations.json";
+
+    std::vector<std::shared_ptr<Region> > regionsCache;
+    std::vector<std::shared_ptr<Municipality> > municipalitiesCache;
+    std::vector<std::shared_ptr<Locality> > localitiesCache;
+    std::vector<std::shared_ptr<NonGovernment> > nonGovernmentEntitiesCache;
+
+    static std::shared_ptr<Location> createLocationFromJson(const json &data);
+
     void buildLocationHierarchy() const;
 
-    std::vector<std::shared_ptr<Region>> regions;
-    std::vector<std::shared_ptr<Municipality>> municipalities;
-    std::vector<std::shared_ptr<Locality>> localities;
-    std::vector<std::shared_ptr<NonGovernment>> nonGovernmentEntities;
+    void loadLocationsFromDataManager();
+
+    [[nodiscard]] int calculateNextLocationId() const;
 
 public:
-    static LocationService& getInstance();
+    static LocationService &getInstance();
 
-    void loadLocations();
-    void saveLocations() const;
+    void saveLocationsToDataManager() const;
 
-    bool addRegion(const std::string& name);
-    bool addMunicipality(const std::string& name, int regionId);
-    bool addLocality(const std::string& name, int municipalityId);
-    bool addNonGovernment(const std::string& name, const std::string& entityType);
+    bool addRegion(const std::string &name);
+
+    bool addMunicipality(const std::string &name, int regionId);
+
+    bool addLocality(const std::string &name, int municipalityId);
+
+    bool addNonGovernment(const std::string &name, const std::string &entityType);
 
     [[nodiscard]] std::shared_ptr<Region> getRegion(int id) const;
+
     [[nodiscard]] std::shared_ptr<Municipality> getMunicipality(int id) const;
+
     [[nodiscard]] std::shared_ptr<Locality> getLocality(int id) const;
+
     [[nodiscard]] std::shared_ptr<NonGovernment> getNonGovernment(int id) const;
 
-    [[nodiscard]] const std::vector<std::shared_ptr<Region>>& getAllRegions() const { return regions; }
-    [[nodiscard]] const std::vector<std::shared_ptr<Municipality>>& getAllMunicipalities() const { return municipalities; }
-    [[nodiscard]] const std::vector<std::shared_ptr<Locality>>& getAllLocalities() const { return localities; }
-    [[nodiscard]] const std::vector<std::shared_ptr<NonGovernment>>& getAllNonGovernment() const { return nonGovernmentEntities; }
+    [[nodiscard]] const std::vector<std::shared_ptr<Region> > &getAllRegions() const { return regionsCache; }
 
-    [[nodiscard]] std::vector<std::shared_ptr<Location>> getAllRegionsAsBase() const;
-    [[nodiscard]] std::vector<std::shared_ptr<Location>> getAllMunicipalitiesAsBase() const;
-    [[nodiscard]] std::vector<std::shared_ptr<Location>> getAllLocalitiesAsBase() const;
-    [[nodiscard]] std::vector<std::shared_ptr<Location>> getAllNonGovernmentAsBase() const;
+    [[nodiscard]] const std::vector<std::shared_ptr<Municipality> > &getAllMunicipalities() const {
+        return municipalitiesCache;
+    }
 
+    [[nodiscard]] const std::vector<std::shared_ptr<Locality> > &getAllLocalities() const { return localitiesCache; }
+
+    [[nodiscard]] const std::vector<std::shared_ptr<NonGovernment> > &getAllNonGovernment() const {
+        return nonGovernmentEntitiesCache;
+    }
+
+    [[nodiscard]] std::vector<std::shared_ptr<Location> > getAllRegionsAsBase() const;
+
+    [[nodiscard]] std::vector<std::shared_ptr<Location> > getAllMunicipalitiesAsBase() const;
+
+    [[nodiscard]] std::vector<std::shared_ptr<Location> > getAllLocalitiesAsBase() const;
+
+    [[nodiscard]] std::vector<std::shared_ptr<Location> > getAllNonGovernmentAsBase() const;
 };
 
 #endif
