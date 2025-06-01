@@ -5,33 +5,37 @@
 #include <string>
 #include <memory>
 #include "../Models/Candidate.h"
-#include "../Utils/DataManager.h"
 
 class CandidateService {
-    std::vector<std::shared_ptr<Candidate>> candidates;
-    std::string dataFile = "data/candidates.json";
-    int nextId;
-
-    static CandidateService* instance;
+    std::vector<std::shared_ptr<Candidate> > candidatesCache;
+    std::string candidatesFilePath = "data/candidates.json";
 
     CandidateService();
+
     ~CandidateService() = default;
 
-    CandidateService(const CandidateService&) = delete;
-    CandidateService& operator=(const CandidateService&) = delete;
+    void loadCandidatesFromDataManager();
 
-    void loadCandidates();
-    int generateNextId();
+    [[nodiscard]] int calculateNextCandidateId() const;
 
 public:
-    static CandidateService& getInstance();
-    void saveCandidates() const;
+    static CandidateService &getInstance();
 
-    bool addCandidate(const std::string& name, const std::string& politicalParty, const std::string& description);
-    bool assignCandidateToElection(int candidateId, int electionId);
-    std::shared_ptr<Candidate> getCandidate(int id) const;
-    std::vector<std::shared_ptr<Candidate>> getAllCandidates() const;
-    std::vector<std::shared_ptr<Candidate>> getCandidatesForElection(int electionId) const;
+    CandidateService(const CandidateService &) = delete;
+
+    CandidateService &operator=(const CandidateService &) = delete;
+
+    void saveCandidatesToDataManager() const;
+
+    bool addCandidate(const std::string &name, const std::string &politicalParty, const std::string &description);
+
+    [[nodiscard]] bool assignCandidateToElection(int candidateId, int electionId) const;
+
+    [[nodiscard]] std::shared_ptr<Candidate> getCandidate(int id) const;
+
+    [[nodiscard]] const std::vector<std::shared_ptr<Candidate> > &getAllCandidates() const;
+
+    [[nodiscard]] std::vector<std::shared_ptr<Candidate> > getCandidatesForElection(int electionId) const;
 };
 
 #endif

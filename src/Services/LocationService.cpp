@@ -8,51 +8,13 @@
 #include <memory>
 #include <iostream>
 
-LocationService *LocationService::instance = nullptr;
-
 LocationService &LocationService::getInstance() {
-    if (instance == nullptr) {
-        instance = new LocationService();
-    }
-    return *instance;
+    static LocationService serviceInstance;
+    return serviceInstance;
 }
 
 LocationService::LocationService() {
     loadLocationsFromDataManager();
-}
-
-std::shared_ptr<Location> LocationService::createLocationFromJson(const json &data) {
-    if (!data.contains("type") || !data["type"].is_string()) {
-        std::cerr <<
-                "LocationService::createLocationFromJson Error: JSON data is missing 'type' field or it's not a string."
-                << std::endl;
-        return nullptr;
-    }
-    const std::string type = data["type"].get<std::string>();
-
-    try {
-        if (type == "region") {
-            return std::make_shared<Region>(data);
-        }
-        if (type == "municipality") {
-            return std::make_shared<Municipality>(data);
-        }
-        if (type == "locality") {
-            return std::make_shared<Locality>(data);
-        }
-        if (type == "nonGovernment") {
-            return std::make_shared<NonGovernment>(data);
-        }
-    } catch (const json::exception &e) {
-        std::cerr << "LocationService::createLocationFromJson Error creating location of type '" << type << "': " << e.
-                what() << std::endl;
-        std::cerr << "Problematic JSON: " << data.dump(4) << std::endl;
-        return nullptr;
-    }
-
-    std::cerr << "LocationService::createLocationFromJson Error: Unknown location type '" << type << "' encountered." <<
-            std::endl;
-    return nullptr;
 }
 
 void LocationService::buildLocationHierarchy() const {
@@ -77,7 +39,7 @@ void LocationService::buildLocationHierarchy() const {
 }
 
 void LocationService::loadLocationsFromDataManager() {
-    json data = DataManager::loadData(locationsFilePath_);
+    json data = DataManager::loadData(locationsFilePath);
 
     regionsCache.clear();
     municipalitiesCache.clear();
@@ -141,7 +103,7 @@ void LocationService::loadLocationsFromDataManager() {
             }
         }
     } else {
-        std::cerr << "Warning: " << locationsFilePath_ <<
+        std::cerr << "Warning: " << locationsFilePath <<
                 " content is not a valid JSON object or file not found. Initializing empty lists." << std::endl;
     }
 
@@ -175,24 +137,8 @@ void LocationService::saveLocationsToDataManager() const {
         if (entity) data["nonGovernment"][std::to_string(entity->getId())] = entity->toJson();
     }
 
-    DataManager::saveData(locationsFilePath_, data);
-    std::cout << "LocationService: Saved locations data to " << locationsFilePath_ << std::endl;
-}
-
-int LocationService::calculateNextLocationId() const {
-    int maxId = 0;
-    auto updateMaxId = [&maxId](const auto &cache) {
-        for (const auto &item: cache) {
-            if (item && item->getId() > maxId) {
-                maxId = item->getId();
-            }
-        }
-    };
-    updateMaxId(regionsCache);
-    updateMaxId(municipalitiesCache);
-    updateMaxId(localitiesCache);
-    updateMaxId(nonGovernmentEntitiesCache);
-    return maxId + 1;
+    DataManager::saveData(locationsFilePath, data);
+    std::cout << "LocationService: Saved locations data to " << locationsFilePath << std::endl;
 }
 
 bool LocationService::addRegion(const std::string &name) {

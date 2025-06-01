@@ -13,29 +13,27 @@ class User;
 enum class ElectionLevel;
 
 class LocationService {
-    static LocationService *instance;
-
     LocationService();
 
     ~LocationService() = default;
 
-    std::string locationsFilePath_ = "data/locations.json";
+    std::string locationsFilePath = "data/locations.json";
 
     std::vector<std::shared_ptr<Region> > regionsCache;
     std::vector<std::shared_ptr<Municipality> > municipalitiesCache;
     std::vector<std::shared_ptr<Locality> > localitiesCache;
     std::vector<std::shared_ptr<NonGovernment> > nonGovernmentEntitiesCache;
 
-    static std::shared_ptr<Location> createLocationFromJson(const json &data);
-
     void buildLocationHierarchy() const;
 
     void loadLocationsFromDataManager();
 
-    [[nodiscard]] int calculateNextLocationId() const;
-
 public:
     static LocationService &getInstance();
+
+    LocationService(const LocationService &) = delete;
+
+    LocationService &operator=(const LocationService &) = delete;
 
     void saveLocationsToDataManager() const;
 
