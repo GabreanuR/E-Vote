@@ -248,9 +248,10 @@ void ManageElectionsMenu::openElection() {
 
     const std::shared_ptr<Election> selectedElection = createdElections[static_cast<size_t>(chosenListIndex)];
 
-    std::cout << "\nAttempting to open election: '" << selectedElection->getName() << "' (ID: " << selectedElection->
-            getId() << ")...\n";
-    ElectionService::getInstance().toggleElectionStatus(selectedElection->getId());
+    std::cout << "\nAttempting to open election: '" << selectedElection->getName() << "' (ID: " << selectedElection->getId() << ")...\n";
+    if (!ElectionService::getInstance().toggleElectionStatus(selectedElection->getId())) {
+        std::cout << "The election status (open) could not be changed. Please check previous messages.\n";
+    }
     pauseScreen();
 }
 
@@ -325,8 +326,9 @@ void ManageElectionsMenu::closeElection() {
 
     const std::shared_ptr<Election> selectedElection = openElections[static_cast<size_t>(chosenListIndex)];
 
-    std::cout << "\nAttempting to close election: '" << selectedElection->getName() << "' (ID: " << selectedElection->
-            getId() << ")...\n";
-    ElectionService::getInstance().toggleElectionStatus(selectedElection->getId());
+    std::cout << "\nAttempting to close election: '" << selectedElection->getName() << "' (ID: " << selectedElection->getId() << ")...\n";
+    if (!ElectionService::getInstance().toggleElectionStatus(selectedElection->getId())) {
+        std::cout << "The election status (close) could not be changed. Please check previous messages.\n";
+    }
     pauseScreen();
 }

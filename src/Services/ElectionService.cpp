@@ -1,76 +1,64 @@
-#include "../../include/Services/ElectionService.h"
-#include "../../include/Utils/DataManager.h"
-#include "../../include/Services/CandidateService.h"
-#include "../../include/Models/Election.h"
+#include "../include/Services/ElectionService.h"
+#include "../include/Utils/DataManager.h"
+#include "../include/Services/CandidateService.h"
+#include "../include/Models/Election.h"
+#include "../include/Models/User.h"
 #include <iostream>
 #include <algorithm>
-
-
-ElectionService* ElectionService::instance = nullptr;
-
+#include <vector>
 
 ElectionService::ElectionService() {
-
+    loadElectionsFromDataManager();
 }
 
-
-ElectionService::~ElectionService() {
-
+ElectionService &ElectionService::getInstance() {
+    static ElectionService serviceInstance;
+    return serviceInstance;
 }
 
+void ElectionService::loadElectionsFromDataManager() {
+    electionsCache.clear();
 
-ElectionService& ElectionService::getInstance() {
-    if (instance == nullptr) {
-        instance = new ElectionService();
-        instance->loadElections();
-    }
-    return *instance;
-}
-
-
-void ElectionService::loadElections() {
-    elections.clear();
-
-    json jsonData = DataManager::getInstance().loadData(electionsFilePath);
-
-    if (jsonData.is_array()) {
-        for (const auto& electionJson : jsonData) {
+    if (json jsonData = DataManager::loadData(electionsFilePath); jsonData.is_array()) {
+        for (const auto &electionJson: jsonData) {
             try {
-                elections.push_back(std::make_shared<Election>(Election::fromJson(electionJson)));
-            } catch (const json::parse_error& e) {
+                electionsCache.push_back(std::make_shared<Election>(Election::fromJson(electionJson)));
+            } catch (const json::parse_error &e) {
                 std::cerr << "Error parsing election JSON: " << e.what() << " at offset " << e.byte << std::endl;
-            } catch (const json::type_error& e) {
+            } catch (const json::type_error &e) {
                 std::cerr << "Error in JSON structure for election: " << e.what() << std::endl;
-            } catch (const std::exception& e) {
+            } catch (const std::exception &e) {
                 std::cerr << "Generic error loading election: " << e.what() << std::endl;
             }
         }
-        std::cout << "Loaded " << elections.size() << " elections from " << electionsFilePath << std::endl;
+        std::cout << "Loaded " << electionsCache.size() << " elections from " << electionsFilePath << std::endl;
     } else {
-        std::cout << "No elections data found or data is not an array in " << electionsFilePath << ". Initializing empty list." << std::endl;
+        std::cout << "No elections data found or data is not an array in " << electionsFilePath <<
+                ". Initializing empty list." << std::endl;
     }
 }
 
-void ElectionService::saveElections() const {
+void ElectionService::saveElectionsToDataManager() const {
     json electionsJsonArray = json::array();
-    for (const auto& electionPtr : elections) {
+    for (const auto &electionPtr: electionsCache) {
         if (electionPtr) {
             electionsJsonArray.push_back(electionPtr->toJson());
         }
     }
-    if (DataManager::getInstance().saveData(electionsFilePath, electionsJsonArray)) {
-        std::cout << "Successfully saved " << elections.size() << " elections to " << electionsFilePath << std::endl;
+    if (DataManager::saveData(electionsFilePath, electionsJsonArray)) {
+        std::cout << "Successfully saved " << electionsCache.size() << " elections to " << electionsFilePath <<
+                std::endl;
     } else {
         std::cerr << "Failed to save elections to " << electionsFilePath << std::endl;
     }
 }
 
-int ElectionService::getNextElectionId() {
-    if (elections.empty()) {
+int ElectionService::getNextElectionId() const {
+    if (electionsCache.empty()) {
         return 1;
     }
     int maxId = 0;
-    for (const auto& electionPtr : elections) {
+    for (const auto &electionPtr: electionsCache) {
         if (electionPtr && electionPtr->getId() > maxId) {
             maxId = electionPtr->getId();
         }
@@ -78,42 +66,44 @@ int ElectionService::getNextElectionId() {
     return maxId + 1;
 }
 
-std::shared_ptr<Election> ElectionService::createElection(const std::string& name, ElectionLevel level, 
-                                                        VotingSystemType votingSystem, int locationId) {
+std::shared_ptr<Election> ElectionService::createElection(const std::string &name, ElectionLevel level,
+                                                          VotingSystemType votingSystem,
+                                                          int locationId) {
     int newId = getNextElectionId();
     auto newElection = std::make_shared<Election>(newId, name, level, votingSystem, locationId);
-    
-    elections.push_back(newElection);
-    std::cout << "Election '" << name << "' (ID: " << newId << ") created with status created." << std::endl;
+
+    electionsCache.push_back(newElection);
+    std::cout << "Election '" << name << "' created with ID " << newId << std::endl;
     return newElection;
 }
 
 std::shared_ptr<Election> ElectionService::getElection(int electionId) const {
-    auto it = std::find_if(elections.begin(), elections.end(),
-                           [electionId](const std::shared_ptr<Election>& e) {
-                               return e && e->getId() == electionId;
-                           });
-    if (it != elections.end()) {
+    const auto it = std::ranges::find_if(electionsCache,
+                                         [electionId](const std::shared_ptr<Election> &e) {
+                                             return e && e->getId() == electionId;
+                                         });
+    if (it != electionsCache.end()) {
         return *it;
     }
     return nullptr;
 }
 
-const std::vector<std::shared_ptr<Election>>& ElectionService::getAllElections() const {
-    return elections;
+const std::vector<std::shared_ptr<Election> > &ElectionService::getAllElections() const {
+    return electionsCache;
 }
 
-bool ElectionService::toggleElectionStatus(int electionId) {
-    auto election = getElection(electionId);
+bool ElectionService::toggleElectionStatus(const int electionId) const {
+    const auto election = getElection(electionId);
     if (!election) {
         std::cerr << "Toggle status failed: Election with ID " << electionId << " not found." << std::endl;
         return false;
     }
 
-    ElectionStatus currentStatus = election->getStatus();
-    if (currentStatus == ElectionStatus::created) {
+    if (const ElectionStatus currentStatus = election->getStatus(); currentStatus == ElectionStatus::created) {
         if (election->getCandidateIds().size() < 2) {
-            std::cerr << "Cannot open Election ID " << electionId << " ('" << election->getName() << "'): Requires at least 2 candidates. Currently has " << election->getCandidateIds().size() << "." << std::endl;
+            std::cerr << "Cannot open Election ID " << electionId << " ('" << election->getName() <<
+                    "'): Requires at least 2 candidates. Currently has " << election->getCandidateIds().size() << "." <<
+                    std::endl;
             return false;
         }
         election->setStatus(ElectionStatus::open);
@@ -121,25 +111,27 @@ bool ElectionService::toggleElectionStatus(int electionId) {
     } else if (currentStatus == ElectionStatus::open) {
         election->setStatus(ElectionStatus::closed);
         std::cout << "Election ID " << electionId << " ('" << election->getName() << "') is now closed." << std::endl;
-
-        std::cout << "(Vote tallying for election ID " << electionId << " would occur now - placeholder)." << std::endl;
     } else if (currentStatus == ElectionStatus::closed) {
-        std::cerr << "Election ID " << electionId << " ('" << election->getName() << "') is already closed. No further status change possible." << std::endl;
+        std::cerr << "Election ID " << electionId << " ('" << election->getName() <<
+                "') is already closed. No further status change possible." << std::endl;
         return false;
     }
 
     return true;
 }
 
-bool ElectionService::addCandidateToElection(int electionId, int candidateId) {
-    auto election = getElection(electionId);
+bool ElectionService::addCandidateToElection(const int electionId, const int candidateId) const {
+    const auto election = getElection(electionId);
     if (!election) {
         std::cerr << "Add candidate failed: Election with ID " << electionId << " not found." << std::endl;
         return false;
     }
 
     if (election->getStatus() != ElectionStatus::created) {
-        std::cerr << "Add candidate failed: Candidates can only be added to an election in 'created' state. Election ID " << electionId << " is currently '" << Election::electionStatusToString(election->getStatus()) << "'." << std::endl;
+        std::cerr <<
+                "Add candidate failed: Candidates can only be added to an election in 'created' state. Election ID " <<
+                electionId << " is currently '" << Election::electionStatusToString(election->getStatus()) << "'." <<
+                std::endl;
         return false;
     }
 
@@ -149,34 +141,73 @@ bool ElectionService::addCandidateToElection(int electionId, int candidateId) {
     }
 
     if (election->hasCandidate(candidateId)) {
-        std::cout << "Info: Candidate ID " << candidateId << " is already assigned to Election ID " << electionId << ". No action taken." << std::endl;
+        std::cout << "Info: Candidate ID " << candidateId << " is already assigned to Election ID " << electionId <<
+                ". No action taken." << std::endl;
         return true;
     }
 
     election->addCandidateId(candidateId);
-    std::cout << "Candidate ID " << candidateId << " successfully added to Election ID " << electionId << " ('" << election->getName() << "')." << std::endl;
 
     return true;
 }
 
-bool ElectionService::removeCandidateFromElection(int electionId, int candidateId) {
-    auto election = getElection(electionId);
-    if (!election) {
-        std::cerr << "Remove candidate failed: Election with ID " << electionId << " not found." << std::endl;
+std::vector<std::shared_ptr<Election> > ElectionService::getAvailableElectionsForUser(
+    const std::shared_ptr<User> &user) const {
+    std::vector<std::shared_ptr<Election> > availableElections;
+    if (!user) {
+        std::cerr << "Error: Cannot get available elections for a null user." << std::endl;
+        return availableElections;
+    }
+
+    for (const auto &allElections = getAllElections(); const auto &election: allElections) {
+        if (election && election->getStatus() == ElectionStatus::open) {
+            const bool hasLocationAccess = user->hasAccessTo(election->getElectionLevel(), election->getLocationId());
+
+            if (const bool alreadyVoted = election->hasVoted(user->getId()); hasLocationAccess && !alreadyVoted) {
+                availableElections.push_back(election);
+            }
+        }
+    }
+    return availableElections;
+}
+
+bool ElectionService::castVote(const int electionId, const int candidateId, const std::shared_ptr<User> &user) const {
+    if (!user) {
+        std::cerr << "Error casting vote: User is null." << std::endl;
         return false;
     }
 
-    if (election->getStatus() != ElectionStatus::created) {
-        std::cerr << "Remove candidate failed: Candidates can only be removed from an election in 'created' state. Election ID " << electionId << " is currently '" << Election::electionStatusToString(election->getStatus()) << "'." << std::endl;
+    const auto election = getElection(electionId);
+    if (!election) {
+        std::cerr << "Error casting vote: Election with ID " << electionId << " not found." << std::endl;
+        return false;
+    }
+
+    if (election->getStatus() != ElectionStatus::open) {
+        std::cerr << "Error casting vote: Election ID " << electionId << " ('" << election->getName() <<
+                "') is not open for voting." << std::endl;
         return false;
     }
 
     if (!election->hasCandidate(candidateId)) {
-        std::cerr << "Remove candidate failed: Candidate ID " << candidateId << " is not assigned to Election ID " << electionId << "." << std::endl;
+        std::cerr << "Error casting vote: Candidate ID " << candidateId << " is not part of election ID " << electionId
+                << "." << std::endl;
         return false;
     }
 
-    election->removeCandidateId(candidateId);
-    std::cout << "Candidate ID " << candidateId << " successfully removed from Election ID " << electionId << " ('" << election->getName() << "')." << std::endl;
-    return true;
+    if (election->hasVoted(user->getId())) {
+        std::cerr << "Error casting vote: User " << user->getUsername() << " (ID: " << user->getId()
+                << ") has already voted in election ID " << electionId << "." << std::endl;
+        return false;
+    }
+
+    try {
+        election->recordVote(candidateId, user->getId());
+        std::cout << "Vote successfully cast by " << user->getUsername() << " for candidate ID " << candidateId
+                << " in election '" << election->getName() << "' (ID: " << electionId << ")." << std::endl;
+        return true;
+    } catch (const std::exception &e) {
+        std::cerr << "Error recording vote in election object: " << e.what() << std::endl;
+        return false;
+    }
 }

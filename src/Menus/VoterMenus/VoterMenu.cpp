@@ -156,11 +156,16 @@ void VoterMenu::vote() const {
     std::getline(std::cin, confirm_vote_str);
 
     if (!confirm_vote_str.empty() && (std::tolower(static_cast<unsigned char>(confirm_vote_str[0])) == 'y')) {
-        electionService.castVote(selectedElection->getId(), selectedCandidate->getId(), loggedInUser);
+        if (electionService.castVote(selectedElection->getId(), selectedCandidate->getId(), loggedInUser)) {
+            std::cout << "\nVote has been processed.\n";
+        } else {
+            std::cout << "\nVote could not be processed. Please see previous messages for details.\n";
+        }
+        pauseScreen();
     } else {
         std::cout << "Voting cancelled by user.\n";
+        pauseScreen();
     }
-    pauseScreen();
 }
 
 void VoterMenu::viewResults() const {

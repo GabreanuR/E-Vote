@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <set>
 #include <nlohmann/json.hpp>
 #include "../Utils/Types.h"
 
@@ -15,49 +16,59 @@ class Election {
     VotingSystemType votingSystem;
     ElectionStatus status;
     std::vector<int> candidateIds;
-    int locationId;
     int voteTotal;
+    std::set<int> votersWhoVoted;
+    int locationId;
 
 public:
-    Election(int id, const std::string& name, ElectionLevel level, VotingSystemType votingSystem, int locationId = 0);
     Election();
 
-    int getId() const { return id; }
-    const std::string& getName() const { return name; }
-    ElectionLevel getElectionLevel() const { return electionLevel; }
-    VotingSystemType getVotingSystem() const { return votingSystem; }
-    ElectionStatus getStatus() const { return status; }
-    const std::vector<int>& getCandidateIds() const { return candidateIds; }
-    int getLocationId() const { return locationId; }
-    int getVoteTotal() const { return voteTotal; }
+    Election(int id, std::string name, ElectionLevel level, VotingSystemType votingSystem, int locationId = 0);
 
-    void setId(int newId) { id = newId; }
-    void setName(const std::string& newName) { name = newName; }
-    void setElectionLevel(ElectionLevel newLevel) { electionLevel = newLevel; }
-    void setVotingSystem(VotingSystemType newSystem) { votingSystem = newSystem; }
-    void setStatus(ElectionStatus newStatus) { status = newStatus; }
-    void setLocationId(int newLocationId) { locationId = newLocationId; }
-    void setVoteTotal(int newVoteTotal) { voteTotal = newVoteTotal; }
+    [[nodiscard]] int getId() const { return id; }
+    [[nodiscard]] const std::string &getName() const { return name; }
+    [[nodiscard]] ElectionLevel getElectionLevel() const { return electionLevel; }
+    [[nodiscard]] VotingSystemType getVotingSystem() const { return votingSystem; }
+    [[nodiscard]] ElectionStatus getStatus() const { return status; }
+    [[nodiscard]] const std::vector<int> &getCandidateIds() const { return candidateIds; }
+    [[nodiscard]] int getVoteTotal() const { return voteTotal; }
+    [[nodiscard]] int getLocationId() const { return locationId; }
+
+    void setName(const std::string &newName) { this->name = newName; }
+    void setElectionLevel(const ElectionLevel newLevel) { this->electionLevel = newLevel; }
+    void setVotingSystem(const VotingSystemType newSystem) { this->votingSystem = newSystem; }
+    void setStatus(const ElectionStatus newStatus) { this->status = newStatus; }
+    void setLocationId(const int id) { this->locationId = id; }
 
     void addCandidateId(int candidateId);
-    void removeCandidateId(int candidateId);
-    bool hasCandidate(int candidateId) const;
+
+    [[nodiscard]] bool hasCandidate(int candidateId) const;
+
+    bool recordVote(int candidateId, int userId);
+
+    [[nodiscard]] bool hasVoted(int userId) const;
+
+    [[nodiscard]] int getVotesForCandidate(int candidateId) const;
 
     [[nodiscard]] json toJson() const;
-    static Election fromJson(const json& j);
+
+    static Election fromJson(const json &j);
 
     static std::string electionLevelToString(ElectionLevel level);
-    static ElectionLevel stringToElectionLevel(const std::string& levelStr);
 
     static std::string electionStatusToString(ElectionStatus status);
-    static ElectionStatus stringToElectionStatus(const std::string& statusStr);
 
     static std::string votingSystemTypeToString(VotingSystemType type);
-    static VotingSystemType stringToVotingSystemType(const std::string& typeStr);
+
+    static ElectionLevel stringToElectionLevel(const std::string &levelStr);
+
+    static ElectionStatus stringToElectionStatus(const std::string &statusStr);
+
+    static VotingSystemType stringToVotingSystemType(const std::string &typeStr);
 };
 
-std::ostream& operator<<(std::ostream& os, const Election& election);
+std::ostream &operator<<(std::ostream &os, const Election &election);
 
-std::istream& operator>>(std::istream& is, Election& election);
+std::istream &operator>>(std::istream &is, Election &election);
 
 #endif

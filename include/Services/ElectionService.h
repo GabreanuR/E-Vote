@@ -6,37 +6,49 @@
 #include <memory>
 #include <nlohmann/json.hpp>
 #include "../Models/Election.h"
+#include "../Models/User.h"
 #include "../Utils/Types.h"
 
 using json = nlohmann::json;
 
 class ElectionService {
-    static ElectionService* instance;
-    std::vector<std::shared_ptr<Election>> elections;
+    std::vector<std::shared_ptr<Election> > electionsCache;
     std::string electionsFilePath = "data/elections.json";
 
     ElectionService();
-    void loadElections();
-    int getNextElectionId();
+
+    void loadElectionsFromDataManager();
+
+    [[nodiscard]] int getNextElectionId() const;
 
 public:
-    ElectionService(const ElectionService&) = delete;
-    ElectionService& operator=(const ElectionService&) = delete;
-    ~ElectionService();
+    ElectionService(const ElectionService &) = delete;
 
-    static ElectionService& getInstance();
+    ElectionService &operator=(const ElectionService &) = delete;
 
-    std::shared_ptr<Election> createElection(const std::string& name, ElectionLevel level, 
-                                           VotingSystemType votingSystem, int locationId);
-    bool toggleElectionStatus(int electionId);
-    std::shared_ptr<Election> getElection(int electionId) const;
-    const std::vector<std::shared_ptr<Election>>& getAllElections() const;
+    ~ElectionService() = default;
 
-    bool addCandidateToElection(int electionId, int candidateId);
-    bool removeCandidateFromElection(int electionId, int candidateId);
+    static ElectionService &getInstance();
 
-    void saveElections() const;
 
+    void saveElectionsToDataManager() const;
+
+    std::shared_ptr<Election> createElection(const std::string &name, ElectionLevel level,
+                                             VotingSystemType votingSystem,
+                                             int locationId);
+
+    [[nodiscard]] bool toggleElectionStatus(int electionId) const;
+
+    [[nodiscard]] std::shared_ptr<Election> getElection(int electionId) const;
+
+    [[nodiscard]] const std::vector<std::shared_ptr<Election> > &getAllElections() const;
+
+    [[nodiscard]] std::vector<std::shared_ptr<Election> > getAvailableElectionsForUser(
+        const std::shared_ptr<User> &user) const;
+
+    [[nodiscard]] bool castVote(int electionId, int candidateId, const std::shared_ptr<User> &user) const;
+
+    [[nodiscard]] bool addCandidateToElection(int electionId, int candidateId) const;
 };
 
 #endif
