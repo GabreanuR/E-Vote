@@ -23,7 +23,7 @@ class Election {
 public:
     Election();
 
-    Election(int id, std::string name, ElectionLevel level, VotingSystemType votingSystem, int locationId = 0);
+    Election(int p_id, std::string name, ElectionLevel level, VotingSystemType votingSystem, int locationId = 0);
 
     [[nodiscard]] int getId() const { return id; }
     [[nodiscard]] const std::string &getName() const { return name; }

@@ -12,9 +12,9 @@
 #include <string>
 
 
-Election::Election(const int id, std::string name, const ElectionLevel level, const VotingSystemType votingSystem,
+Election::Election(const int p_id, std::string name, const ElectionLevel level, const VotingSystemType votingSystem,
                    const int locationId)
-    : id(id), name(std::move(name)), electionLevel(level), votingSystem(votingSystem),
+    : id(p_id), name(std::move(name)), electionLevel(level), votingSystem(votingSystem),
       status(ElectionStatus::created), voteTotal(0), locationId(locationId) {
 }
 

@@ -11,7 +11,7 @@ void Meniu::clearScreen() {
 }
 
 void Meniu::pauseScreen() {
-#ifdef _WIN32
+    #ifdef _WIN32
     system("pause");
 #else
     system("read -p \"Press any key to continue...\" -n1");
