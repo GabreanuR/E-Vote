@@ -96,7 +96,7 @@ void UserService::handleVoterRegionalAccess(const std::shared_ptr<User> &user, c
             chosenRegionId = available_regions_display[parsed_input_value - 1].first;
         } else if (parsed_input_value > 0) {
             chosenRegionId = parsed_input_value;
-        } else {
+    } else {
             std::cerr << "Invalid choice. Please enter a number from the list, a direct positive ID, or 0." <<
                     std::endl;
         }
@@ -129,10 +129,10 @@ void UserService::handleVoterRegionalAccess(const std::shared_ptr<User> &user, c
                 user->grantAccess(ElectionLevel::regional, chosenRegionId);
                 std::cout << "Granted access to region: " << locService.getLocationName(
                     ElectionLevel::regional, chosenRegionId) << std::endl;
-            } else {
+    } else {
                 std::cout << "Cleared regional access (and sub-levels)." << std::endl;
-            }
         }
+    }
     }
 }
 
@@ -153,7 +153,7 @@ void UserService::handleVoterMunicipalAccess(const std::shared_ptr<User> &user, 
         std::cerr << "Please set a specific region first." << std::endl;
         return;
     }
-
+    
     const int selectedRegionId = *regionalAccessIt->second.begin();
     std::cout << "Currently selected Region: " << locService.getLocationName(ElectionLevel::regional, selectedRegionId)
             << " (ID: " << selectedRegionId << ")" << std::endl << std::endl;
@@ -183,7 +183,7 @@ void UserService::handleVoterMunicipalAccess(const std::shared_ptr<User> &user, 
     if (mun_choice_input.empty()) {
         return;
     }
-
+    
     int chosenMunId = -2;
     try {
         if (const int parsed_input_value = std::stoi(mun_choice_input); parsed_input_value == 0) {
@@ -226,10 +226,10 @@ void UserService::handleVoterMunicipalAccess(const std::shared_ptr<User> &user, 
                 user->grantAccess(ElectionLevel::municipal, chosenMunId);
                 std::cout << "Granted access to municipality: " << locService.getLocationName(
                     ElectionLevel::municipal, chosenMunId) << std::endl;
-            } else {
+        } else {
                 std::cout << "Cleared municipal access (and local access)." << std::endl;
-            }
         }
+    }
     }
 }
 
@@ -277,8 +277,8 @@ void UserService::handleVoterLocalAccess(const std::shared_ptr<User> &user, cons
     std::string loc_choice_input;
     std::getline(std::cin, loc_choice_input);
     if (loc_choice_input.empty()) {
-        return;
-    }
+            return;
+        }
 
     int chosenLocId = -2;
     try {
@@ -358,7 +358,7 @@ void UserService::handleGenericLevelAccess(const std::shared_ptr<User> &user, co
         }
     } else if (currentAccessIt->second.empty()) {
         std::cout << "(None specific - no entities assigned)";
-    } else {
+        } else {
         bool first = true;
         for (const int id: currentAccessIt->second) {
             if (!first) std::cout << ", ";
@@ -378,7 +378,7 @@ void UserService::handleGenericLevelAccess(const std::shared_ptr<User> &user, co
             if (const std::vector<int> all_entity_ids_for_level = locService.getAllLocationIds(chosenLevel);
                 all_entity_ids_for_level.empty()) {
                 std::cout << "No specific entities listed or defined for this level." << std::endl;
-            } else {
+        } else {
                 int list_idx_gen = 1;
                 for (const int entity_id_val: all_entity_ids_for_level) {
                     std::cout << list_idx_gen++ << ". " << locService.getLocationName(chosenLevel, entity_id_val) <<
@@ -466,7 +466,7 @@ void UserService::handleGenericLevelAccess(const std::shared_ptr<User> &user, co
             std::cout << "Revoked access from ID " << entityIdParam << " (" << locService.
                     getLocationName(chosenLevel, entityIdParam) << ") at " << electionLevelToString(chosenLevel) << "."
                     << std::endl;
-        } else {
+                } else {
             std::cout << "Failed to revoke access from ID " << entityIdParam <<
                     " (ID might not exist in user specific access list or was already revoked)." << std::endl;
         }
@@ -484,18 +484,18 @@ void UserService::saveUsersToDataManager() const {
     }
     if (DataManager::saveData(usersFilePath, usersJsonArray)) {
         std::cout << "Successfully saved " << usersCache.size() << " users to " << usersFilePath << std::endl;
-    } else {
+                } else {
         std::cerr << "Failed to save users to " << usersFilePath << std::endl;
-    }
-}
+                }
+            }
 
 void UserService::viewUsers() {
     const auto &users = getInstance().getAllUsers();
     if (users.empty()) {
         std::cout << "No users found in the system.\n";
-        Meniu::pauseScreen();
-        return;
-    }
+            Meniu::pauseScreen();
+            return;
+        }
     std::cout << "\n--- List of Users ---\n";
     for (const auto &user: users) {
         if (user) {
@@ -505,7 +505,7 @@ void UserService::viewUsers() {
         }
     }
     std::cout << "---------------------\n";
-    Meniu::pauseScreen();
+                Meniu::pauseScreen();
 }
 
 void UserService::displayUserDetails(const User &user) {
@@ -569,19 +569,19 @@ void UserService::addUser() {
 
     if (choice_str.empty()) {
         std::cout << "Cancelled adding user." << std::endl;
-        Meniu::pauseScreen();
-        return;
-    }
+                        Meniu::pauseScreen();
+                        return;
+                    }
 
     if (choice_str == "1") {
         type_val = UserType::voter;
     } else if (choice_str == "2") {
         type_val = UserType::admin;
-    } else {
+                } else {
         std::cerr << "Invalid choice for user type. Please enter 1 or 2." << std::endl;
-        Meniu::pauseScreen();
-        return;
-    }
+                    Meniu::pauseScreen();
+                    return;
+                }
 
     try {
         getInstance().createUser(username, password, type_val);
@@ -599,9 +599,9 @@ void UserService::toggleUserStatus() {
     std::getline(std::cin, id_str);
     if (id_str.empty()) {
         std::cout << "Cancelled." << std::endl;
-        Meniu::pauseScreen();
-        return;
-    }
+            Meniu::pauseScreen();
+            return;
+        }
 
     try {
         if (const int userIdToToggle = std::stoi(id_str); getInstance().toggleUserStatusInstance(userIdToToggle)) {
@@ -624,9 +624,9 @@ void UserService::deleteUser() {
     std::getline(std::cin, id_str);
     if (id_str.empty()) {
         std::cout << "Cancelled." << std::endl;
-        Meniu::pauseScreen();
-        return;
-    }
+                Meniu::pauseScreen();
+                return;
+            }
 
     try {
         const int userIdToDelete = std::stoi(id_str);
@@ -672,9 +672,9 @@ void UserService::manageUserAccess() {
     const auto user = getInstance().getUser(userId);
     if (!user) {
         std::cerr << "User with ID " << userId << " not found." << std::endl;
-        Meniu::pauseScreen();
-        return;
-    }
+                        Meniu::pauseScreen();
+                        return;
+                    }
 
     const LocationService &locService = LocationService::getInstance();
 
@@ -686,7 +686,7 @@ void UserService::manageUserAccess() {
                 << "Modifications here typically ensure explicit listing of access or grant access to newly.\n"
                 << "created entities if not covered by a 'grant all' rule. Revoking specific access.\n"
                 << "might not limit capabilities due to overriding privileges.\n\n";
-        Meniu::pauseScreen();
+                    Meniu::pauseScreen();
     }
 
     bool managing = true;
@@ -735,7 +735,7 @@ void UserService::manageUserAccess() {
                 handleGenericLevelAccess(user, locService, chosenLevel);
             }
         }
-        Meniu::pauseScreen();
+            Meniu::pauseScreen();
     }
     std::cout << "Finished managing access for " << user->getUsername() << "." << std::endl;
     Meniu::pauseScreen();
@@ -784,7 +784,7 @@ std::shared_ptr<User> UserService::createUser(const std::string &username, const
 
         if (const std::vector<int> local_ids = locService.getAllLocationIds(ElectionLevel::local); local_ids.empty()) {
             newUser->grantAccess(ElectionLevel::local, -1);
-        } else {
+                } else {
             for (const int id: local_ids) newUser->grantAccess(ElectionLevel::local, id);
         }
 
@@ -827,16 +827,16 @@ bool UserService::deleteUserInstance(int userId) {
             }
             if (adminCount <= 1) {
                 std::cerr << "Cannot delete the last admin user." << std::endl;
-                return false;
-            }
+            return false;
         }
+    }
         std::cout << "User '" << (*it)->getUsername() << "' (ID: " << userId << ") deleted." << std::endl;
         usersCache.erase(it);
         return true;
     }
     std::cerr << "Delete failed: User with ID " << userId << " not found." << std::endl;
-    return false;
-}
+        return false;
+    }
 
 std::shared_ptr<User> UserService::getUser(int userId) const {
     const auto it = std::ranges::find_if(usersCache,
@@ -874,8 +874,8 @@ bool UserService::toggleUserStatusInstance(const int userId) const {
             }
             if (enabledAdminCount <= 1) {
                 std::cerr << "Cannot disable the last enabled admin user." << std::endl;
-                return false;
-            }
+        return false;
+    }
         }
         user->setDisabled(!user->isDisabled());
         std::cout << "User '" << user->getUsername() << "' status set to: " << (user->isDisabled()
@@ -884,8 +884,8 @@ bool UserService::toggleUserStatusInstance(const int userId) const {
         return true;
     }
     std::cerr << "Toggle status failed: User ID " << userId << " not found." << std::endl;
-    return false;
-}
+        return false;
+    }
 
 void UserService::grantInitialAccessToSuperAdmin(const ElectionLevel level, const int entityId) const {
     if (const auto rootAdmin = getUser(superAdmin)) {

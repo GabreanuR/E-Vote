@@ -13,7 +13,7 @@ public:
 
     static void pauseScreen();
 
-    [[maybe_unused]] static int getValidatedInput(int min, int max, const std::function<void()> &reprintMenu);
+    static int getValidatedInput(int min, int max, const std::function<void()> &reprintMenu);
 };
 
 #endif
