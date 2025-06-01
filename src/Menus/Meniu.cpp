@@ -18,7 +18,7 @@ void Meniu::pauseScreen() {
 #endif
 }
 
-int Meniu::getValidatedInput(const int min, const int max, const std::function<void()> &reprintMenu) {
+[[maybe_unused]] int Meniu::getValidatedInput(const int min, const int max, const std::function<void()> &reprintMenu) {
     std::string input;
     int choice;
 
