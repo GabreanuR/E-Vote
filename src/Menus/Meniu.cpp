@@ -1,6 +1,5 @@
 #include <iostream>
 #include <sstream>
-#include <functional>
 #include "Menus/Meniu.h"
 
 void Meniu::clearScreen() {
@@ -39,4 +38,11 @@ int Meniu::getValidatedInput(const int min, const int max, const std::function<v
         clearScreen();
         reprintMenu();
     }
+}
+
+int Meniu::getChoice(const int min, const int max) {
+    auto defaultMenu = []() {
+        std::cout << "Please enter your choice: ";
+    };
+    return getValidatedInput(min, max, defaultMenu);
 }

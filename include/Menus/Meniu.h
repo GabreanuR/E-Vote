@@ -14,6 +14,8 @@ public:
     static void pauseScreen();
 
     static int getValidatedInput(int min, int max, const std::function<void()> &reprintMenu);
+    
+    static int getChoice(int min, int max);
 };
 
 #endif
