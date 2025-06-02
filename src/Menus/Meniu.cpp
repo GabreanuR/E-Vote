@@ -18,6 +18,7 @@ void Meniu::pauseScreen() {
 #endif
 }
 
+// cppcheck-suppress unusedFunction
 int Meniu::getValidatedInput(const int min, const int max, const std::function<void()> &reprintMenu) {
     std::string input;
     int choice;
