@@ -39,3 +39,10 @@ int Meniu::getValidatedInput(const int min, const int max, const std::function<v
         reprintMenu();
     }
 }
+
+int Meniu::getChoice(const int min, const int max) {
+    auto defaultMenu = []() {
+        std::cout << "Please enter your choice: ";
+    };
+    return getValidatedInput(min, max, defaultMenu);
+}
