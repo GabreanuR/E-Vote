@@ -1,4 +1,4 @@
-#include "include/Menus/SuperMenu.h"
+#include "include/Menus/MainMenu.h"
 #include "include/Services/UserService.h"
 #include "include/Services/ElectionService.h"
 #include "include/Services/CandidateService.h"
@@ -13,8 +13,8 @@ int main() {
         CandidateService::getInstance();
         LocationService::getInstance();
 
-        SuperMenu superMenu;
-        superMenu.display();
+        MainMenu mainMenu;
+        mainMenu.display();
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
         return 1;
