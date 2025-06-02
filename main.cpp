@@ -1,5 +1,4 @@
 #include "include/Menus/MainMenu.h"
-#include "include/Menus/Meniu.h"
 #include "include/Services/UserService.h"
 #include "include/Services/ElectionService.h"
 #include "include/Services/CandidateService.h"
@@ -14,8 +13,6 @@ int main() {
         CandidateService::getInstance();
         LocationService::getInstance();
 
-        [[maybe_unused]] auto testUsage = Meniu::getChoice;
-        
         MainMenu mainMenu;
         mainMenu.display();
     } catch (const std::exception &e) {
