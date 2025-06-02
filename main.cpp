@@ -13,8 +13,6 @@ int main() {
         ElectionService::getInstance();
         CandidateService::getInstance();
         LocationService::getInstance();
-
-        [[maybe_unused]] auto testUsage = Meniu::getChoice;
         
         MainMenu mainMenu;
         mainMenu.display();
