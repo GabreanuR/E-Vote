@@ -384,8 +384,7 @@ std::vector<int> LocationService::getAllLocationIds(const ElectionLevel level) c
             }
             break;
         }
-        case ElectionLevel::national: 
-            break;
+
         default:
             break;
     }
